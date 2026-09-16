@@ -4,4 +4,4 @@ from app.models.refresh_token import RefreshToken
 from app.models.ticket import Ticket
 from app.models.user import User
 
-__all__ = ["Department", "Category", "User", "Ticket", "RefreshToken"]
+__all__ = ["Category", "Department", "RefreshToken", "Ticket", "User"]
