@@ -1,0 +1,68 @@
+@startuml
+' Zwiększamy odstępy, by etykiety miały miejsce
+skinparam nodesep 70
+skinparam ranksep 70
+
+entity "User" as User {
+  * id : UUID <<PK>>
+  --
+  * login : varchar <<unique>>
+  * password_hash : varchar
+  * first_name : varchar
+  * last_name : varchar
+  * role : enum(reporter, support, admin)
+  department_id : UUID <<FK>>
+  * is_temporary_password : boolean
+  * is_active : boolean
+  * created_at : timestamp
+}
+
+entity "Department" as Department {
+  * id : UUID <<PK>>
+  --
+  * name : varchar <<unique>>
+  * is_active : boolean
+}
+
+entity "Category" as Category {
+  * id : UUID <<PK>>
+  --
+  * name : varchar <<unique>>
+  * is_active : boolean
+}
+
+entity "Ticket" as Ticket {
+  * id : UUID <<PK>>
+  --
+  * title : varchar
+  * description : text
+  * status : enum(nowe, przyjete, zamkniete)
+  reporter_id : UUID <<FK>>
+  assigned_to_id : UUID <<FK>>
+  suggested_category_id : UUID <<FK>>
+  * suggested_priority : enum(low, medium, high, critical)
+  category_id : UUID <<FK>>
+  priority : enum(low, medium, high, critical)
+  * created_at : timestamp
+  * updated_at : timestamp
+}
+
+entity "RefreshToken" as RefreshToken {
+  * id : UUID <<PK>>
+  --
+  * user_id : UUID <<FK>>
+  * token_hash : varchar
+  * expires_at : timestamp
+  * revoked : boolean
+  * created_at : timestamp
+}
+
+User }o-down-|| Department : "należy do"
+User ||-down-o{ RefreshToken : "posiada"
+
+Ticket }o-down-|| User : "zgłoszone przez\n(reporter_id)"
+Ticket }o-down-o| User : "przypisane do\n(assigned_to_id)"
+Ticket }o-right-o| Category : "kategoria finalna\n(category_id)"
+Ticket }o-right-o| Category : "sugestia LLM\n(suggested_category_id)"
+
+@enduml

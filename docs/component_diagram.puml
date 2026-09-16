@@ -1,0 +1,47 @@
+@startuml
+left to right direction
+skinparam componentStyle rectangle
+
+component "React" as Frontend
+
+interface "REST API" as API
+
+package "Backend" {
+  component "Moduł Auth" as Auth
+  component "Rejestr Tokenów" as TokenStore
+  component "Moduł Zgłoszeń" as Tickets
+  component "Moduł Kont Użytkowników" as Users
+  component "Moduł Słowników\n(Kategorie, Działy)" as Dicts
+  component "Moduł Integracji LLM" as LLMModule
+  component "Moduł Statystyk" as Stats
+}
+
+component "Dostawca LLM" as LLM_API
+database "PostgreSQL" as DB
+
+Frontend --> API : wywołania HTTP
+
+API -down- Auth
+API -down- Tickets
+API -down- Users
+API -down- Dicts
+API -down- Stats
+
+Auth --> TokenStore
+Auth ..> DB : <<use>>
+TokenStore ..> DB : <<use>>
+
+Tickets ..> DB : <<use>>
+Tickets --> Dicts : pobiera aktywne kategorie
+Tickets --> LLMModule : deleguje predykcję
+
+Users ..> DB : <<use>>
+Users --> Dicts : pobiera aktywne działy
+
+Dicts ..> DB : <<use>>
+Stats ..> DB : <<use>>
+
+LLMModule --> Dicts : pobiera aktywne kategorie
+LLMModule --> LLM_API : <<use>>
+
+@enduml

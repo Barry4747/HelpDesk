@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" contentScriptType="application/ecmascript" contentStyleType="text/css" height="798px" preserveAspectRatio="none" style="width:1383px;height:798px;" version="1.1" viewBox="0 0 1383 798" width="1383px" zoomAndPan="magnify"><defs><filter height="300%" id="fdg3p4s0w5csm" width="300%" x="-1" y="-1"><feGaussianBlur result="blurOut" stdDeviation="2.0"/><feColorMatrix in="blurOut" result="blurOut2" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 .4 0"/><feOffset dx="4.0" dy="4.0" in="blurOut2" result="blurOut3"/><feBlend in="SourceGraphic" in2="blurOut3" mode="normal"/></filter></defs><g><!--MD5=[b4e09d266be9964199f2622adcc056fa]
+cluster Backend--><polygon fill="#FFFFFF" filter="url(#fdg3p4s0w5csm)" points="346,400.78,413,400.78,420,424.3894,1196,424.3894,1196,724.78,346,724.78,346,400.78" style="stroke:#000000;stroke-width:1.5;"/><line style="stroke:#000000;stroke-width:1.5;" x1="346" x2="420" y1="424.3894" y2="424.3894"/><text fill="#000000" font-family="sans-serif" font-size="14" font-weight="bold" lengthAdjust="spacing" textLength="61" x="350" y="417.3132">Backend</text><!--MD5=[39222abbbfd087a4fdab60e627dc976f]
+entity Auth--><rect fill="#FEFECE" filter="url(#fdg3p4s0w5csm)" height="37.6094" style="stroke:#000000;stroke-width:1.5;" width="91" x="376" y="582.78"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="71" x="386" y="607.3132">Moduł Auth</text><!--MD5=[685b7de89a5e9d6295ce3daec7bc882b]
+entity TokenStore--><rect fill="#FEFECE" filter="url(#fdg3p4s0w5csm)" height="37.6094" style="stroke:#000000;stroke-width:1.5;" width="126" x="678" y="670.78"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="106" x="688" y="695.3132">Rejestr Tokenów</text><!--MD5=[ccd22009ef3eed12d3be19b44c52c168]
+entity Tickets--><rect fill="#FEFECE" filter="url(#fdg3p4s0w5csm)" height="37.6094" style="stroke:#000000;stroke-width:1.5;" width="118" x="362.5" y="509.78"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="98" x="372.5" y="534.3132">Moduł Zgłoszeń</text><!--MD5=[feb5939ce823acf5a8245c3205b3c7a1]
+entity Users--><rect fill="#FEFECE" filter="url(#fdg3p4s0w5csm)" height="37.6094" style="stroke:#000000;stroke-width:1.5;" width="180" x="651" y="597.78"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="160" x="661" y="622.3132">Moduł Kont Użytkowników</text><!--MD5=[d3d944f06544ab501dbdecea6f912de9]
+entity Dicts--><rect fill="#FEFECE" filter="url(#fdg3p4s0w5csm)" height="55.2188" style="stroke:#000000;stroke-width:1.5;" width="136" x="1044" y="508.28"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="106" x="1054" y="532.8132">Moduł Słowników</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="116" x="1054" y="550.4226">(Kategorie, Działy)</text><!--MD5=[61b311704dd46f8f64453c38c8d86a4e]
+entity LLMModule--><rect fill="#FEFECE" filter="url(#fdg3p4s0w5csm)" height="37.6094" style="stroke:#000000;stroke-width:1.5;" width="150" x="666" y="436.78"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="130" x="676" y="461.3132">Moduł Integracji LLM</text><!--MD5=[40553488c6d410f986bfd62c74483789]
+entity Stats--><rect fill="#FEFECE" filter="url(#fdg3p4s0w5csm)" height="37.6094" style="stroke:#000000;stroke-width:1.5;" width="119" x="362" y="436.78"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="99" x="372" y="461.3132">Moduł Statystyk</text><!--MD5=[194a92f280a7d2c2f105939ff984a7cf]
+entity Frontend--><rect fill="#FEFECE" filter="url(#fdg3p4s0w5csm)" height="37.6094" style="stroke:#000000;stroke-width:1.5;" width="57" x="7" y="582.78"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="37" x="17" y="607.3132">React</text><!--MD5=[645d8587175d8f7ad110cd370775931d]
+entity API--><ellipse cx="260" cy="601.78" fill="#FEFECE" filter="url(#fdg3p4s0w5csm)" rx="8" ry="8" style="stroke:#A80036;stroke-width:1.5;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="62" x="229" y="633.3132">REST API</text><!--MD5=[08af4cb40f294fd49cc62c1ee36beddb]
+entity LLM_API--><rect fill="#FEFECE" filter="url(#fdg3p4s0w5csm)" height="37.6094" style="stroke:#000000;stroke-width:1.5;" width="112" x="1056" y="346.78"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="92" x="1066" y="371.3132">Dostawca LLM</text><!--MD5=[f9ba5bf973e7832d2ce5ed59077b93f7]
+entity DB--><path d="M1279,352.28 C1279,342.28 1327.5,342.28 1327.5,342.28 C1327.5,342.28 1376,342.28 1376,352.28 L1376,378.8894 C1376,388.8894 1327.5,388.8894 1327.5,388.8894 C1327.5,388.8894 1279,388.8894 1279,378.8894 L1279,352.28 " fill="#FEFECE" filter="url(#fdg3p4s0w5csm)" style="stroke:#000000;stroke-width:1.5;"/><path d="M1279,352.28 C1279,362.28 1327.5,362.28 1327.5,362.28 C1327.5,362.28 1376,362.28 1376,352.28 " fill="none" style="stroke:#000000;stroke-width:1.5;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="77" x="1289" y="380.8132">PostgreSQL</text><!--MD5=[8300d6f31da3a6901c7e03210cc4c0c1]
+link Frontend to API--><path d="M64.23,601.78 C112.44,601.78 209.97,601.78 245.59,601.78 " fill="none" id="Frontend-to-API" style="stroke:#A80036;stroke-width:1.0;"/><polygon fill="#A80036" points="250.76,601.78,241.76,597.78,245.76,601.78,241.76,605.78,250.76,601.78" style="stroke:#A80036;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="95" x="95" y="598.2751">wywołania HTTP</text><!--MD5=[35b34b4d27a4d3597af9f2ffda93764a]
+link API to Auth--><path d="M269.13,601.78 C288.49,601.78 338.5,601.78 375.77,601.78 " fill="none" id="API-Auth" style="stroke:#A80036;stroke-width:1.0;"/><!--MD5=[5b5fa552cc5367c9ca995bcac1c8fbbb]
+link API to Tickets--><path d="M269.05,597.79 C283.01,590.91 312.65,576.4 338,564.78 C350.22,559.18 363.54,553.28 375.84,547.92 " fill="none" id="API-Tickets" style="stroke:#A80036;stroke-width:1.0;"/><!--MD5=[bb7094ae251433f5f3abec780e19a742]
+link API to Users--><path d="M269.11,607.05 C282.7,615.52 311.21,631.83 338,637.78 C443.57,661.24 568.41,648.66 650.64,635.05 " fill="none" id="API-Users" style="stroke:#A80036;stroke-width:1.0;"/><!--MD5=[ad88e057608cd65f6c21f9a9a6683a66]
+link API to Dicts--><path d="M269.19,609.94 C282.45,622.65 309.97,647.04 338,659.78 C539.24,751.27 620.03,791.81 831,725.78 C925.48,696.21 935.81,659.51 1014,598.78 C1027.93,587.96 1029.53,582.88 1044,572.78 C1048.58,569.59 1053.45,566.44 1058.41,563.42 " fill="none" id="API-Dicts" style="stroke:#A80036;stroke-width:1.0;"/><!--MD5=[d6e2f57b8c1c1a141130ccc7f8ddf9f0]
+link API to Stats--><path d="M265.26,592.53 C275.22,571.84 301.92,521.3 338,491.78 C346.1,485.15 355.62,479.52 365.25,474.83 " fill="none" id="API-Stats" style="stroke:#A80036;stroke-width:1.0;"/><!--MD5=[f7ee7f02c05e9067344a02dff4fadd84]
+link Auth to TokenStore--><path d="M467.32,614.2 C520.85,629.04 610.93,654.01 672.8,671.16 " fill="none" id="Auth-to-TokenStore" style="stroke:#A80036;stroke-width:1.0;"/><polygon fill="#A80036" points="677.96,672.58,670.3484,666.3299,673.1402,671.2499,668.2202,674.0417,677.96,672.58" style="stroke:#A80036;stroke-width:1.0;"/><!--MD5=[32316380bf1ba2d25a59538e316951e0]
+link Auth to DB--><path d="M461.71,582.67 C468.94,577.68 475.83,571.72 481,564.78 C510.5,525.17 476.3,492.93 511,457.78 C682.23,284.33 800.88,345.97 1044,328.78 C1114.93,323.77 1133.65,318.39 1204,328.78 C1227.5,332.25 1252.73,339.28 1274.16,346.28 " fill="none" id="Auth-to-DB" style="stroke:#A80036;stroke-width:1.0;stroke-dasharray:7.0,7.0;"/><polygon fill="#A80036" points="1278.95,347.87,1271.6648,341.2424,1274.2037,346.2974,1269.1487,348.8364,1278.95,347.87" style="stroke:#A80036;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="35" x="920" y="327.2751">«use»</text><!--MD5=[62a4971b4b217630177a80f8bc85e278]
+link TokenStore to DB--><path d="M804.02,693.61 C899.51,696.28 1084.06,688.2 1204,598.78 C1273.43,547.02 1307.19,444.23 1320.05,394.31 " fill="none" id="TokenStore-to-DB" style="stroke:#A80036;stroke-width:1.0;stroke-dasharray:7.0,7.0;"/><polygon fill="#A80036" points="1321.3,389.36,1315.2097,397.1001,1320.0705,394.2065,1322.9641,399.0673,1321.3,389.36" style="stroke:#A80036;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="35" x="1094.5" y="595.2751">«use»</text><!--MD5=[332a11358199fdb708126de6a6d9b763]
+link Tickets to DB--><path d="M463.38,509.57 C470.21,504.67 476.53,498.76 481,491.78 C535.2,407.22 435.41,333.92 511,267.78 C634.42,159.79 1101.39,196.32 1249,267.78 C1278.65,282.13 1300.4,313.95 1313.18,337.46 " fill="none" id="Tickets-to-DB" style="stroke:#A80036;stroke-width:1.0;stroke-dasharray:7.0,7.0;"/><polygon fill="#A80036" points="1315.62,342.04,1314.9339,332.2151,1313.276,337.6235,1307.8675,335.9655,1315.62,342.04" style="stroke:#A80036;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="35" x="920" y="197.2751">«use»</text><!--MD5=[e708d49173c2712e7fa538049b01db6d]
+link Tickets to Dicts--><path d="M480.86,528.71 C586.98,528.68 818.66,529.1 1014,532.78 C1022.02,532.93 1030.41,533.13 1038.76,533.35 " fill="none" id="Tickets-to-Dicts" style="stroke:#A80036;stroke-width:1.0;"/><polygon fill="#A80036" points="1043.95,533.5,1035.0558,529.27,1038.9517,533.3715,1034.8502,537.2673,1043.95,533.5" style="stroke:#A80036;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="151" x="665.5" y="526.2751">pobiera aktywne kategorie</text><!--MD5=[126a0a6a70e36a803882aa31bf6b3a24]
+link Tickets to LLMModule--><path d="M480.73,515.39 C531.3,503.76 604.99,486.82 660.89,473.97 " fill="none" id="Tickets-to-LLMModule" style="stroke:#A80036;stroke-width:1.0;"/><polygon fill="#A80036" points="665.9,472.82,656.2347,470.9275,661.0259,473.9349,658.0185,478.7261,665.9,472.82" style="stroke:#A80036;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="108" x="512" y="480.2751">deleguje predykcję</text><!--MD5=[86bedd4bea3f0bc57b4a6bff0a72cf00]
+link Users to DB--><path d="M770.57,597.49 C789.87,583.22 814.71,562.24 831,538.78 C852.42,507.93 831.38,482.87 861,459.78 C982.06,365.44 1055.91,460.07 1204,419.78 C1228.92,413 1255.28,401.94 1277.14,391.58 " fill="none" id="Users-to-DB" style="stroke:#A80036;stroke-width:1.0;stroke-dasharray:7.0,7.0;"/><polygon fill="#A80036" points="1281.73,389.38,1271.8849,389.6513,1277.2186,391.5358,1275.3341,396.8695,1281.73,389.38" style="stroke:#A80036;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="35" x="1094.5" y="416.2751">«use»</text><!--MD5=[0064cfa4cfff6b1ad9095932ca0274f9]
+link Users to Dicts--><path d="M828.98,597.69 C892.92,583.65 978.78,564.81 1038.9,551.61 " fill="none" id="Users-to-Dicts" style="stroke:#A80036;stroke-width:1.0;"/><polygon fill="#A80036" points="1043.91,550.51,1034.2621,548.5307,1039.0261,551.581,1035.9757,556.345,1043.91,550.51" style="stroke:#A80036;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="132" x="871.5" y="554.2751">pobiera aktywne działy</text><!--MD5=[4f11f3e85487aef897417a91a594379b]
+link Dicts to DB--><path d="M1180.25,518.11 C1203.67,509.72 1229.05,497.91 1249,481.78 C1278.43,457.98 1300.81,420.01 1313.78,394.04 " fill="none" id="Dicts-to-DB" style="stroke:#A80036;stroke-width:1.0;stroke-dasharray:7.0,7.0;"/><polygon fill="#A80036" points="1316.09,389.34,1308.5195,395.6397,1313.8768,393.8235,1315.6931,399.1809,1316.09,389.34" style="stroke:#A80036;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="35" x="1213" y="478.2751">«use»</text><!--MD5=[18b476d9290f8761a79e3816142e4116]
+link Stats to DB--><path d="M422.2,436.52 C422.59,386.73 431.38,253.72 511,196.78 C777.81,6 972.93,19.67 1249,196.78 C1297.36,227.81 1315.94,297.4 1322.77,336.92 " fill="none" id="Stats-to-DB" style="stroke:#A80036;stroke-width:1.0;stroke-dasharray:7.0,7.0;"/><polygon fill="#A80036" points="1323.62,342.06,1326.0994,332.5283,1322.805,337.1269,1318.2064,333.8324,1323.62,342.06" style="stroke:#A80036;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="35" x="920" y="55.2751">«use»</text><!--MD5=[93a30b8009e7d845d205bff98835a894]
+link LLMModule to Dicts--><path d="M816.23,471.87 C881.04,485.93 974.54,506.2 1038.76,520.12 " fill="none" id="LLMModule-to-Dicts" style="stroke:#A80036;stroke-width:1.0;"/><polygon fill="#A80036" points="1043.72,521.19,1035.7695,515.3771,1038.8331,520.1326,1034.0776,523.1962,1043.72,521.19" style="stroke:#A80036;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="151" x="862" y="478.2751">pobiera aktywne kategorie</text><!--MD5=[a688206a9e0838e337756cada639f7d9]
+link LLMModule to LLM_API--><path d="M787.74,436.77 C809.62,428.22 836.36,418.55 861,411.78 C924.77,394.26 999.55,381.49 1050.59,373.91 " fill="none" id="LLMModule-to-LLM_API" style="stroke:#A80036;stroke-width:1.0;"/><polygon fill="#A80036" points="1055.77,373.15,1046.2829,370.5052,1050.8234,373.8791,1047.4495,378.4197,1055.77,373.15" style="stroke:#A80036;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="35" x="920" y="377.2751">«use»</text><!--MD5=[f30fbbcb923d88ab360c5d093a198af5]
+@startuml
+left to right direction
+skinparam componentStyle rectangle
+
+component "React" as Frontend
+
+interface "REST API" as API
+
+package "Backend" {
+  component "Moduł Auth" as Auth
+  component "Rejestr Tokenów" as TokenStore
+  component "Moduł Zgłoszeń" as Tickets
+  component "Moduł Kont Użytkowników" as Users
+  component "Moduł Słowników\n(Kategorie, Działy)" as Dicts
+  component "Moduł Integracji LLM" as LLMModule
+  component "Moduł Statystyk" as Stats
+}
+
+component "Dostawca LLM" as LLM_API
+database "PostgreSQL" as DB
+
+Frontend - -> API : wywołania HTTP
+
+API -down- Auth
+API -down- Tickets
+API -down- Users
+API -down- Dicts
+API -down- Stats
+
+Auth - -> TokenStore
+Auth ..> DB : <<use>>
+TokenStore ..> DB : <<use>>
+
+Tickets ..> DB : <<use>>
+Tickets - -> Dicts : pobiera aktywne kategorie
+Tickets - -> LLMModule : deleguje predykcję
+
+Users ..> DB : <<use>>
+Users - -> Dicts : pobiera aktywne działy
+
+Dicts ..> DB : <<use>>
+Stats ..> DB : <<use>>
+
+LLMModule - -> Dicts : pobiera aktywne kategorie
+LLMModule - -> LLM_API : <<use>>
+
+@enduml
+
+PlantUML version 1.2021.00(Sun Jan 10 11:25:05 CET 2021)
+(MIT source distribution)
+Java Runtime: Java(TM) SE Runtime Environment
+JVM: Java HotSpot(TM) 64-Bit Server VM
+Default Encoding: UTF-8
+Language: pl
+Country: PL
+--></g></svg>

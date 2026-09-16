@@ -1,0 +1,35 @@
+@startuml
+node "Host Docker" as Host {
+
+  node "Kontener: caddy" as CaddyNode <<Docker Container>> {
+    artifact "Caddy" as CaddyArt
+  }
+
+  node "Kontener: frontend" as FrontendNode <<Docker Container>> {
+    artifact "React SPA\n(build statyczny)" as FrontendArt
+  }
+
+  node "Kontener: backend" as BackendNode <<Docker Container>> {
+    artifact "FastAPI app" as BackendArt
+  }
+
+  node "Kontener: db" as DBNode <<Docker Container>> {
+    artifact "PostgreSQL" as DBArt
+  }
+}
+
+node "Infrastruktura zewnętrzna" as External {
+  artifact "LLM API" as LLMArt
+}
+
+actor "Użytkownik\n(przeglądarka)" as User
+
+User --> CaddyNode : HTTPS :443
+
+CaddyNode --> FrontendNode : HTTP (sieć Docker)\npath "/"
+CaddyNode --> BackendNode : HTTP :8000 (sieć Docker)\npath "/api/*"
+
+BackendNode --> DBNode : TCP :5432\n(sieć Docker, wewnętrzna)
+BackendNode --> External : HTTPS :443\n(Internet)
+
+@enduml

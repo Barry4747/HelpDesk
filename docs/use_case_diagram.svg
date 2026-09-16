@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" contentScriptType="application/ecmascript" contentStyleType="text/css" height="1533px" preserveAspectRatio="none" style="width:1925px;height:1533px;" version="1.1" viewBox="0 0 1925 1533" width="1925px" zoomAndPan="magnify"><defs><filter height="300%" id="ffljzcm5yao9s" width="300%" x="-1" y="-1"><feGaussianBlur result="blurOut" stdDeviation="2.0"/><feColorMatrix in="blurOut" result="blurOut2" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 .4 0"/><feOffset dx="4.0" dy="4.0" in="blurOut2" result="blurOut3"/><feBlend in="SourceGraphic" in2="blurOut3" mode="normal"/></filter></defs><g><!--MD5=[cafa1a45af5f2bd91e0322513e081e4b]
+cluster HelpDesk System--><rect fill="#FFFFFF" filter="url(#ffljzcm5yao9s)" height="1514" style="stroke:#000000;stroke-width:1.5;" width="1209" x="527" y="7"/><text fill="#000000" font-family="sans-serif" font-size="14" font-weight="bold" lengthAdjust="spacing" textLength="121" x="1071" y="23.5332">HelpDesk System</text><ellipse cx="790.3279" cy="1371.9033" fill="#FEFECE" filter="url(#ffljzcm5yao9s)" rx="110.3279" ry="41.4033" style="stroke:#A80036;stroke-width:1.5;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="68" x="746.8188" y="1350.9065">Logowanie</text><line style="stroke:#A80036;stroke-width:1.0;" x1="691.8701" x2="888.7858" y1="1353.9826" y2="1353.9826"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="102" x="729.8188" y="1372.5158">extension points</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="158" x="701.8188" y="1390.1252">wymuszona zmiana hasła</text><ellipse cx="1550.0042" cy="1372.0008" fill="#FEFECE" filter="url(#ffljzcm5yao9s)" rx="100.5042" ry="22.5008" style="stroke:#A80036;stroke-width:1.5;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="162" x="1469.0042" y="1375.7293">Wymuszona zmiana hasła</text><ellipse cx="790.4277" cy="1465.0855" fill="#FEFECE" filter="url(#ffljzcm5yao9s)" rx="68.4277" ry="16.0855" style="stroke:#A80036;stroke-width:1.5;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="83" x="745.9277" y="1469.6021">Wylogowanie</text><ellipse cx="790.5211" cy="1126.1423" fill="#FEFECE" filter="url(#ffljzcm5yao9s)" rx="140.5211" ry="53.6423" style="stroke:#A80036;stroke-width:1.5;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="201" x="691.1497" y="1106.1339">Przeglądanie własnych zgłoszeń</text><line style="stroke:#A80036;stroke-width:1.0;" x1="658.1841" x2="922.8581" y1="1109.21" y2="1109.21"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="102" x="740.6497" y="1127.7432">extension points</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="63" x="760.1497" y="1145.3526">filtrowanie</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="68" x="757.6497" y="1162.962">sortowanie</text><ellipse cx="790.347" cy="1239.1694" fill="#FEFECE" filter="url(#ffljzcm5yao9s)" rx="111.347" ry="24.6694" style="stroke:#A80036;stroke-width:1.5;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="186" x="697.347" y="1242.8979">Tworzenie nowego zgłoszenia</text><ellipse cx="1549.9478" cy="1242.0896" fill="#FEFECE" filter="url(#ffljzcm5yao9s)" rx="145.9478" ry="31.5896" style="stroke:#A80036;stroke-width:1.5;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="260" x="1419.9478" y="1245.8181">Predykcja kategorii i priorytetu zgłoszenia</text><ellipse cx="1549.8478" cy="1155.8696" fill="#FEFECE" filter="url(#ffljzcm5yao9s)" rx="84.8478" ry="19.3696" style="stroke:#A80036;stroke-width:1.5;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="126" x="1486.8478" y="1159.5981">Filtrowanie zgłoszeń</text><ellipse cx="1550.1926" cy="1082.0385" fill="#FEFECE" filter="url(#ffljzcm5yao9s)" rx="85.6926" ry="19.5385" style="stroke:#A80036;stroke-width:1.5;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="128" x="1486.1926" y="1085.767">Sortowanie zgłoszeń</text><ellipse cx="790.2704" cy="725.1479" fill="#FEFECE" filter="url(#ffljzcm5yao9s)" rx="223.2704" ry="52.6479" style="stroke:#A80036;stroke-width:1.5;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="336" x="622.4329" y="707.1905">Przeglądanie zgłoszeń (w tym przypisanych do siebie)</text><line style="stroke:#A80036;stroke-width:1.0;" x1="577.1046" x2="1003.4363" y1="710.2667" y2="710.2667"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="102" x="739.4329" y="728.7999">extension points</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="63" x="758.9329" y="746.4093">filtrowanie</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="68" x="756.4329" y="764.0187">sortowanie</text><ellipse cx="790.6965" cy="833.2393" fill="#FEFECE" filter="url(#ffljzcm5yao9s)" rx="91.6965" ry="20.7393" style="stroke:#A80036;stroke-width:1.5;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="142" x="719.6965" y="836.9678">Przypinanie zgłoszenia</text><ellipse cx="1549.8975" cy="844.1795" fill="#FEFECE" filter="url(#ffljzcm5yao9s)" rx="101.3975" ry="22.6795" style="stroke:#A80036;stroke-width:1.5;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="164" x="1467.8975" y="847.908">Weryfikacja predykcji LLM</text><ellipse cx="790.3449" cy="911.769" fill="#FEFECE" filter="url(#ffljzcm5yao9s)" rx="101.8449" ry="22.769" style="stroke:#A80036;stroke-width:1.5;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="165" x="707.8449" y="915.4975">Zmiana statusu zgłoszenia</text><ellipse cx="790.6819" cy="988.1364" fill="#FEFECE" filter="url(#ffljzcm5yao9s)" rx="78.6819" ry="18.1364" style="stroke:#A80036;stroke-width:1.5;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="111" x="733.5947" y="992.3083">Edycja zgłoszenia</text><ellipse cx="1550.0408" cy="767.2082" fill="#FEFECE" filter="url(#ffljzcm5yao9s)" rx="86.5408" ry="19.7082" style="stroke:#A80036;stroke-width:1.5;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="126" x="1485.0408" y="770.9367">Filtrowanie zgłoszeń</text><ellipse cx="1549.8923" cy="691.8785" fill="#FEFECE" filter="url(#ffljzcm5yao9s)" rx="87.3923" ry="19.8785" style="stroke:#A80036;stroke-width:1.5;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="128" x="1483.8923" y="695.607">Sortowanie zgłoszeń</text><ellipse cx="790.5226" cy="91.8045" fill="#FEFECE" filter="url(#ffljzcm5yao9s)" rx="109.5226" ry="24.3045" style="stroke:#A80036;stroke-width:1.5;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="182" x="699.5226" y="95.533">Tworzenie konta użytkownika</text><ellipse cx="790.613" cy="173.8226" fill="#FEFECE" filter="url(#ffljzcm5yao9s)" rx="99.613" ry="22.3226" style="stroke:#A80036;stroke-width:1.5;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="160" x="710.613" y="177.5511">Edycja konta użytkownika</text><ellipse cx="790.7046" cy="255.9409" fill="#FEFECE" filter="url(#ffljzcm5yao9s)" rx="107.7046" ry="23.9409" style="stroke:#A80036;stroke-width:1.5;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="178" x="701.7046" y="259.6694">Usuwanie konta użytkownika</text><ellipse cx="790.2614" cy="339.8523" fill="#FEFECE" filter="url(#ffljzcm5yao9s)" rx="112.2614" ry="24.8523" style="stroke:#A80036;stroke-width:1.5;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="188" x="696.2614" y="343.5808">Przeglądanie panelu statystyk</text><ellipse cx="790.3554" cy="425.7711" fill="#FEFECE" filter="url(#ffljzcm5yao9s)" rx="116.8554" ry="25.7711" style="stroke:#A80036;stroke-width:1.5;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="198" x="691.3554" y="429.4996">Przeglądanie listy użytkowników</text><ellipse cx="790.3762" cy="513.9752" fill="#FEFECE" filter="url(#ffljzcm5yao9s)" rx="122.8762" ry="26.9752" style="stroke:#A80036;stroke-width:1.5;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="211" x="684.8762" y="517.7038">Zarządzanie kategoriami zgłoszeń</text><ellipse cx="790.5408" cy="596.2082" fill="#FEFECE" filter="url(#ffljzcm5yao9s)" rx="86.5408" ry="19.7082" style="stroke:#A80036;stroke-width:1.5;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="130" x="725.5408" y="599.9367">Zarządzanie działami</text><!--MD5=[fee662a292a0353a69bd162820bae93b]
+entity User--><ellipse cx="79" cy="1244.1094" fill="#FEFECE" filter="url(#ffljzcm5yao9s)" rx="8" ry="8" style="stroke:#A80036;stroke-width:1.5;"/><path d="M79,1252.1094 L79,1279.1094 M66,1260.1094 L92,1260.1094 M79,1279.1094 L66,1294.1094 M79,1279.1094 L92,1294.1094 " fill="none" filter="url(#ffljzcm5yao9s)" style="stroke:#A80036;stroke-width:1.5;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="146" x="6" y="1314.1426">Zalogowany użytkownik</text><text fill="#000000" font-family="sans-serif" font-size="14" font-style="italic" lengthAdjust="spacing" textLength="67" x="45.5" y="1231.5332">«abstract»</text><!--MD5=[53a2745812bda411204a62592909d9d2]
+entity Reporter--><ellipse cx="241" cy="1113" fill="#FEFECE" filter="url(#ffljzcm5yao9s)" rx="8" ry="8" style="stroke:#A80036;stroke-width:1.5;"/><path d="M241,1121 L241,1148 M228,1129 L254,1129 M241,1148 L228,1163 M241,1148 L254,1163 " fill="none" filter="url(#ffljzcm5yao9s)" style="stroke:#A80036;stroke-width:1.5;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="56" x="213" y="1183.0332">Reporter</text><!--MD5=[dc940eea49c2d440088659cde7c4166e]
+entity Support--><ellipse cx="355" cy="842" fill="#FEFECE" filter="url(#ffljzcm5yao9s)" rx="8" ry="8" style="stroke:#A80036;stroke-width:1.5;"/><path d="M355,850 L355,877 M342,858 L368,858 M355,877 L342,892 M355,877 L368,892 " fill="none" filter="url(#ffljzcm5yao9s)" style="stroke:#A80036;stroke-width:1.5;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="50" x="330" y="912.0332">Support</text><!--MD5=[97ab183161fd5d1db7fba7485cf76add]
+entity Admin--><ellipse cx="460.5" cy="394" fill="#FEFECE" filter="url(#ffljzcm5yao9s)" rx="8" ry="8" style="stroke:#A80036;stroke-width:1.5;"/><path d="M460.5,402 L460.5,429 M447.5,410 L473.5,410 M460.5,429 L447.5,444 M460.5,429 L473.5,444 " fill="none" filter="url(#ffljzcm5yao9s)" style="stroke:#A80036;stroke-width:1.5;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="39" x="441" y="464.0332">Admin</text><!--MD5=[762d9b1ee2eb630aa40151fb5f0602e7]
+entity LLM--><ellipse cx="1850.5" cy="1219.1094" fill="#FEFECE" filter="url(#ffljzcm5yao9s)" rx="8" ry="8" style="stroke:#A80036;stroke-width:1.5;"/><path d="M1850.5,1227.1094 L1850.5,1254.1094 M1837.5,1235.1094 L1863.5,1235.1094 M1850.5,1254.1094 L1837.5,1269.1094 M1850.5,1254.1094 L1863.5,1269.1094 " fill="none" filter="url(#ffljzcm5yao9s)" style="stroke:#A80036;stroke-width:1.5;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="27" x="1837" y="1289.1426">LLM</text><text fill="#000000" font-family="sans-serif" font-size="14" font-style="italic" lengthAdjust="spacing" textLength="135" x="1783" y="1206.5332">«system zewnętrzny»</text><!--MD5=[0c89217578b2e5c90ba33d0160dae0b3]
+reverse link User to Reporter--><path d="M162.07,1204.42 C180.43,1190.42 198.64,1176.54 212.84,1165.71 " fill="none" id="User-backto-Reporter" style="stroke:#A80036;stroke-width:1.0;"/><polygon fill="none" points="166.15,1210.11,146,1216.67,157.66,1198.98,166.15,1210.11" style="stroke:#A80036;stroke-width:1.0;"/><!--MD5=[e243c39b650d02afad9e3c91aa92c7cc]
+reverse link User to Support--><path d="M126.54,1200.25 C185.37,1115.87 284.45,973.76 329.9,908.57 " fill="none" id="User-backto-Support" style="stroke:#A80036;stroke-width:1.0;"/><polygon fill="none" points="132.16,1204.42,114.98,1216.83,120.68,1196.42,132.16,1204.42" style="stroke:#A80036;stroke-width:1.0;"/><!--MD5=[fb6bb3babf509e51c26342083fa5dfe4]
+reverse link Support to Admin--><path d="M372.37,812.73 C394.92,720.04 434.63,547.32 451.53,467.7 " fill="none" id="Support-backto-Admin" style="stroke:#A80036;stroke-width:1.0;"/><polygon fill="none" points="379.13,814.56,367.57,832.31,365.54,811.22,379.13,814.56" style="stroke:#A80036;stroke-width:1.0;"/><!--MD5=[bfabc85cf8e1d547105ec4b88c6bd7b1]
+link Support to Admin--><!--MD5=[474bd93163ca9ea030dd8c0b592606f2]
+link Reporter to Support--><!--MD5=[728062bbc6246d38cc92b82c3016fbb7]
+link User to UC_Logowanie--><path d="M152.1,1309.15 C178.81,1321.14 209.93,1331 240,1331 C240,1331 240,1331 461.5,1331 C537.29,1331 622.17,1341.91 686.59,1352.47 " fill="none" id="User-to-UC_Logowanie" style="stroke:#000000;stroke-width:1.0;"/><polygon fill="#000000" points="691.58,1353.3,683.3524,1347.8864,686.6469,1352.485,682.0483,1355.7794,691.58,1353.3" style="stroke:#000000;stroke-width:1.0;"/><!--MD5=[d1103585e26c6537b80bb1feda22f46b]
+link User to UC_Wylogowanie--><path d="M103.54,1317.06 C129.63,1364.32 176.56,1428 240,1428 C240,1428 240,1428 461.5,1428 C511.48,1428 645.61,1445.18 726.03,1456.12 " fill="none" id="User-to-UC_Wylogowanie" style="stroke:#000000;stroke-width:1.0;"/><polygon fill="#000000" points="731.25,1456.83,722.8683,1451.6582,726.2952,1456.1589,721.7946,1459.5858,731.25,1456.83" style="stroke:#000000;stroke-width:1.0;"/><!--MD5=[a79281274f0e6e1228fdb33741bab200]
+reverse link UC_Logowanie to UC_ZmianaHasla--><path d="M906.46,1372 C1054.5,1372 1309.34,1372 1449.47,1372 " fill="none" id="UC_Logowanie-backto-UC_ZmianaHasla" style="stroke:#808080;stroke-width:1.0;stroke-dasharray:7.0,7.0;"/><polygon fill="#808080" points="901.24,1372,910.24,1376,906.24,1372,910.24,1368,901.24,1372" style="stroke:#808080;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="53" x="1182.5" y="1352.4951">«extend»</text><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="328" x="1045" y="1368.8467">condition: tylko gdy konto ma flagę hasła tymczasowego</text><!--MD5=[740ddd72200ded12f0e281cc2976949f]
+link Reporter to UC_Rep_Przegladanie--><path d="M269.15,1144.06 C336.61,1141.72 515.73,1135.5 644.98,1131.02 " fill="none" id="Reporter-to-UC_Rep_Przegladanie" style="stroke:#000000;stroke-width:1.0;"/><polygon fill="#000000" points="650.32,1130.83,641.1777,1127.1668,645.3234,1131.0156,641.4747,1135.1613,650.32,1130.83" style="stroke:#000000;stroke-width:1.0;"/><!--MD5=[aaac18ba5184332485aaa532ac46bb6c]
+link Reporter to UC_Rep_Tworzenie--><path d="M269.08,1150.38 C318.6,1160.14 427.13,1181.25 519,1197 C576.4,1206.84 640.83,1216.89 692.41,1224.68 " fill="none" id="Reporter-to-UC_Rep_Tworzenie" style="stroke:#000000;stroke-width:1.0;"/><polygon fill="#000000" points="697.36,1225.43,689.0544,1220.1368,692.4155,1224.6869,687.8655,1228.048,697.36,1225.43" style="stroke:#000000;stroke-width:1.0;"/><!--MD5=[f18387a8adf4b8bac88844c9374956cd]
+link UC_Rep_Tworzenie to UC_LLM_Predykcja--><path d="M902.05,1239.44 C1033.13,1239.96 1252.24,1240.82 1398.66,1241.4 " fill="none" id="UC_Rep_Tworzenie-to-UC_LLM_Predykcja" style="stroke:#0000FF;stroke-width:1.0;stroke-dasharray:7.0,7.0;"/><polygon fill="#0000FF" points="1403.84,1241.43,1394.8515,1237.4043,1398.84,1241.4157,1394.8286,1245.4043,1403.84,1241.43" style="stroke:#0000FF;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="55" x="1181.5" y="1236.4951">«include»</text><!--MD5=[df83d95d377365f154e0dc45bcc5406e]
+reverse link UC_LLM_Predykcja to LLM--><path d="M1701.63,1242 C1730.12,1242 1758.53,1242 1782.73,1242 " fill="none" id="UC_LLM_Predykcja-backto-LLM" style="stroke:#A80036;stroke-width:1.0;"/><polygon fill="#A80036" points="1696.32,1242,1705.32,1246,1701.32,1242,1705.32,1238,1696.32,1242" style="stroke:#A80036;stroke-width:1.0;"/><!--MD5=[77860532d41490b4f0096e16eeb8cd84]
+reverse link UC_Rep_Przegladanie to UC_Rep_Filtrowanie--><path d="M932.36,1139.35 C968.7,1142.34 1007.78,1145.17 1044,1147 C1192,1154.47 1364.68,1156 1464.95,1156.17 " fill="none" id="UC_Rep_Przegladanie-backto-UC_Rep_Filtrowanie" style="stroke:#808080;stroke-width:1.0;stroke-dasharray:7.0,7.0;"/><polygon fill="#808080" points="927.02,1138.91,935.6567,1143.6436,932.0027,1139.3252,936.3211,1135.6712,927.02,1138.91" style="stroke:#808080;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="53" x="1182.5" y="1143.4951">«extend»</text><!--MD5=[9b74a5461f3ecd86aa19a250bf1ea4bb]
+reverse link UC_Rep_Przegladanie to UC_Rep_Sortowanie--><path d="M934.65,1117.69 C1091.98,1108.55 1339.28,1094.18 1466.83,1086.77 " fill="none" id="UC_Rep_Przegladanie-backto-UC_Rep_Sortowanie" style="stroke:#808080;stroke-width:1.0;stroke-dasharray:7.0,7.0;"/><polygon fill="#808080" points="929.56,1117.98,938.7735,1121.46,934.5519,1117.6948,938.3171,1113.4731,929.56,1117.98" style="stroke:#808080;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="53" x="1182.5" y="1089.4951">«extend»</text><!--MD5=[11a31d25b8543b34928eb8717fb20280]
+link Support to UC_Sup_Przegladanie--><path d="M380.16,853.08 C389.12,846.04 399.63,838.56 410,833 C471.92,799.78 545.15,775.84 610.68,759.08 " fill="none" id="Support-to-UC_Sup_Przegladanie" style="stroke:#000000;stroke-width:1.0;"/><polygon fill="#000000" points="615.79,757.79,606.0827,756.1259,610.9435,759.0195,608.0499,763.8803,615.79,757.79" style="stroke:#000000;stroke-width:1.0;"/><!--MD5=[5e66708505b65c7b4b710102e56dbdc6]
+link Support to UC_Sup_Przypinanie--><path d="M380.22,866.14 C389.45,863.45 400.12,860.69 410,859 C505.7,842.6 616.65,836.47 693.76,834.21 " fill="none" id="Support-to-UC_Sup_Przypinanie" style="stroke:#000000;stroke-width:1.0;"/><polygon fill="#000000" points="698.79,834.07,689.6794,830.3287,693.792,834.2128,689.9079,838.3254,698.79,834.07" style="stroke:#000000;stroke-width:1.0;"/><!--MD5=[533b6e1ae63e0b62071dc60f98b8f0a7]
+link Support to UC_Sup_Zmiana--><path d="M380.24,876.12 C438.45,881.23 588.84,894.41 690.18,903.29 " fill="none" id="Support-to-UC_Sup_Zmiana" style="stroke:#000000;stroke-width:1.0;"/><polygon fill="#000000" points="695.27,903.74,686.6592,898.9594,690.2896,903.2976,685.9514,906.928,695.27,903.74" style="stroke:#000000;stroke-width:1.0;"/><!--MD5=[eb8f9b8b02cf502b9f5db0e2f39233f7]
+link Support to UC_Sup_Edycja--><path d="M380.16,888.55 C411.16,906.51 467.13,936.56 519,952 C581.02,970.46 653.87,979.47 708.33,983.86 " fill="none" id="Support-to-UC_Sup_Edycja" style="stroke:#000000;stroke-width:1.0;"/><polygon fill="#000000" points="713.54,984.27,704.8887,979.5631,708.556,983.8701,704.2489,987.5374,713.54,984.27" style="stroke:#000000;stroke-width:1.0;"/><!--MD5=[efc7f7cf423666cab4f1a496f8a8e5aa]
+link UC_Sup_Przypinanie to UC_Sup_Weryfikacja--><path d="M882.12,834.32 C1023,836.36 1293.86,840.3 1443.39,842.47 " fill="none" id="UC_Sup_Przypinanie-to-UC_Sup_Weryfikacja" style="stroke:#0000FF;stroke-width:1.0;stroke-dasharray:7.0,7.0;"/><polygon fill="#0000FF" points="1448.66,842.54,1439.7181,838.4118,1443.6605,842.4686,1439.6038,846.411,1448.66,842.54" style="stroke:#0000FF;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="55" x="1181.5" y="833.4951">«include»</text><!--MD5=[f7e8de47b43d4ac7d352da810e823cf4]
+reverse link UC_Sup_Przegladanie to UC_Sup_Filtrowanie--><path d="M1012.62,738.21 C1023.23,738.82 1033.73,739.42 1044,740 C1192.36,748.37 1365.28,757.48 1465.44,762.68 " fill="none" id="UC_Sup_Przegladanie-backto-UC_Sup_Filtrowanie" style="stroke:#808080;stroke-width:1.0;stroke-dasharray:7.0,7.0;"/><polygon fill="#808080" points="1007.41,737.91,1016.1671,742.4169,1012.4019,738.1952,1016.6235,734.43,1007.41,737.91" style="stroke:#808080;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="53" x="1182.5" y="736.4951">«extend»</text><!--MD5=[904ad2c631d2f02a9c8c8acd6ce06586]
+reverse link UC_Sup_Przegladanie to UC_Sup_Sortowanie--><path d="M1015.69,715.23 C1166.28,708.67 1356.22,700.4 1464,695.7 " fill="none" id="UC_Sup_Przegladanie-backto-UC_Sup_Sortowanie" style="stroke:#808080;stroke-width:1.0;stroke-dasharray:7.0,7.0;"/><polygon fill="#808080" points="1010.35,715.47,1019.513,719.081,1015.3454,715.2559,1019.1705,711.0883,1010.35,715.47" style="stroke:#808080;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="53" x="1182.5" y="696.4951">«extend»</text><!--MD5=[0d501656fcac65131cb6c7dd8febe303]
+link Admin to UC_Adm_Tworzenie--><path d="M463.96,384.28 C469.11,312 483.64,167.96 519,134 C562.67,92.06 629.87,81.46 686.36,81.4 " fill="none" id="Admin-to-UC_Adm_Tworzenie" style="stroke:#000000;stroke-width:1.0;"/><polygon fill="#000000" points="691.45,81.42,682.473,77.3686,686.4501,81.3914,682.4273,85.3685,691.45,81.42" style="stroke:#000000;stroke-width:1.0;"/><!--MD5=[989f32b34d556a6bddb6819209b72185]
+link Admin to UC_Adm_Edycja--><path d="M467.34,384.3 C475.94,329.18 493.77,236.42 519,214 C566.54,171.76 638.39,162.78 696.1,163.81 " fill="none" id="Admin-to-UC_Adm_Edycja" style="stroke:#000000;stroke-width:1.0;"/><polygon fill="#000000" points="701.28,163.93,692.3858,159.7,696.2817,163.8015,692.1802,167.6973,701.28,163.93" style="stroke:#000000;stroke-width:1.0;"/><!--MD5=[683cab824375217990a02189ecdd6a55]
+link Admin to UC_Adm_Usuwanie--><path d="M469.15,384.28 C476.74,355.22 491.4,318.02 519,297 C565.03,261.94 628.5,250.96 682.4,249.09 " fill="none" id="Admin-to-UC_Adm_Usuwanie" style="stroke:#000000;stroke-width:1.0;"/><polygon fill="#000000" points="687.58,248.93,678.4588,245.2147,682.5825,249.0871,678.7101,253.2107,687.58,248.93" style="stroke:#000000;stroke-width:1.0;"/><!--MD5=[392d73cfa7507dde0ef5242d300768dc]
+link Admin to UC_Adm_Statystyki--><path d="M480.16,407.85 C490.73,398.64 504.67,388.12 519,382 C567.7,361.2 625.25,350.55 674.72,345.16 " fill="none" id="Admin-to-UC_Adm_Statystyki" style="stroke:#000000;stroke-width:1.0;"/><polygon fill="#000000" points="679.79,344.62,670.4175,341.594,674.818,345.1486,671.2633,349.5491,679.79,344.62" style="stroke:#000000;stroke-width:1.0;"/><!--MD5=[ce01c51eea747e5cd01a0980b9543ca0]
+link Admin to UC_Adm_Lista--><path d="M480.07,426 C516.01,426 597.7,426 668.13,426 " fill="none" id="Admin-to-UC_Adm_Lista" style="stroke:#000000;stroke-width:1.0;"/><polygon fill="#000000" points="673.18,426,664.18,422,668.18,426,664.18,430,673.18,426" style="stroke:#000000;stroke-width:1.0;"/><!--MD5=[9a69ce293d20ad7b60882960e4cad147]
+link Admin to UC_Adm_Kategorie--><path d="M480,443.45 C490.62,452.49 504.67,462.88 519,469 C565.15,488.7 619.16,499.81 666.73,506.06 " fill="none" id="Admin-to-UC_Adm_Kategorie" style="stroke:#000000;stroke-width:1.0;"/><polygon fill="#000000" points="671.9,506.72,663.4747,501.6196,666.9397,506.091,662.4683,509.5561,671.9,506.72" style="stroke:#000000;stroke-width:1.0;"/><!--MD5=[b9f9995d79bba97afb87960309ea9862]
+link Admin to UC_Adm_Dzialy--><path d="M468.58,467.81 C475.93,497.72 490.54,536.37 519,558 C572.15,598.38 648.62,605.85 706.71,604.38 " fill="none" id="Admin-to-UC_Adm_Dzialy" style="stroke:#000000;stroke-width:1.0;"/><polygon fill="#000000" points="711.92,604.23,702.8094,600.4887,706.922,604.3728,703.0379,608.4854,711.92,604.23" style="stroke:#000000;stroke-width:1.0;"/><!--MD5=[db49d66866cb375806542b0e6733549f]
+@startuml
+left to right direction
+
+skinparam arrow {
+  Color<<assoc>> Black
+  Color<<extend>> Gray
+  Color<<include>> Blue
+}
+
+actor "Zalogowany użytkownik" as User <<abstract>>
+actor Reporter
+actor Support
+actor Admin
+actor LLM <<system zewnętrzny>>
+
+Reporter -up-|> User
+Support -up-|> User
+Admin -up-|> Support
+
+Reporter -[hidden]down-> Support
+Support -[hidden]down-> Admin
+
+rectangle "HelpDesk System" {
+
+  together {
+    usecase UC_Logowanie as "Logowanie
+    - -
+    extension points
+    wymuszona zmiana hasła"
+    usecase "Wymuszona zmiana hasła" as UC_ZmianaHasla
+    usecase "Wylogowanie" as UC_Wylogowanie
+  }
+
+  together {
+    usecase UC_Rep_Przegladanie as "Przeglądanie własnych zgłoszeń
+    - -
+    extension points
+    filtrowanie
+    sortowanie"
+    usecase "Tworzenie nowego zgłoszenia" as UC_Rep_Tworzenie
+    usecase "Predykcja kategorii i priorytetu zgłoszenia" as UC_LLM_Predykcja
+    usecase "Filtrowanie zgłoszeń" as UC_Rep_Filtrowanie
+    usecase "Sortowanie zgłoszeń" as UC_Rep_Sortowanie
+  }
+
+  together {
+    usecase UC_Sup_Przegladanie as "Przeglądanie zgłoszeń (w tym przypisanych do siebie)
+    - -
+    extension points
+    filtrowanie
+    sortowanie"
+    usecase "Przypinanie zgłoszenia" as UC_Sup_Przypinanie
+    usecase "Weryfikacja predykcji LLM" as UC_Sup_Weryfikacja
+    usecase "Zmiana statusu zgłoszenia" as UC_Sup_Zmiana
+    usecase "Edycja zgłoszenia" as UC_Sup_Edycja
+    usecase "Filtrowanie zgłoszeń " as UC_Sup_Filtrowanie
+    usecase "Sortowanie zgłoszeń " as UC_Sup_Sortowanie
+  }
+
+  together {
+    usecase "Tworzenie konta użytkownika" as UC_Adm_Tworzenie
+    usecase "Edycja konta użytkownika" as UC_Adm_Edycja
+    usecase "Usuwanie konta użytkownika" as UC_Adm_Usuwanie
+    usecase "Przeglądanie panelu statystyk" as UC_Adm_Statystyki
+    usecase "Przeglądanie listy użytkowników" as UC_Adm_Lista
+    usecase "Zarządzanie kategoriami zgłoszeń" as UC_Adm_Kategorie
+    usecase "Zarządzanie działami" as UC_Adm_Dzialy
+  }
+}
+
+User - -> UC_Logowanie <<assoc>>
+User - -> UC_Wylogowanie <<assoc>>
+UC_Logowanie <.[#Gray]. UC_ZmianaHasla : <<extend>>\ncondition: tylko gdy konto ma flagę hasła tymczasowego
+
+Reporter - -> UC_Rep_Przegladanie <<assoc>>
+Reporter - -> UC_Rep_Tworzenie <<assoc>>
+UC_Rep_Tworzenie .[#Blue].> UC_LLM_Predykcja : <<include>>
+UC_LLM_Predykcja <- - LLM
+
+UC_Rep_Przegladanie <.[#Gray]. UC_Rep_Filtrowanie : <<extend>>
+UC_Rep_Przegladanie <.[#Gray]. UC_Rep_Sortowanie : <<extend>>
+
+Support - -> UC_Sup_Przegladanie <<assoc>>
+Support - -> UC_Sup_Przypinanie <<assoc>>
+Support - -> UC_Sup_Zmiana <<assoc>>
+Support - -> UC_Sup_Edycja <<assoc>>
+UC_Sup_Przypinanie .[#Blue].> UC_Sup_Weryfikacja : <<include>>
+
+UC_Sup_Przegladanie <.[#Gray]. UC_Sup_Filtrowanie : <<extend>>
+UC_Sup_Przegladanie <.[#Gray]. UC_Sup_Sortowanie : <<extend>>
+
+Admin - -> UC_Adm_Tworzenie <<assoc>>
+Admin - -> UC_Adm_Edycja <<assoc>>
+Admin - -> UC_Adm_Usuwanie <<assoc>>
+Admin - -> UC_Adm_Statystyki <<assoc>>
+Admin - -> UC_Adm_Lista <<assoc>>
+Admin - -> UC_Adm_Kategorie <<assoc>>
+Admin - -> UC_Adm_Dzialy <<assoc>>
+
+@enduml
+
+PlantUML version 1.2021.00(Sun Jan 10 11:25:05 CET 2021)
+(MIT source distribution)
+Java Runtime: Java(TM) SE Runtime Environment
+JVM: Java HotSpot(TM) 64-Bit Server VM
+Default Encoding: UTF-8
+Language: pl
+Country: PL
+--></g></svg>

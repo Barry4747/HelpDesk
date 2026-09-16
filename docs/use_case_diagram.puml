@@ -1,0 +1,100 @@
+@startuml
+left to right direction
+
+skinparam arrow {
+  Color<<assoc>> Black
+  Color<<extend>> Gray
+  Color<<include>> Blue
+}
+
+actor "Zalogowany użytkownik" as User <<abstract>>
+actor Reporter
+actor Support
+actor Admin
+actor LLM <<system zewnętrzny>>
+
+Reporter -up-|> User
+Support -up-|> User
+Admin -up-|> Support
+
+Reporter -[hidden]down-> Support
+Support -[hidden]down-> Admin
+
+rectangle "HelpDesk System" {
+
+  together {
+    usecase UC_Logowanie as "Logowanie
+    --
+    extension points
+    wymuszona zmiana hasła"
+    usecase "Wymuszona zmiana hasła" as UC_ZmianaHasla
+    usecase "Wylogowanie" as UC_Wylogowanie
+  }
+
+  together {
+    usecase UC_Rep_Przegladanie as "Przeglądanie własnych zgłoszeń
+    --
+    extension points
+    filtrowanie
+    sortowanie"
+    usecase "Tworzenie nowego zgłoszenia" as UC_Rep_Tworzenie
+    usecase "Predykcja kategorii i priorytetu zgłoszenia" as UC_LLM_Predykcja
+    usecase "Filtrowanie zgłoszeń" as UC_Rep_Filtrowanie
+    usecase "Sortowanie zgłoszeń" as UC_Rep_Sortowanie
+  }
+
+  together {
+    usecase UC_Sup_Przegladanie as "Przeglądanie zgłoszeń (w tym przypisanych do siebie)
+    --
+    extension points
+    filtrowanie
+    sortowanie"
+    usecase "Przypinanie zgłoszenia" as UC_Sup_Przypinanie
+    usecase "Weryfikacja predykcji LLM" as UC_Sup_Weryfikacja
+    usecase "Zmiana statusu zgłoszenia" as UC_Sup_Zmiana
+    usecase "Edycja zgłoszenia" as UC_Sup_Edycja
+    usecase "Filtrowanie zgłoszeń " as UC_Sup_Filtrowanie
+    usecase "Sortowanie zgłoszeń " as UC_Sup_Sortowanie
+  }
+
+  together {
+    usecase "Tworzenie konta użytkownika" as UC_Adm_Tworzenie
+    usecase "Edycja konta użytkownika" as UC_Adm_Edycja
+    usecase "Usuwanie konta użytkownika" as UC_Adm_Usuwanie
+    usecase "Przeglądanie panelu statystyk" as UC_Adm_Statystyki
+    usecase "Przeglądanie listy użytkowników" as UC_Adm_Lista
+    usecase "Zarządzanie kategoriami zgłoszeń" as UC_Adm_Kategorie
+    usecase "Zarządzanie działami" as UC_Adm_Dzialy
+  }
+}
+
+User --> UC_Logowanie <<assoc>>
+User --> UC_Wylogowanie <<assoc>>
+UC_Logowanie <.[#Gray]. UC_ZmianaHasla : <<extend>>\ncondition: tylko gdy konto ma flagę hasła tymczasowego
+
+Reporter --> UC_Rep_Przegladanie <<assoc>>
+Reporter --> UC_Rep_Tworzenie <<assoc>>
+UC_Rep_Tworzenie .[#Blue].> UC_LLM_Predykcja : <<include>>
+UC_LLM_Predykcja <-- LLM
+
+UC_Rep_Przegladanie <.[#Gray]. UC_Rep_Filtrowanie : <<extend>>
+UC_Rep_Przegladanie <.[#Gray]. UC_Rep_Sortowanie : <<extend>>
+
+Support --> UC_Sup_Przegladanie <<assoc>>
+Support --> UC_Sup_Przypinanie <<assoc>>
+Support --> UC_Sup_Zmiana <<assoc>>
+Support --> UC_Sup_Edycja <<assoc>>
+UC_Sup_Przypinanie .[#Blue].> UC_Sup_Weryfikacja : <<include>>
+
+UC_Sup_Przegladanie <.[#Gray]. UC_Sup_Filtrowanie : <<extend>>
+UC_Sup_Przegladanie <.[#Gray]. UC_Sup_Sortowanie : <<extend>>
+
+Admin --> UC_Adm_Tworzenie <<assoc>>
+Admin --> UC_Adm_Edycja <<assoc>>
+Admin --> UC_Adm_Usuwanie <<assoc>>
+Admin --> UC_Adm_Statystyki <<assoc>>
+Admin --> UC_Adm_Lista <<assoc>>
+Admin --> UC_Adm_Kategorie <<assoc>>
+Admin --> UC_Adm_Dzialy <<assoc>>
+
+@enduml
