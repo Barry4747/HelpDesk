@@ -40,7 +40,7 @@ entity "Ticket" as Ticket {
   reporter_id : UUID <<FK>>
   assigned_to_id : UUID <<FK>>
   suggested_category_id : UUID <<FK>>
-  * suggested_priority : enum(low, medium, high, critical)
+  suggested_priority : enum(low, medium, high, critical)
   category_id : UUID <<FK>>
   priority : enum(low, medium, high, critical)
   * created_at : timestamp
