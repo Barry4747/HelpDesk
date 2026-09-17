@@ -1,7 +1,7 @@
 from dataclasses import dataclass
 from datetime import datetime, timedelta, timezone
 
-from fastapi import Depends
+from fastapi import Depends, Response
 
 from app.core.config import settings
 from app.core.security import (
@@ -19,8 +19,34 @@ from app.exceptions.auth import (
     InvalidTokenError,
 )
 from app.models.refresh_token import RefreshToken
-from app.repositories.refresh_token_repository import RefreshTokenRepository
-from app.repositories.user_repository import UserRepository
+from app.repositories.refresh_token import RefreshTokenRepository
+from app.repositories.user import UserRepository
+
+
+def set_auth_cookies(response: Response, access_token: str, refresh_token: str) -> None:
+    response.set_cookie(
+        key="access_token",
+        value=access_token,
+        httponly=True,
+        secure=True,
+        samesite="strict",
+    )
+    response.set_cookie(
+        key="refresh_token",
+        value=refresh_token,
+        httponly=True,
+        secure=True,
+        samesite="strict",
+    )
+
+
+def clear_auth_cookies(response: Response) -> None:
+    response.delete_cookie(
+        key="access_token", httponly=True, secure=True, samesite="strict"
+    )
+    response.delete_cookie(
+        key="refresh_token", httponly=True, secure=True, samesite="strict"
+    )
 
 
 @dataclass
@@ -69,18 +95,18 @@ class AuthService:
         )
 
     def login(self, login: str, password: str) -> LoginResult:
-        user = self.user_repo.get_by_login(login)
-        if not user or not verify_password(password, user.password_hash):
+        user_record = self.user_repo.get_by_login(login)
+        if not user_record or not verify_password(password, user_record.password_hash):
             raise InvalidCredentialsError()
 
-        if not user.is_active:
+        if not user_record.is_active:
             raise AccountInactiveError()
 
-        if user.is_temporary_password:
-            pct = create_password_change_token(user.id)
+        if user_record.is_temporary_password:
+            pct = create_password_change_token(user_record.id)
             return LoginResult(password_change_token=pct)
 
-        return self._create_full_session(user.id, user.role.value)
+        return self._create_full_session(user_record.id, user_record.role.value)
 
     def refresh(self, raw_refresh_token: str) -> RefreshResult:
         hashed_token = hash_refresh_token(raw_refresh_token)
@@ -95,11 +121,11 @@ class AuthService:
 
         self.refresh_token_repo.revoke(rt_record)
 
-        user = self.user_repo.get_by_id(rt_record.user_id)
-        if not user or not user.is_active:
+        user_record = self.user_repo.get_by_id(rt_record.user_id)
+        if not user_record or not user_record.is_active:
             raise InvalidTokenError()
 
-        session = self._create_full_session(user.id, user.role.value)
+        session = self._create_full_session(user_record.id, user_record.role.value)
 
         return RefreshResult(
             access_token=session.access_token,
@@ -123,12 +149,12 @@ class AuthService:
         if not user_id:
             raise InvalidTokenError()
 
-        user = self.user_repo.get_by_id(user_id)
-        if not user or not user.is_active:
+        user_record = self.user_repo.get_by_id(user_id)
+        if not user_record or not user_record.is_active:
             raise InvalidTokenError()
 
-        user.password_hash = hash_password(new_password)
-        user.is_temporary_password = False
-        self.user_repo.update(user)
+        user_record.password_hash = hash_password(new_password)
+        user_record.is_temporary_password = False
+        self.user_repo.update(user_record)
 
-        return self._create_full_session(user.id, user.role.value)
+        return self._create_full_session(user_record.id, user_record.role.value)

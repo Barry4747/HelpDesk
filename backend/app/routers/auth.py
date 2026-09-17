@@ -6,35 +6,9 @@ from app.exceptions.auth import (
     InvalidTokenError,
 )
 from app.schemas.auth import ChangePasswordRequest, LoginRequest
-from app.services.auth_service import AuthService
+from app.services.auth import AuthService, clear_auth_cookies, set_auth_cookies
 
 router = APIRouter(prefix="/api/v1/auth", tags=["auth"])
-
-
-def set_auth_cookies(response: Response, access_token: str, refresh_token: str) -> None:
-    response.set_cookie(
-        key="access_token",
-        value=access_token,
-        httponly=True,
-        secure=True,
-        samesite="strict",
-    )
-    response.set_cookie(
-        key="refresh_token",
-        value=refresh_token,
-        httponly=True,
-        secure=True,
-        samesite="strict",
-    )
-
-
-def clear_auth_cookies(response: Response) -> None:
-    response.delete_cookie(
-        key="access_token", httponly=True, secure=True, samesite="strict"
-    )
-    response.delete_cookie(
-        key="refresh_token", httponly=True, secure=True, samesite="strict"
-    )
 
 
 @router.post("/login")

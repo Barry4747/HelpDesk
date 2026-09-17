@@ -5,7 +5,7 @@ from fastapi import Depends
 
 from app.exceptions.ticket import TicketNotFoundError
 from app.models.ticket import Ticket, TicketStatus
-from app.repositories.ticket_repository import TicketRepository
+from app.repositories.ticket import TicketRepository
 from app.schemas.ticket import TicketCreate, TicketStatusUpdate, TicketUpdate
 
 
@@ -40,7 +40,9 @@ class TicketService:
 
         return self.repository.update(ticket)
 
-    def change_status(self, ticket_id: uuid.UUID, data: TicketStatusUpdate) -> Ticket:
+    def update_status(
+        self, ticket_id: uuid.UUID, data: TicketStatusUpdate
+    ) -> Ticket:
         ticket = self.get_ticket(ticket_id)
         ticket.status = data.status
         return self.repository.update(ticket)

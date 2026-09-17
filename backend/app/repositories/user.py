@@ -12,7 +12,7 @@ class UserRepository:
     def __init__(self, session: Session = Depends(get_db)):
         self.session = session
 
-    def get_by_id(self, user_id: uuid.UUID) -> User | None:
+    def get_by_id(self, user_id: str | uuid.UUID) -> User | None:
         stmt = select(User).where(User.id == user_id)
         return self.session.scalars(stmt).first()
 
