@@ -1,4 +1,5 @@
 import uuid
+from collections.abc import Sequence
 
 from fastapi import Depends
 from sqlalchemy import select
@@ -19,6 +20,16 @@ class UserRepository:
     def get_by_login(self, login: str) -> User | None:
         stmt = select(User).where(User.login == login)
         return self.session.scalars(stmt).first()
+
+    def get_all(self) -> Sequence[User]:
+        stmt = select(User).order_by(User.created_at.desc())
+        return self.session.scalars(stmt).all()
+
+    def create(self, user: User) -> User:
+        self.session.add(user)
+        self.session.commit()
+        self.session.refresh(user)
+        return user
 
     def update(self, user: User) -> User:
         self.session.commit()
