@@ -20,6 +20,12 @@ export function ProtectedRoute({ children }: { children: ReactNode }) {
         <Link to="/users" style={{ marginLeft: "1rem" }}>
           Użytkownicy
         </Link>
+        <Link to="/categories" style={{ marginLeft: "1rem" }}>
+          Kategorie
+        </Link>
+        <Link to="/departments" style={{ marginLeft: "1rem" }}>
+          Działy
+        </Link>
         <button type="button" onClick={logout} style={{ marginLeft: "1rem" }}>
           Wyloguj
         </button>

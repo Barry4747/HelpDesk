@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+import { getDepartments } from "../api/departments";
 import { deactivateUser, getUser, updateUser } from "../api/users";
+import type { Department } from "../types/department";
 import type { User, UserUpdateInput } from "../types/user";
 
 export function UserDetailPage() {
@@ -8,6 +10,7 @@ export function UserDetailPage() {
   const navigate = useNavigate();
 
   const [user, setUser] = useState<User | null>(null);
+  const [departments, setDepartments] = useState<Department[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -16,24 +19,28 @@ export function UserDetailPage() {
   const [passwordMessage, setPasswordMessage] = useState<string | null>(null);
 
   useEffect(() => {
-    async function loadUser() {
+    async function loadData() {
       if (!id) return;
       try {
-        const data = await getUser(id);
-        setUser(data);
+        const [userData, depsData] = await Promise.all([
+          getUser(id),
+          getDepartments(),
+        ]);
+        setUser(userData);
+        setDepartments(depsData);
         setEditData({
-          first_name: data.first_name,
-          last_name: data.last_name,
-          role: data.role as "reporter" | "support",
-          department_id: data.department_id || "",
+          first_name: userData.first_name,
+          last_name: userData.last_name,
+          role: userData.role as "reporter" | "support",
+          department_id: userData.department_id || "",
         });
       } catch (err: any) {
-        setError(err.message || "Błąd pobierania użytkownika");
+        setError(err.message || "Błąd pobierania danych");
       } finally {
         setLoading(false);
       }
     }
-    loadUser();
+    loadData();
   }, [id]);
 
   const handleEditChange = (
@@ -87,6 +94,12 @@ export function UserDetailPage() {
   if (error) return <div>Błąd: {error}</div>;
   if (!user) return <div>Brak danych użytkownika</div>;
 
+  const currentDep = departments.find((d) => d.id === user.department_id);
+  const options = departments.filter((d) => d.is_active);
+  if (currentDep && !currentDep.is_active) {
+    options.push(currentDep);
+  }
+
   return (
     <main>
       <h1>Szczegóły użytkownika</h1>
@@ -118,8 +131,15 @@ export function UserDetailPage() {
               </select>
             </label>
             <label>
-              Dział (UUID):
-              <input type="text" name="department_id" value={editData.department_id || ""} onChange={handleEditChange} />
+              Dział:
+              <select name="department_id" value={editData.department_id || ""} onChange={handleEditChange}>
+                <option value="">Brak działu</option>
+                {options.map((dep) => (
+                  <option key={dep.id} value={dep.id}>
+                    {dep.name} {!dep.is_active && "(nieaktywny)"}
+                  </option>
+                ))}
+              </select>
             </label>
             <button type="submit">Zapisz dane</button>
           </form>

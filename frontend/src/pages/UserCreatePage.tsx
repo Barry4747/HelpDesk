@@ -1,11 +1,14 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { getDepartments } from "../api/departments";
 import { createUser } from "../api/users";
+import type { Department } from "../types/department";
 import type { UserCreateInput } from "../types/user";
 
 export function UserCreatePage() {
   const navigate = useNavigate();
   const [error, setError] = useState<string | null>(null);
+  const [departments, setDepartments] = useState<Department[]>([]);
   
   const [formData, setFormData] = useState<UserCreateInput>({
     login: "",
@@ -15,6 +18,18 @@ export function UserCreatePage() {
     role: "reporter",
     department_id: "",
   });
+
+  useEffect(() => {
+    async function fetchDeps() {
+      try {
+        const deps = await getDepartments();
+        setDepartments(deps.filter((d) => d.is_active));
+      } catch (err) {
+        console.error("Failed to fetch departments", err);
+      }
+    }
+    fetchDeps();
+  }, []);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
@@ -102,14 +117,19 @@ export function UserCreatePage() {
         </label>
         
         <label>
-          Dział (UUID):
-          <input
-            type="text"
+          Dział:
+          <select
             name="department_id"
-            value={formData.department_id}
+            value={formData.department_id || ""}
             onChange={handleChange}
-            placeholder="Opcjonalne"
-          />
+          >
+            <option value="">Brak działu</option>
+            {departments.map((dep) => (
+              <option key={dep.id} value={dep.id}>
+                {dep.name}
+              </option>
+            ))}
+          </select>
         </label>
         
         <div style={{ marginTop: "1rem" }}>

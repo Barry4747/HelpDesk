@@ -1,6 +1,8 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { ProtectedRoute } from "./components/ProtectedRoute";
+import { CategoryListPage } from "./pages/CategoryListPage";
 import { ChangePasswordPage } from "./pages/ChangePasswordPage";
+import { DepartmentListPage } from "./pages/DepartmentListPage";
 import { LoginPage } from "./pages/LoginPage";
 import { TicketCreatePage } from "./pages/TicketCreatePage";
 import { TicketDetailPage } from "./pages/TicketDetailPage";
@@ -22,6 +24,9 @@ export default function AppRoutes() {
         <Route path="/users" element={<ProtectedRoute><UserListPage /></ProtectedRoute>} />
         <Route path="/users/new" element={<ProtectedRoute><UserCreatePage /></ProtectedRoute>} />
         <Route path="/users/:id" element={<ProtectedRoute><UserDetailPage /></ProtectedRoute>} />
+
+        <Route path="/categories" element={<ProtectedRoute><CategoryListPage /></ProtectedRoute>} />
+        <Route path="/departments" element={<ProtectedRoute><DepartmentListPage /></ProtectedRoute>} />
       </Routes>
     </BrowserRouter>
   );
