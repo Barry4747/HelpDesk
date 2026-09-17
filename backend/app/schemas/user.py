@@ -1,6 +1,8 @@
 import uuid
 from typing import Literal
+
 from pydantic import BaseModel, ConfigDict, Field
+
 from app.models.user import UserRole
 
 
