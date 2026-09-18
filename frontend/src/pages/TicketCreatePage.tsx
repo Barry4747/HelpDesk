@@ -5,7 +5,6 @@ import { createTicket } from "../api/tickets";
 export function TicketCreatePage() {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
-  const [reporterId, setReporterId] = useState("");
   const [error, setError] = useState<string | null>(null);
   const navigate = useNavigate();
 
@@ -15,7 +14,6 @@ export function TicketCreatePage() {
       const newTicket = await createTicket({
         title,
         description,
-        reporter_id: reporterId,
       });
       navigate(`/tickets/${newTicket.id}`);
     } catch (err: any) {
@@ -44,16 +42,6 @@ export function TicketCreatePage() {
             required
             value={description}
             onChange={(e) => setDescription(e.target.value)}
-          />
-        </label>
-        <br />
-        <label>
-          Reporter ID (UUID):
-          <input
-            type="text"
-            required
-            value={reporterId}
-            onChange={(e) => setReporterId(e.target.value)}
           />
         </label>
         <br />

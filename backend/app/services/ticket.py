@@ -35,8 +35,6 @@ class TicketService:
             title=data.title,
             description=data.description,
             reporter_id=reporter_id,
-            category_id=data.category_id,
-            priority=data.priority,
             status=TicketStatus.nowe,
         )
         return self.repository.create(ticket)

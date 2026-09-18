@@ -9,8 +9,6 @@ from app.models.ticket import TicketPriority, TicketStatus
 class TicketCreate(BaseModel):
     title: str = Field(..., min_length=1)
     description: str = Field(..., min_length=1)
-    category_id: uuid.UUID
-    priority: TicketPriority
 
 
 class TicketUpdateSupport(BaseModel):

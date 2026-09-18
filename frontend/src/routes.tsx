@@ -18,15 +18,15 @@ export default function AppRoutes() {
         <Route path="/login" element={<LoginPage />} />
         <Route path="/change-password" element={<ChangePasswordPage />} />
         <Route path="/" element={<ProtectedRoute><TicketListPage /></ProtectedRoute>} />
-        <Route path="/tickets/new" element={<ProtectedRoute><TicketCreatePage /></ProtectedRoute>} />
+        <Route path="/tickets/new" element={<ProtectedRoute allowedRoles={["reporter"]}><TicketCreatePage /></ProtectedRoute>} />
         <Route path="/tickets/:id" element={<ProtectedRoute><TicketDetailPage /></ProtectedRoute>} />
         
-        <Route path="/users" element={<ProtectedRoute><UserListPage /></ProtectedRoute>} />
-        <Route path="/users/new" element={<ProtectedRoute><UserCreatePage /></ProtectedRoute>} />
-        <Route path="/users/:id" element={<ProtectedRoute><UserDetailPage /></ProtectedRoute>} />
+        <Route path="/users" element={<ProtectedRoute allowedRoles={["admin"]}><UserListPage /></ProtectedRoute>} />
+        <Route path="/users/new" element={<ProtectedRoute allowedRoles={["admin"]}><UserCreatePage /></ProtectedRoute>} />
+        <Route path="/users/:id" element={<ProtectedRoute allowedRoles={["admin"]}><UserDetailPage /></ProtectedRoute>} />
 
-        <Route path="/categories" element={<ProtectedRoute><CategoryListPage /></ProtectedRoute>} />
-        <Route path="/departments" element={<ProtectedRoute><DepartmentListPage /></ProtectedRoute>} />
+        <Route path="/categories" element={<ProtectedRoute allowedRoles={["admin"]}><CategoryListPage /></ProtectedRoute>} />
+        <Route path="/departments" element={<ProtectedRoute allowedRoles={["admin"]}><DepartmentListPage /></ProtectedRoute>} />
       </Routes>
     </BrowserRouter>
   );
