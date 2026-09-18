@@ -9,14 +9,25 @@ from app.models.ticket import TicketPriority, TicketStatus
 class TicketCreate(BaseModel):
     title: str = Field(..., min_length=1)
     description: str = Field(..., min_length=1)
-    reporter_id: uuid.UUID
+    category_id: uuid.UUID
+    priority: TicketPriority
 
 
-class TicketUpdate(BaseModel):
-    title: str | None = Field(default=None, min_length=1)
-    description: str | None = Field(default=None, min_length=1)
+class TicketUpdateSupport(BaseModel):
     category_id: uuid.UUID | None = None
     priority: TicketPriority | None = None
+
+    model_config = ConfigDict(extra="forbid")
+
+
+class TicketUpdateAdmin(BaseModel):
+    category_id: uuid.UUID | None = None
+    priority: TicketPriority | None = None
+    title: str | None = Field(default=None, min_length=1)
+    description: str | None = Field(default=None, min_length=1)
+    assigned_to_id: uuid.UUID | None = None
+
+    model_config = ConfigDict(extra="forbid")
 
 
 class TicketStatusUpdate(BaseModel):

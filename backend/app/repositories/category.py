@@ -1,8 +1,10 @@
 import uuid
 from collections.abc import Sequence
+
 from fastapi import Depends
 from sqlalchemy import select
 from sqlalchemy.orm import Session
+
 from app.dependencies.database import get_db
 from app.models.category import Category
 

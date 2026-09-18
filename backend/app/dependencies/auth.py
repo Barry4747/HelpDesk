@@ -2,6 +2,7 @@ from fastapi import Depends, HTTPException, Request, status
 from fastapi.security import OAuth2PasswordBearer
 
 from app.core.security import decode_access_token
+from app.exceptions.auth import InvalidTokenError
 from app.models.user import User
 from app.repositories.user import UserRepository
 
@@ -17,21 +18,18 @@ def get_current_user(
     if not token:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="Brak tokena dostępu",
+            detail="Brak uwierzytelnienia",
         )
 
-    payload = decode_access_token(token)
-    if not payload:
+    try:
+        payload = decode_access_token(token)
+        user_id = payload.get("sub")
+        if not user_id:
+            raise InvalidTokenError()
+    except InvalidTokenError:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="Nieprawidłowy lub wygasły token dostępu",
-        )
-
-    user_id = payload.get("sub")
-    if not user_id:
-        raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="Nieprawidłowy payload tokena",
+            detail="Nieprawidłowy lub wygasły token",
         )
 
     user = user_repo.get_by_id(user_id)
@@ -44,7 +42,21 @@ def get_current_user(
     if not user.is_active:
         raise HTTPException(
             status_code=status.HTTP_403_FORBIDDEN,
-            detail="Konto użytkownika jest nieaktywne",
+            detail="Konto jest nieaktywne",
         )
 
     return user
+
+
+def require_role(*allowed_roles: str):
+    """Zwraca dependency sprawdzającą czy current_user.role jest w allowed_roles."""
+
+    def dependency(current_user: User = Depends(get_current_user)) -> User:
+        if current_user.role not in allowed_roles:
+            raise HTTPException(
+                status_code=status.HTTP_403_FORBIDDEN,
+                detail="Brak uprawnień do tej operacji",
+            )
+        return current_user
+
+    return dependency

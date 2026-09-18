@@ -1,6 +1,8 @@
 import uuid
 from collections.abc import Sequence
+
 from fastapi import Depends
+
 from app.exceptions.department import (
     DepartmentNameAlreadyExistsError,
     DepartmentNotFoundError,
