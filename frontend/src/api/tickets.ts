@@ -2,80 +2,64 @@ import type {
   Ticket,
   TicketCreateInput,
   TicketStatusUpdateInput,
-  TicketUpdateInput,
+  TicketUpdateAdminInput,
+  TicketUpdateSupportInput,
 } from "../types/ticket";
+import { apiFetch } from "./client";
 
-const API_BASE_URL = "/api/v1";
+const API_BASE_URL = "/api/v1/tickets";
+
+export async function createTicket(data: TicketCreateInput): Promise<Ticket> {
+  const response = await apiFetch(API_BASE_URL, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(data),
+  });
+  if (!response.ok) throw new Error("Błąd tworzenia zgłoszenia");
+  return response.json();
+}
 
 export async function getTickets(): Promise<Ticket[]> {
-  const response = await fetch(`${API_BASE_URL}/tickets`);
-  if (!response.ok) {
-    throw new Error("Failed to fetch tickets");
-  }
+  const response = await apiFetch(API_BASE_URL);
+  if (!response.ok) throw new Error("Błąd pobierania listy zgłoszeń");
   return response.json();
 }
 
 export async function getTicket(id: string): Promise<Ticket> {
-  const response = await fetch(`${API_BASE_URL}/tickets/${id}`);
-  if (!response.ok) {
-    throw new Error(`Failed to fetch ticket ${id}`);
-  }
-  return response.json();
-}
-
-export async function createTicket(data: TicketCreateInput): Promise<Ticket> {
-  const response = await fetch(`${API_BASE_URL}/tickets`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(data),
-  });
-  if (!response.ok) {
-    throw new Error("Failed to create ticket");
-  }
+  const response = await apiFetch(`${API_BASE_URL}/${id}`);
+  if (!response.ok) throw new Error("Błąd pobierania zgłoszenia");
   return response.json();
 }
 
 export async function updateTicket(
   id: string,
-  data: TicketUpdateInput,
+  data: TicketUpdateSupportInput | TicketUpdateAdminInput
 ): Promise<Ticket> {
-  const response = await fetch(`${API_BASE_URL}/tickets/${id}`, {
+  const response = await apiFetch(`${API_BASE_URL}/${id}`, {
     method: "PATCH",
-    headers: {
-      "Content-Type": "application/json",
-    },
+    headers: { "Content-Type": "application/json" },
     body: JSON.stringify(data),
   });
-  if (!response.ok) {
-    throw new Error(`Failed to update ticket ${id}`);
-  }
+  if (!response.ok) throw new Error("Błąd aktualizacji zgłoszenia");
   return response.json();
 }
 
 export async function updateStatus(
   id: string,
-  data: TicketStatusUpdateInput,
+  data: TicketStatusUpdateInput
 ): Promise<Ticket> {
-  const response = await fetch(`${API_BASE_URL}/tickets/${id}/status`, {
+  const response = await apiFetch(`${API_BASE_URL}/${id}/status`, {
     method: "PATCH",
-    headers: {
-      "Content-Type": "application/json",
-    },
+    headers: { "Content-Type": "application/json" },
     body: JSON.stringify(data),
   });
-  if (!response.ok) {
-    throw new Error(`Failed to update ticket status ${id}`);
-  }
+  if (!response.ok) throw new Error("Błąd zmiany statusu");
   return response.json();
 }
 
 export async function deleteTicket(id: string): Promise<void> {
-  const response = await fetch(`${API_BASE_URL}/tickets/${id}`, {
+  const response = await apiFetch(`${API_BASE_URL}/${id}`, {
     method: "DELETE",
   });
-  if (!response.ok) {
-    throw new Error(`Failed to delete ticket ${id}`);
-  }
+  if (!response.ok) throw new Error("Błąd usunięcia zgłoszenia");
 }

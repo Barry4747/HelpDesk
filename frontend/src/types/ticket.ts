@@ -19,14 +19,19 @@ export interface Ticket {
 export interface TicketCreateInput {
   title: string;
   description: string;
-  reporter_id: string;
 }
 
-export interface TicketUpdateInput {
+export interface TicketUpdateSupportInput {
+  category_id?: string | null;
+  priority?: TicketPriority | null;
+}
+
+export interface TicketUpdateAdminInput {
   title?: string;
   description?: string;
   category_id?: string | null;
   priority?: TicketPriority | null;
+  assigned_to_id?: string | null;
 }
 
 export interface TicketStatusUpdateInput {
