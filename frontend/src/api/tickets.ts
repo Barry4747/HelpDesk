@@ -19,9 +19,23 @@ export async function createTicket(data: TicketCreateInput): Promise<Ticket> {
   return response.json();
 }
 
-export async function getTickets(): Promise<Ticket[]> {
-  const response = await apiFetch(API_BASE_URL);
-  if (!response.ok) throw new Error("Błąd pobierania listy zgłoszeń");
+export async function getTickets(params?: any): Promise<any> {
+  let url = API_BASE_URL;
+  if (params) {
+    const searchParams = new URLSearchParams();
+    Object.entries(params).forEach(([key, value]) => {
+      if (value !== undefined && value !== "" && value !== null) {
+        searchParams.append(key, value.toString());
+      }
+    });
+    const qs = searchParams.toString();
+    if (qs) {
+      url += `?${qs}`;
+    }
+  }
+
+  const response = await apiFetch(url);
+  if (!response.ok) throw new Error("Błąd podczas pobierania zgłoszeń");
   return response.json();
 }
 

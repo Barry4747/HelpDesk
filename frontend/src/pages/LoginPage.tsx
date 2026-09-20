@@ -17,7 +17,7 @@ export function LoginPage() {
     setError(null);
     setLoading(true);
     try {
-      const result = await apiLogin(loginVal, password);
+      const result = await loginAPI(loginVal, password);
       if (result.requires_password_change) {
         navigate("/change-password");
       } else {
