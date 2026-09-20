@@ -8,7 +8,7 @@ from app.exceptions.user import LoginAlreadyExistsError, UserNotFoundError
 from app.models.user import User
 from app.repositories.refresh_token import RefreshTokenRepository
 from app.repositories.user import UserRepository
-from app.schemas.user import UserCreate, UserUpdate
+from app.schemas.user import PaginatedUsersResponse, UserCreate, UserFilterParams, UserUpdate
 
 
 class UserService:
@@ -42,8 +42,14 @@ class UserService:
             raise UserNotFoundError()
         return user
 
-    def list_users(self) -> Sequence[User]:
-        return self.user_repo.get_all()
+    def list_users(self, filters: UserFilterParams) -> PaginatedUsersResponse:
+        items, total = self.user_repo.get_filtered(filters)
+        return PaginatedUsersResponse(
+            items=items,
+            total=total,
+            page=filters.page,
+            page_size=filters.page_size,
+        )
 
     def update_user(self, user_id: uuid.UUID, data: UserUpdate) -> User:
         user = self.get_user(user_id)

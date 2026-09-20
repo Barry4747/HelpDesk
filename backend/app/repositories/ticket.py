@@ -37,6 +37,8 @@ class TicketRepository:
             conditions.append(Ticket.priority == filters.priority)
         if filters.category_id:
             conditions.append(Ticket.category_id == filters.category_id)
+        if filters.search:
+            conditions.append(Ticket.title.ilike(f"%{filters.search}%"))
             
         if conditions:
             stmt = stmt.where(*conditions)

@@ -27,10 +27,10 @@ export function UserDetailPage() {
 
   useEffect(() => {
     if (!id) return;
-    Promise.all([getUser(id), getDepartments()])
+    Promise.all([getUser(id), getDepartments({ page_size: 1000 })])
       .then(([userData, depsData]) => {
         setUser(userData);
-        setDepartments(depsData);
+        setDepartments(depsData.items);
         setEditData({
           first_name: userData.first_name,
           last_name: userData.last_name,

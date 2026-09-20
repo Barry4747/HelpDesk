@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import { getTickets } from "../api/tickets";
 import { getCategories } from "../api/categories";
@@ -6,6 +6,19 @@ import { TicketTable } from "../components/TicketTable";
 import { useAuth } from "../context/AuthContext";
 import type { PaginatedTicketsResponse, TicketFilterParams, TicketStatus, TicketPriority } from "../types/ticket";
 import type { Category } from "../types/category";
+
+// Simple debounce helper
+function useDebounce<T extends (...args: any[]) => void>(callback: T, delay: number) {
+  const [timeoutId, setTimeoutId] = useState<NodeJS.Timeout | null>(null);
+  
+  return useCallback((...args: Parameters<T>) => {
+    if (timeoutId) clearTimeout(timeoutId);
+    const newTimeoutId = setTimeout(() => {
+      callback(...args);
+    }, delay);
+    setTimeoutId(newTimeoutId);
+  }, [callback, delay, timeoutId]);
+}
 
 export function TicketListPage() {
   const [data, setData] = useState<PaginatedTicketsResponse | null>(null);
@@ -18,11 +31,14 @@ export function TicketListPage() {
   const { user } = useAuth();
   const role = (user as any)?.role;
 
+  const [searchInput, setSearchInput] = useState(searchParams.get("search") || "");
+
   const filters: TicketFilterParams = {
     status: (searchParams.get("status") as TicketStatus) || "",
     priority: (searchParams.get("priority") as TicketPriority) || "",
     category_id: searchParams.get("category_id") || "",
     assigned_to_me: searchParams.get("assigned_to_me") === "true",
+    search: searchParams.get("search") || "",
     sort_by: (searchParams.get("sort_by") as any) || "created_at",
     sort_order: (searchParams.get("sort_order") as any) || "desc",
     page: parseInt(searchParams.get("page") || "1", 10),
@@ -30,7 +46,7 @@ export function TicketListPage() {
   };
 
   useEffect(() => {
-    getCategories().then(setCategories).catch(console.error);
+    getCategories({ page_size: 1000 }).then(res => setCategories(res.items)).catch(console.error);
   }, []);
 
   useEffect(() => {
@@ -56,6 +72,15 @@ export function TicketListPage() {
       }
     });
     setSearchParams(params);
+  };
+
+  const debouncedSearch = useDebounce((value: string) => {
+    updateFilters({ search: value });
+  }, 500);
+
+  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchInput(e.target.value);
+    debouncedSearch(e.target.value);
   };
 
   const handleSortChange = (field: "created_at" | "updated_at" | "priority" | "status") => {
@@ -92,6 +117,18 @@ export function TicketListPage() {
 
       <div className="card" style={{ marginBottom: "24px" }}>
         <div className="card-body" style={{ display: "flex", gap: "16px", flexWrap: "wrap", alignItems: "flex-end" }}>
+          
+          <div className="form-group" style={{ marginBottom: 0, flex: 1, minWidth: "200px" }}>
+            <label className="form-label">Szukaj</label>
+            <input 
+              type="text" 
+              className="form-control" 
+              placeholder="Tytuł zgłoszenia..." 
+              value={searchInput}
+              onChange={handleSearchChange}
+            />
+          </div>
+
           <div className="form-group" style={{ marginBottom: 0, flex: 1, minWidth: "150px" }}>
             <label className="form-label">Status</label>
             <select

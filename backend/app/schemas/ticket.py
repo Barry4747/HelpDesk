@@ -56,6 +56,7 @@ class TicketFilterParams(BaseModel):
     priority: TicketPriority | None = None
     category_id: uuid.UUID | None = None
     assigned_to_me: bool = False
+    search: str | None = None
     sort_by: Literal["created_at", "updated_at", "priority", "status"] = "created_at"
     sort_order: Literal["asc", "desc"] = "desc"
     page: int = Field(default=1, ge=1)

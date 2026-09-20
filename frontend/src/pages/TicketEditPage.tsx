@@ -89,12 +89,12 @@ export function TicketEditPage() {
       .catch((err) => setError(err.message))
       .finally(() => setLoading(false));
 
-    getCategories().then(setCategories).catch(console.error);
+    getCategories({ page_size: 1000 }).then(res => setCategories(res.items)).catch(console.error);
 
     if (role === "admin") {
-      getUsers()
-        .then((users) =>
-          setAssignableUsers(users.filter((u) => u.role === "support" || u.role === "admin"))
+      getUsers({ page_size: 1000 })
+        .then((res) =>
+          setAssignableUsers(res.items.filter((u) => u.role === "support" || u.role === "admin"))
         )
         .catch(console.error);
     }

@@ -135,8 +135,8 @@ export function TicketDetailPage() {
 
   useEffect(() => {
     loadTicket();
-    getCategories().then(setCategories).catch(console.error);
-    getDepartments().then(setDepartments).catch(console.error);
+    getCategories({ page_size: 1000 }).then(res => setCategories(res.items)).catch(console.error);
+    getDepartments({ page_size: 1000 }).then(res => setDepartments(res.items)).catch(console.error);
   }, [id]);
 
   const handleStatusUpdate = async (e: React.FormEvent) => {

@@ -22,8 +22,8 @@ export function UserCreatePage() {
   });
 
   useEffect(() => {
-    getDepartments()
-      .then((deps) => setDepartments(deps.filter((d) => d.is_active)))
+    getDepartments({ page_size: 1000 })
+      .then((res) => setDepartments(res.items.filter((d) => d.is_active)))
       .catch(console.error);
   }, []);
 

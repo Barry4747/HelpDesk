@@ -43,6 +43,7 @@ export interface TicketFilterParams {
   priority?: TicketPriority | "";
   category_id?: string;
   assigned_to_me?: boolean;
+  search?: string;
   sort_by?: "created_at" | "updated_at" | "priority" | "status";
   sort_order?: "asc" | "desc";
   page?: number;

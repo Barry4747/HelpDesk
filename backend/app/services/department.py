@@ -9,7 +9,7 @@ from app.exceptions.department import (
 )
 from app.models.department import Department
 from app.repositories.department import DepartmentRepository
-from app.schemas.department import DepartmentCreate, DepartmentUpdate
+from app.schemas.department import DepartmentCreate, DepartmentUpdate, DepartmentFilterParams, PaginatedDepartmentsResponse
 
 
 class DepartmentService:
@@ -26,8 +26,14 @@ class DepartmentService:
         )
         return self.repository.create(department)
 
-    def list_departments(self) -> Sequence[Department]:
-        return self.repository.get_all()
+    def list_departments(self, filters: DepartmentFilterParams) -> PaginatedDepartmentsResponse:
+        items, total = self.repository.get_filtered(filters)
+        return PaginatedDepartmentsResponse(
+            items=items,
+            total=total,
+            page=filters.page,
+            page_size=filters.page_size
+        )
 
     def update_department(self, department_id: uuid.UUID, data: DepartmentUpdate) -> Department:
         department = self.repository.get_by_id(department_id)

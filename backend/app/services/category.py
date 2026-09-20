@@ -9,7 +9,7 @@ from app.exceptions.category import (
 )
 from app.models.category import Category
 from app.repositories.category import CategoryRepository
-from app.schemas.category import CategoryCreate, CategoryUpdate
+from app.schemas.category import CategoryCreate, CategoryUpdate, CategoryFilterParams, PaginatedCategoriesResponse
 
 
 class CategoryService:
@@ -26,8 +26,14 @@ class CategoryService:
         )
         return self.repository.create(category)
 
-    def list_categories(self) -> Sequence[Category]:
-        return self.repository.get_all()
+    def list_categories(self, filters: CategoryFilterParams) -> PaginatedCategoriesResponse:
+        items, total = self.repository.get_filtered(filters)
+        return PaginatedCategoriesResponse(
+            items=items,
+            total=total,
+            page=filters.page,
+            page_size=filters.page_size
+        )
 
     def update_category(self, category_id: uuid.UUID, data: CategoryUpdate) -> Category:
         category = self.repository.get_by_id(category_id)
