@@ -4,7 +4,7 @@ from fastapi import APIRouter, Depends, status
 
 from app.dependencies.auth import get_current_user, require_role
 from app.models.user import User
-from app.schemas.user import UserCreate, UserResponse, UserUpdate
+from app.schemas.user import UserCreate, UserResponse, UserUpdate, UserFilterParams, PaginatedUsersResponse
 from app.services.user import UserService
 
 router = APIRouter(prefix="/api/v1/users", tags=["users"])
@@ -24,18 +24,20 @@ def create_user(
     return service.create_user(data)
 
 
-@router.get("", response_model=list[UserResponse])
+@router.get("", response_model=PaginatedUsersResponse)
 def list_users(
-    service: UserService = Depends(), _admin: User = Depends(require_role("admin"))
+    filters: UserFilterParams = Depends(),
+    service: UserService = Depends(),
+    _admin: User = Depends(require_role("admin"))
 ):
-    return service.list_users()
+    return service.list_users(filters)
 
 
 @router.get("/{user_id}", response_model=UserResponse)
 def get_user(
     user_id: uuid.UUID,
     service: UserService = Depends(),
-    _admin: User = Depends(require_role("admin")),
+    _user: User = Depends(get_current_user),
 ):
     return service.get_user(user_id)
 

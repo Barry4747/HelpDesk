@@ -4,7 +4,7 @@ from fastapi import APIRouter, Depends, status
 
 from app.dependencies.auth import get_current_user, require_role
 from app.models.user import User
-from app.schemas.category import CategoryCreate, CategoryResponse, CategoryUpdate
+from app.schemas.category import CategoryCreate, CategoryResponse, CategoryUpdate, CategoryFilterParams, PaginatedCategoriesResponse
 from app.services.category import CategoryService
 
 router = APIRouter(prefix="/api/v1/categories", tags=["categories"])
@@ -19,12 +19,13 @@ def create_category(
     return service.create_category(data)
 
 
-@router.get("", response_model=list[CategoryResponse])
+@router.get("", response_model=PaginatedCategoriesResponse)
 def list_categories(
+    filters: CategoryFilterParams = Depends(),
     service: CategoryService = Depends(),
     _user: User = Depends(get_current_user),
 ):
-    return service.list_categories()
+    return service.list_categories(filters)
 
 
 @router.patch("/{category_id}", response_model=CategoryResponse)

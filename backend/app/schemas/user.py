@@ -16,11 +16,9 @@ class UserCreate(BaseModel):
 
 
 class UserUpdate(BaseModel):
-    login: str | None = Field(default=None, min_length=3)
-    password: str | None = Field(default=None, min_length=6)
     first_name: str | None = None
     last_name: str | None = None
-    role: Literal["reporter", "support"] | None = None
+    role: Literal["reporter", "support", "admin"] | None = None
     department_id: uuid.UUID | None = None
 
 
@@ -29,9 +27,27 @@ class UserResponse(BaseModel):
     login: str
     first_name: str
     last_name: str
-    role: UserRole
+    role: str
     department_id: uuid.UUID | None
-    is_temporary_password: bool
     is_active: bool
+    is_temporary_password: bool
 
     model_config = ConfigDict(from_attributes=True)
+
+
+class UserFilterParams(BaseModel):
+    role: UserRole | None = None
+    department_id: uuid.UUID | None = None
+    is_active: bool | None = None
+    search: str | None = None
+    sort_by: Literal["login", "first_name", "last_name", "created_at", "role", "department_id", "is_active"] = "created_at"
+    sort_order: Literal["asc", "desc"] = "desc"
+    page: int = Field(default=1, ge=1)
+    page_size: int = Field(default=20, ge=1, le=1000)
+
+
+class PaginatedUsersResponse(BaseModel):
+    items: list[UserResponse]
+    total: int
+    page: int
+    page_size: int

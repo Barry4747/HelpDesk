@@ -1,10 +1,20 @@
-import type { Category, CategoryUpdateInput } from "../types/category";
+import type { Category, CategoryUpdateInput, CategoryFilterParams, PaginatedCategoriesResponse } from "../types/category";
 import { apiFetch } from "./client";
 
 const API_BASE_URL = "/api/v1/categories";
 
-export async function getCategories(): Promise<Category[]> {
-  const response = await apiFetch(API_BASE_URL);
+export async function getCategories(filters?: CategoryFilterParams): Promise<PaginatedCategoriesResponse> {
+  const params = new URLSearchParams();
+  if (filters) {
+    Object.entries(filters).forEach(([key, value]) => {
+      if (value !== undefined && value !== "" && value !== null) {
+        params.append(key, value.toString());
+      }
+    });
+  }
+  const queryString = params.toString();
+  const url = queryString ? `${API_BASE_URL}?${queryString}` : API_BASE_URL;
+  const response = await apiFetch(url);
   if (!response.ok) throw new Error("Błąd pobierania kategorii");
   return response.json();
 }

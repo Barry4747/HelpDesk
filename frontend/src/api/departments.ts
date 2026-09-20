@@ -1,10 +1,18 @@
-import type { Department, DepartmentUpdateInput } from "../types/department";
+import type { Department, DepartmentFilterParams, DepartmentUpdateInput, PaginatedDepartmentsResponse } from "../types/department";
 import { apiFetch } from "./client";
 
 const API_BASE_URL = "/api/v1/departments";
 
-export async function getDepartments(): Promise<Department[]> {
-  const response = await apiFetch(API_BASE_URL);
+export async function getDepartments(filters?: DepartmentFilterParams): Promise<PaginatedDepartmentsResponse> {
+  const params = new URLSearchParams();
+  if (filters) {
+    Object.entries(filters).forEach(([key, value]) => {
+      if (value !== undefined && value !== "" && value !== null) {
+        params.append(key, value.toString());
+      }
+    });
+  }
+  const response = await apiFetch(`${API_BASE_URL}?${params.toString()}`);
   if (!response.ok) throw new Error("Błąd pobierania działów");
   return response.json();
 }

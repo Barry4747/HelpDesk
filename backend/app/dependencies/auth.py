@@ -23,6 +23,8 @@ def get_current_user(
 
     try:
         payload = decode_access_token(token)
+        if not payload:
+            raise InvalidTokenError()
         user_id = payload.get("sub")
         if not user_id:
             raise InvalidTokenError()

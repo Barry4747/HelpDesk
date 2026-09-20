@@ -37,3 +37,22 @@ export interface TicketUpdateAdminInput {
 export interface TicketStatusUpdateInput {
   status: TicketStatus;
 }
+
+export interface TicketFilterParams {
+  status?: TicketStatus | "";
+  priority?: TicketPriority | "";
+  category_id?: string;
+  assigned_to_me?: boolean;
+  search?: string;
+  sort_by?: "created_at" | "updated_at" | "priority" | "status";
+  sort_order?: "asc" | "desc";
+  page?: number;
+  page_size?: number;
+}
+
+export interface PaginatedTicketsResponse {
+  items: Ticket[];
+  total: number;
+  page: number;
+  page_size: number;
+}
