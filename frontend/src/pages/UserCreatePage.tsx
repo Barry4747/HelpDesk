@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import toast from "react-hot-toast";
 import { getDepartments } from "../api/departments";
 import { createUser } from "../api/users";
 import type { Department } from "../types/department";
@@ -40,9 +41,11 @@ export function UserCreatePage() {
         ...formData,
         department_id: formData.department_id || undefined,
       };
-      const user = await createUser(payload);
-      navigate(`/users/${user.id}`);
+      await createUser(payload);
+      toast.success("Użytkownik został pomyślnie utworzony");
+      navigate("/users");
     } catch (err: any) {
+      toast.error(err.message || "Błąd podczas dodawania użytkownika");
       setError(err.message || "Błąd podczas dodawania użytkownika");
     } finally {
       setLoading(false);

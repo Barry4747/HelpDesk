@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import toast from "react-hot-toast";
 import { createTicket } from "../api/tickets";
 
 export function TicketCreatePage() {
@@ -15,8 +16,10 @@ export function TicketCreatePage() {
     setLoading(true);
     try {
       const newTicket = await createTicket({ title, description });
+      toast.success("Zgłoszenie zostało pomyślnie utworzone");
       navigate(`/tickets/${newTicket.id}`);
     } catch (err: any) {
+      toast.error(err.message);
       setError(err.message);
     } finally {
       setLoading(false);

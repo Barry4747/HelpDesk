@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+import toast from "react-hot-toast";
 import { getDepartments } from "../api/departments";
 import { deactivateUser, getUser, updateUser } from "../api/users";
 import type { Department } from "../types/department";
@@ -58,8 +59,10 @@ export function UserDetailPage() {
       const updated = await updateUser(id, payload);
       setUser(updated);
       setSaveMsg("Dane zostały zapisane.");
+      toast.success("Dane użytkownika zostały zaktualizowane");
     } catch (err: any) {
       setError(err.message);
+      toast.error(err.message || "Błąd podczas zapisywania danych");
     }
   };
 
@@ -72,8 +75,10 @@ export function UserDetailPage() {
       setUser(updated);
       setPasswordInput("");
       setSaveMsg("Hasło zostało zmienione. Użytkownik będzie musiał je zmienić przy następnym logowaniu.");
+      toast.success("Hasło zostało zmienione");
     } catch (err: any) {
       setError(err.message);
+      toast.error(err.message || "Błąd podczas zmiany hasła");
     }
   };
 
@@ -83,8 +88,10 @@ export function UserDetailPage() {
     try {
       const updated = await deactivateUser(id);
       setUser(updated);
+      toast.success("Konto zostało dezaktywowane");
     } catch (err: any) {
       setError(err.message);
+      toast.error(err.message || "Wystąpił błąd");
     }
   };
 

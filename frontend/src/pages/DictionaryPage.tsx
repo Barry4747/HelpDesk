@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import toast from "react-hot-toast";
 import { createCategory, getCategories, updateCategory } from "../api/categories";
 import { createDepartment, getDepartments, updateDepartment } from "../api/departments";
 import type { Category } from "../types/category";
@@ -184,8 +185,10 @@ export function DictionaryPage() {
     try {
       const created = await createCategory(name);
       setCategories((prev) => [...prev, created]);
+      toast.success("Utworzono kategorię");
     } catch (err: any) {
       setCatError(err.message || "Błąd tworzenia kategorii");
+      toast.error(err.message || "Błąd tworzenia kategorii");
       throw err;
     }
   };
@@ -194,8 +197,10 @@ export function DictionaryPage() {
     try {
       const updated = await updateCategory(id, { is_active: !current });
       setCategories((prev) => prev.map((c) => (c.id === id ? updated : c)));
+      toast.success("Zaktualizowano status kategorii");
     } catch (err: any) {
       setCatError(err.message);
+      toast.error(err.message || "Błąd aktualizacji kategorii");
     }
   };
 
@@ -203,8 +208,10 @@ export function DictionaryPage() {
     try {
       const updated = await updateCategory(id, { name });
       setCategories((prev) => prev.map((c) => (c.id === id ? updated : c)));
+      toast.success("Zaktualizowano kategorię");
     } catch (err: any) {
       setCatError(err.message);
+      toast.error(err.message || "Błąd aktualizacji kategorii");
       throw err;
     }
   };
@@ -214,8 +221,10 @@ export function DictionaryPage() {
     try {
       const created = await createDepartment(name);
       setDepartments((prev) => [...prev, created]);
+      toast.success("Utworzono dział");
     } catch (err: any) {
       setDepError(err.message || "Błąd tworzenia działu");
+      toast.error(err.message || "Błąd tworzenia działu");
       throw err;
     }
   };
@@ -224,8 +233,10 @@ export function DictionaryPage() {
     try {
       const updated = await updateDepartment(id, { is_active: !current });
       setDepartments((prev) => prev.map((d) => (d.id === id ? updated : d)));
+      toast.success("Zaktualizowano status działu");
     } catch (err: any) {
       setDepError(err.message);
+      toast.error(err.message || "Błąd aktualizacji działu");
     }
   };
 
@@ -233,8 +244,10 @@ export function DictionaryPage() {
     try {
       const updated = await updateDepartment(id, { name });
       setDepartments((prev) => prev.map((d) => (d.id === id ? updated : d)));
+      toast.success("Zaktualizowano dział");
     } catch (err: any) {
       setDepError(err.message);
+      toast.error(err.message || "Błąd aktualizacji działu");
       throw err;
     }
   };

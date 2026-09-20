@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import toast from "react-hot-toast";
 import { changePassword as apiChangePassword } from "../api/auth";
 import { useAuth } from "../context/AuthContext";
 
@@ -28,8 +29,10 @@ export function ChangePasswordPage() {
     try {
       await apiChangePassword(newPassword);
       await refreshUser();
+      toast.success("Hasło zostało pomyślnie zmienione");
       navigate("/");
     } catch (err: any) {
+      toast.error(err.message || "Wystąpił błąd");
       setError(err.message || "Zmiana hasła nie powiodła się");
     } finally {
       setLoading(false);

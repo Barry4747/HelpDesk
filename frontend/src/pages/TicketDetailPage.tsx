@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import Select from "react-select";
+import toast from "react-hot-toast";
 import { getCategories } from "../api/categories";
 import { getDepartments } from "../api/departments";
 import {
@@ -72,8 +73,8 @@ const selectStyles = {
     backgroundColor: state.isSelected
       ? "var(--color-primary)"
       : state.isFocused
-      ? "var(--color-bg-alt)"
-      : "white",
+        ? "var(--color-bg-alt)"
+        : "white",
     color: state.isSelected ? "white" : "var(--color-text)",
     cursor: "pointer",
   }),
@@ -95,8 +96,7 @@ export function TicketDetailPage() {
   const [loadingPage, setLoadingPage] = useState(true);
 
   const [status, setStatus] = useState<TicketStatus | "">("");
-  
-  // AI Predykcja
+
   const [aiCategoryId, setAiCategoryId] = useState("");
   const [aiPriority, setAiPriority] = useState<TicketPriority | "">("");
 
@@ -114,7 +114,7 @@ export function TicketDetailPage() {
       setStatus(data.status);
       setAiCategoryId(data.suggested_category_id || "");
       setAiPriority(data.suggested_priority || "");
-      
+
       const rep = await getUser(data.reporter_id);
       setReporter(rep);
     } catch (err: any) {
@@ -137,20 +137,28 @@ export function TicketDetailPage() {
     try {
       await updateStatus(ticket.id, { status: status as TicketStatus });
       await loadTicket();
+      toast.success("Status zgłoszenia został zaktualizowany");
     } catch (err: any) {
+      toast.error(err.message);
       setSaveError(err.message);
     }
   };
 
   const handleAssignToMe = async () => {
     if (!ticket || !user) return;
+    if (needsReview) {
+      toast.error("Zgłoszenie musi mieć przypisaną kategorię i priorytet przed przypisaniem pracownika.");
+      return;
+    }
     setSaveError(null);
     try {
       await updateTicket(ticket.id, {
         assigned_to_id: user.id,
       });
       await loadTicket();
+      toast.success("Zgłoszenie zostało przypisane do Ciebie");
     } catch (err: any) {
+      toast.error(err.message);
       setSaveError(err.message);
     }
   };
@@ -160,14 +168,20 @@ export function TicketDetailPage() {
     if (!window.confirm("Na pewno usunąć to zgłoszenie? Tej akcji nie można cofnąć.")) return;
     try {
       await deleteTicket(ticket.id);
+      toast.success("Zgłoszenie zostało usunięte");
       navigate("/");
     } catch (err: any) {
+      toast.error(err.message);
       setSaveError(err.message);
     }
   };
 
   const handleConfirmSuggestions = async () => {
     if (!ticket) return;
+    if (!aiCategoryId || !aiPriority) {
+      toast.error("Proszę wybrać zarówno kategorię jak i priorytet przed zatwierdzeniem.");
+      return;
+    }
     setSaveError(null);
     try {
       await updateTicket(ticket.id, {
@@ -175,7 +189,9 @@ export function TicketDetailPage() {
         priority: (aiPriority as TicketPriority) || null,
       });
       await loadTicket();
+      toast.success("Sugestie AI zostały zatwierdzone");
     } catch (err: any) {
+      toast.error(err.message);
       setSaveError(err.message);
     }
   };
@@ -272,7 +288,7 @@ export function TicketDetailPage() {
                 ? "Kategoria i priorytet zostały zasugerowane przez AI. Zweryfikuj, popraw (jeśli to konieczne) i zatwierdź je."
                 : "To zgłoszenie nie ma przypisanej kategorii i priorytetu. Uzupełnij je i zatwierdź."}
             </div>
-            
+
             <div style={{ display: "flex", gap: "12px", alignItems: "center", background: "rgba(255,255,255,0.5)", padding: "12px", borderRadius: "6px", marginBottom: "12px" }}>
               <div style={{ flex: 1 }}>
                 <label style={{ display: "block", fontSize: "12px", color: "var(--color-text-secondary)", marginBottom: "4px" }}>Kategoria</label>
@@ -301,13 +317,12 @@ export function TicketDetailPage() {
                 />
               </div>
             </div>
-            
+
             <div>
-              <button 
-                type="button" 
-                className="btn btn-primary btn-sm" 
+              <button
+                type="button"
+                className="btn btn-primary btn-sm"
                 onClick={handleConfirmSuggestions}
-                disabled={!aiCategoryId || !aiPriority}
               >
                 Zatwierdź
               </button>
@@ -317,9 +332,7 @@ export function TicketDetailPage() {
       )}
 
       <div style={{ display: "grid", gridTemplateColumns: "1fr 340px", gap: "24px", alignItems: "start" }}>
-        {/* Main content */}
         <div style={{ display: "flex", flexDirection: "column", gap: "24px" }}>
-          {/* Info card */}
           <div className="card">
             <div className="card-header">
               <span className="card-title">Szczegóły zgłoszenia</span>
@@ -343,7 +356,7 @@ export function TicketDetailPage() {
                 <div className="detail-field">
                   <span className="detail-label">Kategoria</span>
                   <span className="detail-value">
-                    {ticket.category_id 
+                    {ticket.category_id
                       ? (categories.find(c => c.id === ticket.category_id)?.name || ticket.category_id)
                       : "—"}
                   </span>
@@ -352,7 +365,7 @@ export function TicketDetailPage() {
                   <span className="detail-label">Reporter</span>
                   <div className="detail-value">
                     {reporter ? (
-                      <div 
+                      <div
                         onMouseEnter={() => setShowReporterTooltip(true)}
                         onMouseLeave={() => setShowReporterTooltip(false)}
                         style={{ position: "relative", display: "inline-flex", alignItems: "center", gap: "6px" }}
@@ -365,7 +378,7 @@ export function TicketDetailPage() {
                             <line x1="12" y1="8" x2="12.01" y2="8"></line>
                           </svg>
                         </div>
-                        
+
                         {showReporterTooltip && (
                           <div style={{
                             position: "absolute",
@@ -408,8 +421,7 @@ export function TicketDetailPage() {
                 </div>
               </div>
             </div>
-            
-            {/* Actions for Support/Admin */}
+
             {canEdit && (
               <div style={{ padding: "16px", display: "flex", gap: "12px", borderTop: "1px solid var(--color-border-subtle)", backgroundColor: "var(--color-bg-alt)", borderBottomLeftRadius: "6px", borderBottomRightRadius: "6px" }}>
                 {ticket.assigned_to_id !== user?.id && (
@@ -417,13 +429,11 @@ export function TicketDetailPage() {
                     type="button"
                     className="btn btn-primary"
                     onClick={handleAssignToMe}
-                    disabled={needsReview}
-                    title={needsReview ? "Musisz najpierw uzupełnić/zatwierdzić kategorię i priorytet" : ""}
                   >
                     Przypisz do siebie
                   </button>
                 )}
-                
+
                 <button
                   type="button"
                   className="btn btn-outline"
@@ -436,9 +446,7 @@ export function TicketDetailPage() {
           </div>
         </div>
 
-        {/* Sidebar */}
         <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
-          {/* Status change */}
           {canEdit && ticket.assigned_to_id && (
             <div className="card">
               <div className="card-header">
@@ -465,7 +473,6 @@ export function TicketDetailPage() {
             </div>
           )}
 
-          {/* Metadata */}
           <div className="card">
             <div className="card-header">
               <span className="card-title">Informacje systemowe</span>

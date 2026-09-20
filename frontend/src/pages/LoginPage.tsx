@@ -1,6 +1,7 @@
 import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import { login as apiLogin } from "../api/auth";
+import { useNavigate } from "react-router-dom";
+import toast from "react-hot-toast";
+import { login as loginAPI } from "../api/auth";
 import { useAuth } from "../context/AuthContext";
 
 export function LoginPage() {
@@ -21,10 +22,12 @@ export function LoginPage() {
         navigate("/change-password");
       } else {
         await refreshUser();
+        toast.success("Pomyślnie zalogowano");
         navigate("/");
       }
-    } catch {
-      setError("Nieprawidłowy login lub hasło");
+    } catch (err: any) {
+      toast.error(err.message || "Nieprawidłowy login lub hasło");
+      setError(err.message || "Nieprawidłowy login lub hasło");
     } finally {
       setLoading(false);
     }

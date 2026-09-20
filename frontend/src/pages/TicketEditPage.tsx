@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import Select from "react-select";
+import toast from "react-hot-toast";
 import { getCategories } from "../api/categories";
 import { getTicket, updateTicket, updateStatus } from "../api/tickets";
 import { getUsers } from "../api/users";
@@ -122,8 +123,10 @@ export function TicketEditPage() {
       if (status && status !== ticket.status && assignedToId) {
         await updateStatus(ticket.id, { status: status as TicketStatus });
       }
+      toast.success("Zgłoszenie zostało pomyślnie zaktualizowane");
       navigate(`/tickets/${ticket.id}`);
     } catch (err: any) {
+      toast.error(err.message);
       setSaveError(err.message);
       setSaving(false);
     }
