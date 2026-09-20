@@ -8,6 +8,7 @@ import type { Ticket } from "../types/ticket";
 export function TicketListPage() {
   const [tickets, setTickets] = useState<Ticket[]>([]);
   const [error, setError] = useState<string | null>(null);
+  const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
   const { user } = useAuth();
   const role = (user as any)?.role;
@@ -15,7 +16,8 @@ export function TicketListPage() {
   useEffect(() => {
     getTickets()
       .then(setTickets)
-      .catch((err) => setError(err.message));
+      .catch((err) => setError(err.message))
+      .finally(() => setLoading(false));
   }, []);
 
   const handleRowClick = (id: string) => {
@@ -23,15 +25,30 @@ export function TicketListPage() {
   };
 
   return (
-    <main>
-      <h1>Lista zgłoszeń</h1>
-      {role === "reporter" && (
-        <Link to="/tickets/new">
-          <button type="button">Nowe zgłoszenie</button>
-        </Link>
+    <div className="container">
+      <div className="page-header">
+        <div>
+          <h1 className="page-title">Zgłoszenia</h1>
+          <p className="page-subtitle">
+            {role === "reporter" ? "Twoje zgłoszenia" : "Wszystkie zgłoszenia w systemie"}
+          </p>
+        </div>
+        {role === "reporter" && (
+          <Link to="/tickets/new" className="btn btn-primary">
+            + Nowe zgłoszenie
+          </Link>
+        )}
+      </div>
+
+      {error && <div className="alert alert-error">{error}</div>}
+
+      {loading ? (
+        <div className="loading">Ładowanie...</div>
+      ) : (
+        <div className="table-wrapper">
+          <TicketTable tickets={tickets} onRowClick={handleRowClick} />
+        </div>
       )}
-      {error && <p style={{ color: "red" }}>Błąd: {error}</p>}
-      <TicketTable tickets={tickets} onRowClick={handleRowClick} />
-    </main>
+    </div>
   );
 }

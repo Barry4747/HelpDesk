@@ -47,13 +47,22 @@ class TicketService:
         if current_user.role == "reporter" and ticket.reporter_id != current_user.id:
             raise TicketAccessDeniedError()
 
+        if current_user.role == "support":
+            if ticket.assigned_to_id is not None and ticket.assigned_to_id != current_user.id:
+                raise TicketAccessDeniedError()
+
         return ticket
 
     def list_tickets(self, current_user: User) -> Sequence[Ticket]:
+        all_tickets = self.repository.get_all()
         if current_user.role == "reporter":
-            all_tickets = self.repository.get_all()
             return [t for t in all_tickets if t.reporter_id == current_user.id]
-        return self.repository.get_all()
+        if current_user.role == "support":
+            return [
+                t for t in all_tickets
+                if t.assigned_to_id == current_user.id or (t.status == TicketStatus.nowe and t.assigned_to_id is None)
+            ]
+        return all_tickets
 
     def update_ticket(
         self,
@@ -65,10 +74,28 @@ class TicketService:
 
         update_data = data.model_dump(exclude_unset=True)
 
-        if "assigned_to_id" in update_data and update_data["assigned_to_id"] is not None:
-            assignee = self.user_repo.get_by_id(update_data["assigned_to_id"])
-            if not assignee or assignee.role not in ["support", "admin"]:
-                raise InvalidAssigneeError()
+        if "assigned_to_id" in update_data:
+            new_assignee = update_data["assigned_to_id"]
+            if current_user.role == "support" and new_assignee is not None and new_assignee != current_user.id:
+                raise TicketAccessDeniedError()
+
+            if new_assignee is not None:
+                assignee = self.user_repo.get_by_id(new_assignee)
+                if not assignee or assignee.role not in ["support", "admin"]:
+                    raise InvalidAssigneeError()
+                
+                final_category = update_data.get("category_id", ticket.category_id)
+                final_priority = update_data.get("priority", ticket.priority)
+                if not final_category or not final_priority:
+                    from fastapi import HTTPException, status
+                    raise HTTPException(
+                        status_code=status.HTTP_400_BAD_REQUEST, 
+                        detail="Zgłoszenie musi mieć przypisaną kategorię i priorytet przed przypisaniem pracownika."
+                    )
+                
+                # Zmień status na przyjęte, jeśli było to nowe zgłoszenie bez przypisania
+                if ticket.assigned_to_id is None and ticket.status == TicketStatus.nowe:
+                    ticket.status = TicketStatus.przyjete
 
         for key, value in update_data.items():
             setattr(ticket, key, value)

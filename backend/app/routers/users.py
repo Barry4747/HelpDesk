@@ -35,7 +35,7 @@ def list_users(
 def get_user(
     user_id: uuid.UUID,
     service: UserService = Depends(),
-    _admin: User = Depends(require_role("admin")),
+    _user: User = Depends(get_current_user),
 ):
     return service.get_user(user_id)
 

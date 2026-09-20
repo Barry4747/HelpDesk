@@ -1,15 +1,87 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+import Select from "react-select";
+import { getCategories } from "../api/categories";
+import { getDepartments } from "../api/departments";
 import {
   deleteTicket,
   getTicket,
   updateStatus,
   updateTicket,
 } from "../api/tickets";
-import { getUsers } from "../api/users";
+import { getUser } from "../api/users";
 import { useAuth } from "../context/AuthContext";
+import type { Category } from "../types/category";
+import type { Department } from "../types/department";
 import type { Ticket, TicketPriority, TicketStatus } from "../types/ticket";
 import type { User } from "../types/user";
+
+const STATUS_OPTIONS = [
+  { value: "nowe", label: "Nowe" },
+  { value: "przyjete", label: "Przyjęte" },
+  { value: "zamkniete", label: "Zamknięte" },
+];
+
+const PRIORITY_OPTIONS = [
+  { value: "niski", label: "Niski" },
+  { value: "sredni", label: "Średni" },
+  { value: "wysoki", label: "Wysoki" },
+  { value: "krytyczny", label: "Krytyczny" },
+];
+
+const STATUS_LABELS: Record<string, string> = {
+  nowe: "Nowe",
+  przyjete: "Przyjęte",
+  zamkniete: "Zamknięte",
+};
+
+const STATUS_CLASSES: Record<string, string> = {
+  nowe: "badge badge-blue",
+  przyjete: "badge badge-orange",
+  zamkniete: "badge badge-gray",
+};
+
+const PRIORITY_LABELS: Record<string, string> = {
+  niski: "Niski",
+  sredni: "Średni",
+  wysoki: "Wysoki",
+  krytyczny: "Krytyczny",
+};
+
+const ROLE_LABELS: Record<string, string> = {
+  admin: "Administrator",
+  support: "Wsparcie",
+  reporter: "Reporter",
+};
+
+const selectStyles = {
+  control: (base: any) => ({
+    ...base,
+    minHeight: "32px",
+    borderRadius: "6px",
+    borderColor: "var(--color-border)",
+    boxShadow: "none",
+    "&:hover": {
+      borderColor: "var(--color-border-hover)",
+    },
+    fontSize: "13px",
+  }),
+  option: (base: any, state: any) => ({
+    ...base,
+    fontSize: "13px",
+    backgroundColor: state.isSelected
+      ? "var(--color-primary)"
+      : state.isFocused
+      ? "var(--color-bg-alt)"
+      : "white",
+    color: state.isSelected ? "white" : "var(--color-text)",
+    cursor: "pointer",
+  }),
+  menuPortal: (base: any) => ({
+    ...base,
+    zIndex: 9999,
+  }),
+};
 
 export function TicketDetailPage() {
   const { id } = useParams<{ id: string }>();
@@ -19,98 +91,111 @@ export function TicketDetailPage() {
 
   const [ticket, setTicket] = useState<Ticket | null>(null);
   const [error, setError] = useState<string | null>(null);
-
-  const [title, setTitle] = useState("");
-  const [description, setDescription] = useState("");
-  const [categoryId, setCategoryId] = useState("");
-  const [priority, setPriority] = useState<TicketPriority | "">("");
-  const [assignedToId, setAssignedToId] = useState("");
+  const [saveError, setSaveError] = useState<string | null>(null);
+  const [loadingPage, setLoadingPage] = useState(true);
 
   const [status, setStatus] = useState<TicketStatus | "">("");
+  
+  // AI Predykcja
+  const [aiCategoryId, setAiCategoryId] = useState("");
+  const [aiPriority, setAiPriority] = useState<TicketPriority | "">("");
 
-  const [assignableUsers, setAssignableUsers] = useState<User[]>([]);
+  const [categories, setCategories] = useState<Category[]>([]);
+  const [departments, setDepartments] = useState<Department[]>([]);
+  const [reporter, setReporter] = useState<User | null>(null);
 
-  const loadTicket = () => {
+  const [showReporterTooltip, setShowReporterTooltip] = useState(false);
+
+  const loadTicket = async () => {
     if (!id) return;
-    getTicket(id)
-      .then((data) => {
-        setTicket(data);
-        setTitle(data.title);
-        setDescription(data.description);
-        setCategoryId(data.category_id || "");
-        setPriority(data.priority || "");
-        setAssignedToId(data.assigned_to_id || "");
-        setStatus(data.status);
-      })
-      .catch((err) => setError(err.message));
+    try {
+      const data = await getTicket(id);
+      setTicket(data);
+      setStatus(data.status);
+      setAiCategoryId(data.suggested_category_id || "");
+      setAiPriority(data.suggested_priority || "");
+      
+      const rep = await getUser(data.reporter_id);
+      setReporter(rep);
+    } catch (err: any) {
+      setError(err.message);
+    } finally {
+      setLoadingPage(false);
+    }
   };
 
   useEffect(() => {
     loadTicket();
-    if (role === "admin") {
-      getUsers()
-        .then((users) => {
-          setAssignableUsers(
-            users.filter((u) => u.role === "support" || u.role === "admin")
-          );
-        })
-        .catch(console.error);
-    }
-  }, [id, role]);
-
-  const handleUpdate = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!ticket) return;
-    try {
-      if (role === "support") {
-        await updateTicket(ticket.id, {
-          category_id: categoryId || null,
-          priority: (priority as TicketPriority) || null,
-        });
-      } else if (role === "admin") {
-        await updateTicket(ticket.id, {
-          title,
-          description,
-          category_id: categoryId || null,
-          priority: (priority as TicketPriority) || null,
-          assigned_to_id: assignedToId || null,
-        });
-      }
-      loadTicket();
-    } catch (err: any) {
-      setError(err.message);
-    }
-  };
+    getCategories().then(setCategories).catch(console.error);
+    getDepartments().then(setDepartments).catch(console.error);
+  }, [id]);
 
   const handleStatusUpdate = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!ticket || !status) return;
+    setSaveError(null);
     try {
       await updateStatus(ticket.id, { status: status as TicketStatus });
-      loadTicket();
+      await loadTicket();
     } catch (err: any) {
-      setError(err.message);
+      setSaveError(err.message);
+    }
+  };
+
+  const handleAssignToMe = async () => {
+    if (!ticket || !user) return;
+    setSaveError(null);
+    try {
+      await updateTicket(ticket.id, {
+        assigned_to_id: user.id,
+      });
+      await loadTicket();
+    } catch (err: any) {
+      setSaveError(err.message);
     }
   };
 
   const handleDelete = async () => {
     if (!ticket) return;
-    if (!window.confirm("Na pewno usunąć?")) return;
+    if (!window.confirm("Na pewno usunąć to zgłoszenie? Tej akcji nie można cofnąć.")) return;
     try {
       await deleteTicket(ticket.id);
       navigate("/");
     } catch (err: any) {
-      setError(err.message);
+      setSaveError(err.message);
     }
   };
 
-  if (error) {
-    return <p style={{ color: "red" }}>Błąd: {error}</p>;
+  const handleConfirmSuggestions = async () => {
+    if (!ticket) return;
+    setSaveError(null);
+    try {
+      await updateTicket(ticket.id, {
+        category_id: aiCategoryId || null,
+        priority: (aiPriority as TicketPriority) || null,
+      });
+      await loadTicket();
+    } catch (err: any) {
+      setSaveError(err.message);
+    }
+  };
+
+  if (loadingPage) {
+    return <div className="loading">Ładowanie...</div>;
   }
 
-  if (!ticket) {
-    return <p>Ładowanie...</p>;
+  if (error) {
+    return (
+      <div className="container">
+        <div className="alert alert-error">{error}</div>
+        <button className="btn btn-secondary" onClick={() => navigate("/")}>
+          Wróć do listy
+        </button>
+      </div>
+    );
   }
+
+  if (!ticket) return null;
 
   const canEdit = role === "support" || role === "admin";
   const canDelete =
@@ -119,144 +204,283 @@ export function TicketDetailPage() {
       ticket.assigned_to_id === user?.id &&
       ticket.status === "zamkniete");
 
+  const needsReview = !ticket.category_id || !ticket.priority;
+  const hasSuggestions = ticket.suggested_category_id || ticket.suggested_priority;
+
+  const categoryOptions = categories.map((c) => ({ value: c.id, label: c.name }));
+  categoryOptions.unshift({ value: "", label: "Brak" });
+
+  const selectedStatus = STATUS_OPTIONS.find((o) => o.value === status) || STATUS_OPTIONS[0];
+
+  const aiSelectedCategory = categoryOptions.find((o) => o.value === aiCategoryId) || categoryOptions[0];
+  const aiSelectedPriority = PRIORITY_OPTIONS.find((o) => o.value === aiPriority) || { value: "", label: "Brak" };
+
+  const reporterDept = departments.find(d => d.id === reporter?.department_id)?.name || reporter?.department_id || "Brak";
+
   return (
-    <main>
-      <h1>Szczegóły zgłoszenia</h1>
-
-      <h2>Dane aktualne</h2>
-      <dl>
-        <dt>ID</dt>
-        <dd>{ticket.id}</dd>
-        <dt>Tytuł</dt>
-        <dd>{ticket.title}</dd>
-        <dt>Opis</dt>
-        <dd>{ticket.description}</dd>
-        <dt>Status</dt>
-        <dd>{ticket.status}</dd>
-        <dt>Priorytet</dt>
-        <dd>{ticket.priority || "brak"}</dd>
-        <dt>Kategoria (ID)</dt>
-        <dd>{ticket.category_id || "brak"}</dd>
-        <dt>Reporter (ID)</dt>
-        <dd>{ticket.reporter_id}</dd>
-        <dt>Przypisany (ID)</dt>
-        <dd>{ticket.assigned_to_id || "brak"}</dd>
-        <dt>Sugerowana Kategoria (ID)</dt>
-        <dd>{ticket.suggested_category_id || "brak"}</dd>
-        <dt>Sugerowany Priorytet</dt>
-        <dd>{ticket.suggested_priority || "brak"}</dd>
-        <dt>Utworzono</dt>
-        <dd>{new Date(ticket.created_at).toLocaleString()}</dd>
-        <dt>Zaktualizowano</dt>
-        <dd>{new Date(ticket.updated_at).toLocaleString()}</dd>
-      </dl>
-
-      {canEdit && (
-        <>
-          <h2>Edycja zgłoszenia</h2>
-          <form onSubmit={handleUpdate}>
-            {role === "admin" && (
-              <>
-                <label>
-                  Tytuł:
-                  <input
-                    type="text"
-                    required
-                    value={title}
-                    onChange={(e) => setTitle(e.target.value)}
-                  />
-                </label>
-                <br />
-                <label>
-                  Opis:
-                  <textarea
-                    required
-                    value={description}
-                    onChange={(e) => setDescription(e.target.value)}
-                  />
-                </label>
-                <br />
-              </>
-            )}
-
-            <label>
-              Kategoria ID:
-              <input
-                type="text"
-                value={categoryId}
-                onChange={(e) => setCategoryId(e.target.value)}
-              />
-            </label>
-            <br />
-            <label>
-              Priorytet:
-              <select
-                value={priority}
-                onChange={(e) => setPriority(e.target.value as TicketPriority)}
-              >
-                <option value="">Brak</option>
-                <option value="niski">Niski</option>
-                <option value="sredni">Średni</option>
-                <option value="wysoki">Wysoki</option>
-                <option value="krytyczny">Krytyczny</option>
-              </select>
-            </label>
-            <br />
-
-            {role === "admin" && (
-              <>
-                <label>
-                  Przypisany pracownik:
-                  <select
-                    value={assignedToId}
-                    onChange={(e) => setAssignedToId(e.target.value)}
-                  >
-                    <option value="">Brak</option>
-                    {assignableUsers.map((u) => (
-                      <option key={u.id} value={u.id}>
-                        {u.first_name} {u.last_name} ({u.role})
-                      </option>
-                    ))}
-                  </select>
-                </label>
-                <br />
-              </>
-            )}
-
-            <button type="submit">Zapisz zmiany</button>
-          </form>
-
-          <hr />
-
-          <h2>Zmiana statusu</h2>
-          <form onSubmit={handleStatusUpdate}>
-            <select
-              value={status}
-              onChange={(e) => setStatus(e.target.value as TicketStatus)}
-            >
-              <option value="nowe">Nowe</option>
-              <option value="przyjete">Przyjęte</option>
-              <option value="zamkniete">Zamknięte</option>
-            </select>
-            <button type="submit">Zmień status</button>
-          </form>
-
-          <hr />
-        </>
-      )}
-
-      {canDelete && (
-        <>
-          <button type="button" onClick={handleDelete} style={{ color: "red" }}>
-            Usuń zgłoszenie
+    <div className="container">
+      {/* Header */}
+      <div className="page-header">
+        <div>
+          <button
+            type="button"
+            onClick={() => navigate("/")}
+            style={{
+              background: "none",
+              border: "none",
+              cursor: "pointer",
+              color: "var(--color-text-secondary)",
+              fontSize: "13px",
+              padding: 0,
+              marginBottom: "8px",
+              fontFamily: "inherit",
+            }}
+          >
+            ← Wróć do zgłoszeń
           </button>
-          <br />
-        </>
+          <h1 className="page-title">{ticket.title}</h1>
+        </div>
+        <div style={{ display: "flex", gap: "8px", alignItems: "center" }}>
+          {canDelete && (
+            <button
+              type="button"
+              className="btn btn-danger btn-sm"
+              onClick={handleDelete}
+            >
+              Usuń zgłoszenie
+            </button>
+          )}
+        </div>
+      </div>
+
+      {saveError && <div className="alert alert-error" style={{ marginBottom: "16px" }}>{saveError}</div>}
+
+      {/* AI Suggestions Review Alert */}
+      {canEdit && needsReview && ticket.status === "nowe" && (
+        <div className="alert alert-info" style={{ display: "flex", gap: "12px", alignItems: "flex-start", marginBottom: "24px" }}>
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0, marginTop: "2px", color: "var(--color-primary)" }}>
+            <circle cx="12" cy="12" r="10"></circle>
+            <line x1="12" y1="16" x2="12" y2="12"></line>
+            <line x1="12" y1="8" x2="12.01" y2="8"></line>
+          </svg>
+          <div style={{ flex: 1 }}>
+            <div style={{ fontWeight: 500, marginBottom: "4px" }}>
+              {hasSuggestions ? "Weryfikacja predykcji AI" : "Uzupełnij brakujące dane"}
+            </div>
+            <div style={{ fontSize: "13px", color: "var(--color-text-secondary)", marginBottom: "12px" }}>
+              {hasSuggestions
+                ? "Kategoria i priorytet zostały zasugerowane przez AI. Zweryfikuj, popraw (jeśli to konieczne) i zatwierdź je."
+                : "To zgłoszenie nie ma przypisanej kategorii i priorytetu. Uzupełnij je i zatwierdź."}
+            </div>
+            
+            <div style={{ display: "flex", gap: "12px", alignItems: "center", background: "rgba(255,255,255,0.5)", padding: "12px", borderRadius: "6px", marginBottom: "12px" }}>
+              <div style={{ flex: 1 }}>
+                <label style={{ display: "block", fontSize: "12px", color: "var(--color-text-secondary)", marginBottom: "4px" }}>Kategoria</label>
+                <Select
+                  options={categoryOptions}
+                  value={aiSelectedCategory}
+                  onChange={(option) => setAiCategoryId(option?.value || "")}
+                  styles={selectStyles}
+                  placeholder="Wybierz..."
+                  isSearchable
+                  menuPortalTarget={document.body}
+                  menuPosition="fixed"
+                />
+              </div>
+              <div style={{ flex: 1 }}>
+                <label style={{ display: "block", fontSize: "12px", color: "var(--color-text-secondary)", marginBottom: "4px" }}>Priorytet</label>
+                <Select
+                  options={PRIORITY_OPTIONS}
+                  value={aiSelectedPriority}
+                  onChange={(option) => setAiPriority((option?.value as TicketPriority) || "")}
+                  styles={selectStyles}
+                  placeholder="Wybierz..."
+                  isSearchable
+                  menuPortalTarget={document.body}
+                  menuPosition="fixed"
+                />
+              </div>
+            </div>
+            
+            <div>
+              <button 
+                type="button" 
+                className="btn btn-primary btn-sm" 
+                onClick={handleConfirmSuggestions}
+                disabled={!aiCategoryId || !aiPriority}
+              >
+                Zatwierdź
+              </button>
+            </div>
+          </div>
+        </div>
       )}
 
-      <button type="button" onClick={() => navigate("/")}>
-        Wróć do listy
-      </button>
-    </main>
+      <div style={{ display: "grid", gridTemplateColumns: "1fr 340px", gap: "24px", alignItems: "start" }}>
+        {/* Main content */}
+        <div style={{ display: "flex", flexDirection: "column", gap: "24px" }}>
+          {/* Info card */}
+          <div className="card">
+            <div className="card-header">
+              <span className="card-title">Szczegóły zgłoszenia</span>
+              <div style={{ display: "flex", gap: "8px", alignItems: "center" }}>
+                <span className={STATUS_CLASSES[ticket.status] ?? "badge badge-gray"}>
+                  {STATUS_LABELS[ticket.status] ?? ticket.status}
+                </span>
+                {ticket.priority && (
+                  <span className={`badge badge-${ticket.priority === "krytyczny" ? "red" : ticket.priority === "wysoki" ? "orange" : ticket.priority === "sredni" ? "amber" : "green"}`}>
+                    {PRIORITY_LABELS[ticket.priority]}
+                  </span>
+                )}
+              </div>
+            </div>
+            <div className="card-body">
+              <div className="detail-grid">
+                <div className="detail-field detail-field-full">
+                  <span className="detail-label">Opis</span>
+                  <span className="detail-value" style={{ whiteSpace: "pre-wrap" }}>{ticket.description}</span>
+                </div>
+                <div className="detail-field">
+                  <span className="detail-label">Kategoria</span>
+                  <span className="detail-value">
+                    {ticket.category_id 
+                      ? (categories.find(c => c.id === ticket.category_id)?.name || ticket.category_id)
+                      : "—"}
+                  </span>
+                </div>
+                <div className="detail-field">
+                  <span className="detail-label">Reporter</span>
+                  <div className="detail-value">
+                    {reporter ? (
+                      <div 
+                        onMouseEnter={() => setShowReporterTooltip(true)}
+                        onMouseLeave={() => setShowReporterTooltip(false)}
+                        style={{ position: "relative", display: "inline-flex", alignItems: "center", gap: "6px" }}
+                      >
+                        {reporter.first_name} {reporter.last_name}
+                        <div style={{ cursor: "help", display: "flex", color: "var(--color-primary)" }}>
+                          <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                            <circle cx="12" cy="12" r="10"></circle>
+                            <line x1="12" y1="16" x2="12" y2="12"></line>
+                            <line x1="12" y1="8" x2="12.01" y2="8"></line>
+                          </svg>
+                        </div>
+                        
+                        {showReporterTooltip && (
+                          <div style={{
+                            position: "absolute",
+                            bottom: "100%",
+                            left: "0",
+                            marginBottom: "8px",
+                            backgroundColor: "white",
+                            border: "1px solid var(--color-border)",
+                            padding: "12px",
+                            borderRadius: "6px",
+                            boxShadow: "0 4px 12px rgba(0,0,0,0.1)",
+                            width: "max-content",
+                            zIndex: 10,
+                            display: "flex",
+                            flexDirection: "column",
+                            gap: "4px"
+                          }}>
+                            <div style={{ fontSize: "12px" }}><strong>Login:</strong> {reporter.login}</div>
+                            <div style={{ fontSize: "12px" }}><strong>Rola:</strong> {ROLE_LABELS[reporter.role] || reporter.role}</div>
+                            <div style={{ fontSize: "12px" }}><strong>Dział:</strong> {reporterDept}</div>
+                          </div>
+                        )}
+                      </div>
+                    ) : (
+                      ticket.reporter_id
+                    )}
+                  </div>
+                </div>
+                <div className="detail-field">
+                  <span className="detail-label">Przypisany do</span>
+                  <span className="detail-value">{ticket.assigned_to_id || "—"}</span>
+                </div>
+                <div className="detail-field">
+                  <span className="detail-label">Utworzono</span>
+                  <span className="detail-value">{new Date(ticket.created_at).toLocaleString("pl-PL")}</span>
+                </div>
+                <div className="detail-field">
+                  <span className="detail-label">Zaktualizowano</span>
+                  <span className="detail-value">{new Date(ticket.updated_at).toLocaleString("pl-PL")}</span>
+                </div>
+              </div>
+            </div>
+            
+            {/* Actions for Support/Admin */}
+            {canEdit && (
+              <div style={{ padding: "16px", display: "flex", gap: "12px", borderTop: "1px solid var(--color-border-subtle)", backgroundColor: "var(--color-bg-alt)", borderBottomLeftRadius: "6px", borderBottomRightRadius: "6px" }}>
+                {ticket.assigned_to_id !== user?.id && (
+                  <button
+                    type="button"
+                    className="btn btn-primary"
+                    onClick={handleAssignToMe}
+                    disabled={needsReview}
+                    title={needsReview ? "Musisz najpierw uzupełnić/zatwierdzić kategorię i priorytet" : ""}
+                  >
+                    Przypisz do siebie
+                  </button>
+                )}
+                
+                <button
+                  type="button"
+                  className="btn btn-outline"
+                  onClick={() => navigate(`/tickets/${ticket.id}/edit`)}
+                >
+                  Edytuj zgłoszenie
+                </button>
+              </div>
+            )}
+          </div>
+        </div>
+
+        {/* Sidebar */}
+        <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
+          {/* Status change */}
+          {canEdit && ticket.assigned_to_id && (
+            <div className="card">
+              <div className="card-header">
+                <span className="card-title">Zmiana statusu</span>
+              </div>
+              <div className="card-body">
+                <form onSubmit={handleStatusUpdate}>
+                  <div className="form-group" style={{ marginBottom: "12px" }}>
+                    <Select
+                      options={STATUS_OPTIONS}
+                      value={selectedStatus}
+                      onChange={(option) => setStatus((option?.value as TicketStatus) || "")}
+                      styles={selectStyles}
+                      isSearchable
+                      menuPortalTarget={document.body}
+                      menuPosition="fixed"
+                    />
+                  </div>
+                  <button type="submit" className="btn btn-outline" style={{ width: "100%", justifyContent: "center" }}>
+                    Zmień status
+                  </button>
+                </form>
+              </div>
+            </div>
+          )}
+
+          {/* Metadata */}
+          <div className="card">
+            <div className="card-header">
+              <span className="card-title">Informacje systemowe</span>
+            </div>
+            <div className="card-body" style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
+              <div className="detail-field">
+                <span className="detail-label">ID zgłoszenia</span>
+                <span className="detail-value" style={{ fontSize: "12px", wordBreak: "break-all" }}>
+                  {ticket.id}
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   );
 }

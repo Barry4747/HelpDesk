@@ -14,6 +14,7 @@ class TicketCreate(BaseModel):
 class TicketUpdateSupport(BaseModel):
     category_id: uuid.UUID | None = None
     priority: TicketPriority | None = None
+    assigned_to_id: uuid.UUID | None = None
 
     model_config = ConfigDict(extra="forbid")
 

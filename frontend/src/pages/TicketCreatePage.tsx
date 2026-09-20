@@ -6,47 +6,93 @@ export function TicketCreatePage() {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [error, setError] = useState<string | null>(null);
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setError(null);
+    setLoading(true);
     try {
-      const newTicket = await createTicket({
-        title,
-        description,
-      });
+      const newTicket = await createTicket({ title, description });
       navigate(`/tickets/${newTicket.id}`);
     } catch (err: any) {
       setError(err.message);
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
-    <main>
-      <h1>Nowe zgłoszenie</h1>
-      {error && <p style={{ color: "red" }}>Błąd: {error}</p>}
-      <form onSubmit={handleSubmit}>
-        <label>
-          Tytuł:
-          <input
-            type="text"
-            required
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
-          />
-        </label>
-        <br />
-        <label>
-          Opis:
-          <textarea
-            required
-            value={description}
-            onChange={(e) => setDescription(e.target.value)}
-          />
-        </label>
-        <br />
-        <button type="submit">Utwórz</button>
-      </form>
-    </main>
+    <div className="container">
+      <div className="page-header">
+        <div>
+          <h1 className="page-title">Nowe zgłoszenie</h1>
+          <p className="page-subtitle">Opisz problem, z którym potrzebujesz pomocy</p>
+        </div>
+        <button
+          type="button"
+          className="btn btn-secondary"
+          onClick={() => navigate("/")}
+        >
+          Anuluj
+        </button>
+      </div>
+
+      {error && <div className="alert alert-error">{error}</div>}
+
+      <div className="card" style={{ maxWidth: 720 }}>
+        <div className="card-body">
+          <form onSubmit={handleSubmit}>
+            <div className="form-group">
+              <label className="form-label" htmlFor="ticket-title">
+                Tytuł <span className="form-label-required">*</span>
+              </label>
+              <input
+                id="ticket-title"
+                type="text"
+                className="form-control"
+                required
+                placeholder="Krótkie podsumowanie problemu"
+                value={title}
+                onChange={(e) => setTitle(e.target.value)}
+              />
+            </div>
+
+            <div className="form-group">
+              <label className="form-label" htmlFor="ticket-description">
+                Opis <span className="form-label-required">*</span>
+              </label>
+              <textarea
+                id="ticket-description"
+                className="form-control"
+                required
+                placeholder="Opisz szczegółowo problem..."
+                style={{ minHeight: 140 }}
+                value={description}
+                onChange={(e) => setDescription(e.target.value)}
+              />
+            </div>
+
+            <div style={{ display: "flex", gap: "12px", marginTop: "8px" }}>
+              <button
+                type="submit"
+                className="btn btn-primary"
+                disabled={loading}
+              >
+                {loading ? "Tworzenie..." : "Utwórz zgłoszenie"}
+              </button>
+              <button
+                type="button"
+                className="btn btn-secondary"
+                onClick={() => navigate("/")}
+              >
+                Anuluj
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
   );
 }

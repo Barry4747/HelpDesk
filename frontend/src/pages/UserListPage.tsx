@@ -11,32 +11,33 @@ export function UserListPage() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    async function loadUsers() {
-      try {
-        const data = await getUsers();
-        setUsers(data);
-      } catch (err: any) {
-        setError(err.message || "Błąd pobierania użytkowników");
-      } finally {
-        setLoading(false);
-      }
-    }
-    loadUsers();
+    getUsers()
+      .then(setUsers)
+      .catch((err: any) => setError(err.message || "Błąd pobierania użytkowników"))
+      .finally(() => setLoading(false));
   }, []);
 
-  if (loading) return <div>Ładowanie użytkowników...</div>;
-  if (error) return <div>Błąd: {error}</div>;
-
   return (
-    <main>
-      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "1rem" }}>
-        <h1>Użytkownicy</h1>
-        <Link to="/users/new">
-          <button type="button">Dodaj użytkownika</button>
+    <div className="container">
+      <div className="page-header">
+        <div>
+          <h1 className="page-title">Użytkownicy</h1>
+          <p className="page-subtitle">Zarządzaj kontami użytkowników w systemie</p>
+        </div>
+        <Link to="/users/new" className="btn btn-primary">
+          + Dodaj użytkownika
         </Link>
       </div>
 
-      <UserTable users={users} onRowClick={(id) => navigate(`/users/${id}`)} />
-    </main>
+      {error && <div className="alert alert-error">{error}</div>}
+
+      {loading ? (
+        <div className="loading">Ładowanie...</div>
+      ) : (
+        <div className="table-wrapper">
+          <UserTable users={users} onRowClick={(id) => navigate(`/users/${id}`)} />
+        </div>
+      )}
+    </div>
   );
 }
