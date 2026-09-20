@@ -103,8 +103,10 @@ export function TicketDetailPage() {
   const [categories, setCategories] = useState<Category[]>([]);
   const [departments, setDepartments] = useState<Department[]>([]);
   const [reporter, setReporter] = useState<User | null>(null);
+  const [assignee, setAssignee] = useState<User | null>(null);
 
   const [showReporterTooltip, setShowReporterTooltip] = useState(false);
+  const [showAssigneeTooltip, setShowAssigneeTooltip] = useState(false);
 
   const loadTicket = async () => {
     if (!id) return;
@@ -117,6 +119,13 @@ export function TicketDetailPage() {
 
       const rep = await getUser(data.reporter_id);
       setReporter(rep);
+
+      if (data.assigned_to_id) {
+        const ass = await getUser(data.assigned_to_id);
+        setAssignee(ass);
+      } else {
+        setAssignee(null);
+      }
     } catch (err: any) {
       setError(err.message);
     } finally {
@@ -232,6 +241,7 @@ export function TicketDetailPage() {
   const aiSelectedPriority = PRIORITY_OPTIONS.find((o) => o.value === aiPriority) || { value: "", label: "Brak" };
 
   const reporterDept = departments.find(d => d.id === reporter?.department_id)?.name || reporter?.department_id || "Brak";
+  const assigneeDept = departments.find(d => d.id === assignee?.department_id)?.name || assignee?.department_id || "Brak";
 
   return (
     <div className="container">
@@ -271,7 +281,6 @@ export function TicketDetailPage() {
 
       {saveError && <div className="alert alert-error" style={{ marginBottom: "16px" }}>{saveError}</div>}
 
-      {/* AI Suggestions Review Alert */}
       {canEdit && needsReview && ticket.status === "nowe" && (
         <div className="alert alert-info" style={{ display: "flex", gap: "12px", alignItems: "flex-start", marginBottom: "24px" }}>
           <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0, marginTop: "2px", color: "var(--color-primary)" }}>
@@ -409,7 +418,49 @@ export function TicketDetailPage() {
                 </div>
                 <div className="detail-field">
                   <span className="detail-label">Przypisany do</span>
-                  <span className="detail-value">{ticket.assigned_to_id || "—"}</span>
+                  <div className="detail-value">
+                    {assignee ? (
+                      <div
+                        onMouseEnter={() => setShowAssigneeTooltip(true)}
+                        onMouseLeave={() => setShowAssigneeTooltip(false)}
+                        style={{ position: "relative", display: "inline-flex", alignItems: "center", gap: "6px" }}
+                      >
+                        {assignee.first_name} {assignee.last_name}
+                        <div style={{ cursor: "help", display: "flex", color: "var(--color-primary)" }}>
+                          <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                            <circle cx="12" cy="12" r="10"></circle>
+                            <line x1="12" y1="16" x2="12" y2="12"></line>
+                            <line x1="12" y1="8" x2="12.01" y2="8"></line>
+                          </svg>
+                        </div>
+
+                        {showAssigneeTooltip && (
+                          <div style={{
+                            position: "absolute",
+                            bottom: "100%",
+                            left: "0",
+                            marginBottom: "8px",
+                            backgroundColor: "white",
+                            border: "1px solid var(--color-border)",
+                            padding: "12px",
+                            borderRadius: "6px",
+                            boxShadow: "0 4px 12px rgba(0,0,0,0.1)",
+                            width: "max-content",
+                            zIndex: 10,
+                            display: "flex",
+                            flexDirection: "column",
+                            gap: "4px"
+                          }}>
+                            <div style={{ fontSize: "12px" }}><strong>Login:</strong> {assignee.login}</div>
+                            <div style={{ fontSize: "12px" }}><strong>Rola:</strong> {ROLE_LABELS[assignee.role] || assignee.role}</div>
+                            <div style={{ fontSize: "12px" }}><strong>Dział:</strong> {assigneeDept}</div>
+                          </div>
+                        )}
+                      </div>
+                    ) : (
+                      ticket.assigned_to_id || "—"
+                    )}
+                  </div>
                 </div>
                 <div className="detail-field">
                   <span className="detail-label">Utworzono</span>

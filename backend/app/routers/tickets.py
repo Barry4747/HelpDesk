@@ -17,6 +17,8 @@ from app.schemas.ticket import (
     TicketStatusUpdate,
     TicketUpdateAdmin,
     TicketUpdateSupport,
+    PaginatedTicketsResponse,
+    TicketFilterParams,
 )
 from app.services.ticket import TicketService
 
@@ -32,12 +34,19 @@ def create_ticket(
     return service.create_ticket(data, reporter_id=current_user.id)
 
 
-@router.get("", response_model=list[TicketResponse], status_code=status.HTTP_200_OK)
+@router.get("", response_model=PaginatedTicketsResponse, status_code=status.HTTP_200_OK)
 def list_tickets(
+    filters: TicketFilterParams = Depends(),
     service: TicketService = Depends(),
     current_user: User = Depends(get_current_user),
 ):
-    return service.list_tickets(current_user)
+    items, total = service.list_tickets(filters, current_user)
+    return PaginatedTicketsResponse(
+        items=items,
+        total=total,
+        page=filters.page,
+        page_size=filters.page_size,
+    )
 
 
 @router.get(

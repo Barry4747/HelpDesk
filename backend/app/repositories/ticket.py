@@ -21,6 +21,57 @@ class TicketRepository:
         stmt = select(Ticket)
         return self.session.scalars(stmt).all()
 
+    def get_filtered(self, filters, extra_conditions: list = None) -> tuple[Sequence[Ticket], int]:
+        from sqlalchemy import case, func
+        
+        stmt = select(Ticket)
+        count_stmt = select(func.count()).select_from(Ticket)
+        
+        conditions = []
+        if extra_conditions:
+            conditions.extend(extra_conditions)
+            
+        if filters.status:
+            conditions.append(Ticket.status == filters.status)
+        if filters.priority:
+            conditions.append(Ticket.priority == filters.priority)
+        if filters.category_id:
+            conditions.append(Ticket.category_id == filters.category_id)
+            
+        if conditions:
+            stmt = stmt.where(*conditions)
+            count_stmt = count_stmt.where(*conditions)
+            
+        total = self.session.scalar(count_stmt) or 0
+        
+        if filters.sort_by == "priority":
+            order_col = case(
+                (Ticket.priority == "krytyczny", 4),
+                (Ticket.priority == "wysoki", 3),
+                (Ticket.priority == "sredni", 2),
+                (Ticket.priority == "niski", 1),
+                else_=0
+            )
+        elif filters.sort_by == "status":
+            order_col = case(
+                (Ticket.status == "nowe", 1),
+                (Ticket.status == "przyjete", 2),
+                (Ticket.status == "zamkniete", 3),
+                else_=4
+            )
+        else:
+            order_col = getattr(Ticket, filters.sort_by)
+            
+        if filters.sort_order == "desc":
+            stmt = stmt.order_by(order_col.desc())
+        else:
+            stmt = stmt.order_by(order_col.asc())
+            
+        stmt = stmt.limit(filters.page_size).offset((filters.page - 1) * filters.page_size)
+        
+        items = self.session.scalars(stmt).all()
+        return items, total
+
     def create(self, ticket: Ticket) -> Ticket:
         self.session.add(ticket)
         self.session.commit()
