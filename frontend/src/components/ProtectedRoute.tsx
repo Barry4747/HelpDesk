@@ -61,6 +61,7 @@ export function ProtectedRoute({
           <>
             <NavLink to="/users">Użytkownicy</NavLink>
             <NavLink to="/dictionary">Kategorie i działy</NavLink>
+            <NavLink to="/stats">Statystyki</NavLink>
           </>
         )}
       </div>

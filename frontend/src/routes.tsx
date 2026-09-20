@@ -10,6 +10,7 @@ import { TicketListPage } from "./pages/TicketListPage";
 import { UserCreatePage } from "./pages/UserCreatePage";
 import { UserDetailPage } from "./pages/UserDetailPage";
 import { UserListPage } from "./pages/UserListPage";
+import { StatsPage } from "./pages/StatsPage";
 
 export default function AppRoutes() {
   return (
@@ -27,6 +28,8 @@ export default function AppRoutes() {
         <Route path="/users/:id" element={<ProtectedRoute allowedRoles={["admin"]}><UserDetailPage /></ProtectedRoute>} />
 
         <Route path="/dictionary" element={<ProtectedRoute allowedRoles={["admin"]}><DictionaryPage /></ProtectedRoute>} />
+
+        <Route path="/stats" element={<ProtectedRoute allowedRoles={["admin"]}><StatsPage /></ProtectedRoute>} />
 
         {/* Przekierowanie starych ścieżek dla kompatybilności */}
         <Route path="/categories" element={<ProtectedRoute allowedRoles={["admin"]}><DictionaryPage /></ProtectedRoute>} />
