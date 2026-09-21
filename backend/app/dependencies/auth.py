@@ -54,7 +54,7 @@ def require_role(*allowed_roles: str):
     """Zwraca dependency sprawdzającą czy current_user.role jest w allowed_roles."""
 
     def dependency(current_user: User = Depends(get_current_user)) -> User:
-        if current_user.role not in allowed_roles:
+        if current_user.role.value not in allowed_roles:
             raise HTTPException(
                 status_code=status.HTTP_403_FORBIDDEN,
                 detail="Brak uprawnień do tej operacji",

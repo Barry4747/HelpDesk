@@ -8,11 +8,13 @@ from app.models.user import UserRole
 
 class UserCreate(BaseModel):
     login: str = Field(min_length=3)
-    password: str = Field(min_length=6)
+    password: str = Field(min_length=8)
     first_name: str
     last_name: str
     role: Literal["reporter", "support"]
     department_id: uuid.UUID | None = None
+
+    model_config = ConfigDict(extra="forbid")
 
 
 class UserUpdate(BaseModel):
@@ -20,6 +22,8 @@ class UserUpdate(BaseModel):
     last_name: str | None = None
     role: Literal["reporter", "support", "admin"] | None = None
     department_id: uuid.UUID | None = None
+
+    model_config = ConfigDict(extra="forbid")
 
 
 class UserResponse(BaseModel):
@@ -43,7 +47,7 @@ class UserFilterParams(BaseModel):
     sort_by: Literal["login", "first_name", "last_name", "created_at", "role", "department_id", "is_active"] = "created_at"
     sort_order: Literal["asc", "desc"] = "desc"
     page: int = Field(default=1, ge=1)
-    page_size: int = Field(default=20, ge=1, le=1000)
+    page_size: int = Field(default=20, ge=1, le=100)
 
 
 class PaginatedUsersResponse(BaseModel):

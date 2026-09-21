@@ -161,7 +161,6 @@ export function UserCreatePage() {
                 >
                   <option value="reporter">Reporter</option>
                   <option value="support">Wsparcie (Support)</option>
-                  <option value="admin">Administrator</option>
                 </select>
               </div>
               <div className="form-group">

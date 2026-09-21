@@ -1,34 +1,22 @@
 from fastapi import APIRouter, Depends, HTTPException, Request, Response, status
 
-from app.exceptions.auth import (
-    AccountInactiveError,
-    InvalidCredentialsError,
-    InvalidTokenError,
-)
+from app.core.config import settings
+from app.core.limiter import limiter
+from app.exceptions.auth import InvalidTokenError
 from app.schemas.auth import ChangePasswordRequest, LoginRequest
 from app.services.auth import AuthService, clear_auth_cookies, set_auth_cookies
 
 router = APIRouter(prefix="/api/v1/auth", tags=["auth"])
 
-
 @router.post("/login")
+@limiter.limit("10/minute")
 def login(
     data: LoginRequest,
+    request: Request,
     response: Response,
     auth_service: AuthService = Depends(),
 ):
-    try:
-        result = auth_service.login(data.login, data.password)
-    except InvalidCredentialsError:
-        raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="Nieprawidłowy login lub hasło",
-        )
-    except AccountInactiveError:
-        raise HTTPException(
-            status_code=status.HTTP_403_FORBIDDEN,
-            detail="Konto użytkownika jest nieaktywne",
-        )
+    result = auth_service.login(data.login, data.password)
 
     if result.password_change_token:
         response.set_cookie(
@@ -37,6 +25,7 @@ def login(
             httponly=True,
             secure=True,
             samesite="strict",
+            max_age=settings.JWT_PASSWORD_CHANGE_TOKEN_EXPIRE_MINUTES * 60,
         )
         return {"message": "Wymagana zmiana hasła"}
 
@@ -46,7 +35,7 @@ def login(
 
 
 @router.post("/refresh")
-def refresh(
+def refresh_token(
     request: Request,
     response: Response,
     auth_service: AuthService = Depends(),
@@ -61,17 +50,14 @@ def refresh(
         result = auth_service.refresh(refresh_token)
     except InvalidTokenError:
         clear_auth_cookies(response)
-        raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="Nieprawidłowy lub wygasły token",
-        )
+        raise
 
     set_auth_cookies(response, result.access_token, result.refresh_token)
     return {"message": "Sesja odświeżona"}
 
 
 @router.post("/logout")
-def logout(
+def logout_user(
     request: Request,
     response: Response,
     auth_service: AuthService = Depends(),
@@ -81,9 +67,6 @@ def logout(
         auth_service.logout(refresh_token)
 
     clear_auth_cookies(response)
-    response.delete_cookie(
-        key="password_change_token", httponly=True, secure=True, samesite="strict"
-    )
     return {"message": "Wylogowano pomyślnie"}
 
 
@@ -102,20 +85,15 @@ def change_password(
         )
 
     try:
-        result = auth_service.change_password(token, data.new_password)
+        auth_service.change_password(token, data.new_password)
     except InvalidTokenError:
         response.delete_cookie(
             key="password_change_token", httponly=True, secure=True, samesite="strict"
         )
-        raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="Nieprawidłowy lub wygasły token zmiany hasła",
-        )
+        raise
 
     response.delete_cookie(
         key="password_change_token", httponly=True, secure=True, samesite="strict"
     )
-    if result.access_token and result.refresh_token:
-        set_auth_cookies(response, result.access_token, result.refresh_token)
-
-    return {"message": "Hasło zmienione pomyślnie"}
+    clear_auth_cookies(response)
+    return {"message": "Hasło zmienione pomyślnie. Zaloguj się ponownie."}

@@ -1,4 +1,4 @@
-import { apiFetch } from "./client";
+import { apiFetch, throwApiError } from "./client";
 
 const API_BASE_URL = "/api/v1/auth";
 
@@ -12,7 +12,7 @@ export async function login(loginStr: string, passwordStr: string): Promise<{ re
   });
 
   if (!response.ok) {
-    throw new Error("Logowanie nie powiodło się");
+    await throwApiError(response, "Logowanie nie powiodło się");
   }
 
   const data = await response.json();
@@ -27,7 +27,7 @@ export async function refresh(): Promise<void> {
     method: "POST",
   });
   if (!response.ok) {
-    throw new Error("Odświeżanie sesji nie powiodło się");
+    await throwApiError(response, "Odświeżanie sesji nie powiodło się");
   }
 }
 
@@ -36,7 +36,7 @@ export async function logout(): Promise<void> {
     method: "POST",
   });
   if (!response.ok) {
-    throw new Error("Wylogowanie nie powiodło się");
+    await throwApiError(response, "Wylogowanie nie powiodło się");
   }
 }
 
@@ -49,6 +49,6 @@ export async function changePassword(newPassword: string): Promise<void> {
     body: JSON.stringify({ new_password: newPassword }),
   });
   if (!response.ok) {
-    throw new Error("Zmiana hasła nie powiodła się");
+    await throwApiError(response, "Zmiana hasła nie powiodła się");
   }
 }

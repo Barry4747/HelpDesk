@@ -4,12 +4,6 @@ from fastapi import APIRouter, Body, Depends, HTTPException, status
 from pydantic import ValidationError
 
 from app.dependencies.auth import get_current_user, require_role
-from app.exceptions.ticket import (
-    InvalidAssigneeError,
-    TicketAccessDeniedError,
-    TicketDeleteNotAllowedError,
-    TicketNotFoundError,
-)
 from app.models.user import User
 from app.schemas.ticket import (
     TicketCreate,
@@ -57,16 +51,7 @@ def get_ticket(
     service: TicketService = Depends(),
     current_user: User = Depends(get_current_user),
 ):
-    try:
-        return service.get_ticket(ticket_id, current_user)
-    except TicketNotFoundError:
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND, detail="Zgłoszenie nie istnieje"
-        )
-    except TicketAccessDeniedError:
-        raise HTTPException(
-            status_code=status.HTTP_403_FORBIDDEN, detail="Brak dostępu do zgłoszenia"
-        )
+    return service.get_ticket(ticket_id, current_user)
 
 
 @router.patch(
@@ -88,20 +73,7 @@ def update_ticket(
             status_code=status.HTTP_422_UNPROCESSABLE_ENTITY, detail=e.errors()
         )
 
-    try:
-        return service.update_ticket(ticket_id, data, current_user)
-    except TicketNotFoundError:
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND, detail="Zgłoszenie nie istnieje"
-        )
-    except TicketAccessDeniedError:
-        raise HTTPException(
-            status_code=status.HTTP_403_FORBIDDEN, detail="Brak dostępu do zgłoszenia"
-        )
-    except InvalidAssigneeError:
-        raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST, detail="Nieprawidłowy przypisany pracownik"
-        )
+    return service.update_ticket(ticket_id, data, current_user)
 
 
 @router.patch(
@@ -115,16 +87,7 @@ def change_ticket_status(
     service: TicketService = Depends(),
     current_user: User = Depends(require_role("support", "admin")),
 ):
-    try:
-        return service.update_status(ticket_id, data, current_user)
-    except TicketNotFoundError:
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND, detail="Zgłoszenie nie istnieje"
-        )
-    except TicketAccessDeniedError:
-        raise HTTPException(
-            status_code=status.HTTP_403_FORBIDDEN, detail="Brak dostępu do zgłoszenia"
-        )
+    return service.update_status(ticket_id, data, current_user)
 
 
 @router.delete("/{ticket_id}", status_code=status.HTTP_204_NO_CONTENT)
@@ -133,17 +96,4 @@ def delete_ticket(
     service: TicketService = Depends(),
     current_user: User = Depends(require_role("support", "admin")),
 ):
-    try:
-        service.delete_ticket(ticket_id, current_user)
-    except TicketNotFoundError:
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND, detail="Zgłoszenie nie istnieje"
-        )
-    except TicketAccessDeniedError:
-        raise HTTPException(
-            status_code=status.HTTP_403_FORBIDDEN, detail="Brak dostępu do zgłoszenia"
-        )
-    except TicketDeleteNotAllowedError:
-        raise HTTPException(
-            status_code=status.HTTP_403_FORBIDDEN, detail="Brak uprawnień do usunięcia tego zgłoszenia"
-        )
+    service.delete_ticket(ticket_id, current_user)

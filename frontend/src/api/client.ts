@@ -1,3 +1,23 @@
+export async function throwApiError(response: Response, fallbackMessage: string): Promise<never> {
+  let detail = fallbackMessage;
+  try {
+    const data = await response.json();
+    if (data?.detail) {
+      if (typeof data.detail === "string") {
+        detail = data.detail;
+      } else if (Array.isArray(data.detail)) {
+        const errorMessages = data.detail.map((err: any) => {
+          const field = err.loc ? err.loc.join(".") : "Pole";
+          return `${field}: ${err.msg}`;
+        });
+        detail = errorMessages.join("\n");
+      }
+    }
+  } catch {
+  }
+  throw new Error(detail);
+}
+
 export async function apiFetch(url: string, options: RequestInit = {}): Promise<Response> {
   const mergedOptions: RequestInit = {
     ...options,

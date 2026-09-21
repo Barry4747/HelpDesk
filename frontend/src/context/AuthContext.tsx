@@ -31,8 +31,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     try {
       await apiLogout();
     } catch (err) {
+      console.error("Błąd podczas wylogowania:", err);
     } finally {
-      await refreshUser();
+      setUser(null);
       window.location.href = "/login";
     }
   };

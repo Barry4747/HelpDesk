@@ -1,11 +1,13 @@
 import type {
+  PaginatedTicketsResponse,
   Ticket,
   TicketCreateInput,
+  TicketFilterParams,
   TicketStatusUpdateInput,
   TicketUpdateAdminInput,
   TicketUpdateSupportInput,
 } from "../types/ticket";
-import { apiFetch } from "./client";
+import { apiFetch, throwApiError } from "./client";
 
 const API_BASE_URL = "/api/v1/tickets";
 
@@ -15,11 +17,11 @@ export async function createTicket(data: TicketCreateInput): Promise<Ticket> {
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(data),
   });
-  if (!response.ok) throw new Error("Błąd tworzenia zgłoszenia");
+  if (!response.ok) await throwApiError(response, "Błąd tworzenia zgłoszenia");
   return response.json();
 }
 
-export async function getTickets(params?: any): Promise<any> {
+export async function getTickets(params?: Partial<TicketFilterParams>): Promise<PaginatedTicketsResponse> {
   let url = API_BASE_URL;
   if (params) {
     const searchParams = new URLSearchParams();
@@ -35,13 +37,13 @@ export async function getTickets(params?: any): Promise<any> {
   }
 
   const response = await apiFetch(url);
-  if (!response.ok) throw new Error("Błąd podczas pobierania zgłoszeń");
+  if (!response.ok) await throwApiError(response, "Błąd podczas pobierania zgłoszeń");
   return response.json();
 }
 
 export async function getTicket(id: string): Promise<Ticket> {
   const response = await apiFetch(`${API_BASE_URL}/${id}`);
-  if (!response.ok) throw new Error("Błąd pobierania zgłoszenia");
+  if (!response.ok) await throwApiError(response, "Błąd pobierania zgłoszenia");
   return response.json();
 }
 
@@ -54,7 +56,7 @@ export async function updateTicket(
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(data),
   });
-  if (!response.ok) throw new Error("Błąd aktualizacji zgłoszenia");
+  if (!response.ok) await throwApiError(response, "Błąd aktualizacji zgłoszenia");
   return response.json();
 }
 
@@ -67,7 +69,7 @@ export async function updateStatus(
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(data),
   });
-  if (!response.ok) throw new Error("Błąd zmiany statusu");
+  if (!response.ok) await throwApiError(response, "Błąd zmiany statusu");
   return response.json();
 }
 
@@ -75,5 +77,5 @@ export async function deleteTicket(id: string): Promise<void> {
   const response = await apiFetch(`${API_BASE_URL}/${id}`, {
     method: "DELETE",
   });
-  if (!response.ok) throw new Error("Błąd usunięcia zgłoszenia");
+  if (!response.ok) await throwApiError(response, "Błąd usunięcia zgłoszenia");
 }

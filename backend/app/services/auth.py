@@ -80,6 +80,8 @@ class AuthService:
             days=settings.JWT_REFRESH_TOKEN_EXPIRE_DAYS
         )
 
+        self.refresh_token_repo.revoke_all_for_user(user_id)
+
         rt_record = RefreshToken(
             user_id=user_id,
             token_hash=hashed_token,

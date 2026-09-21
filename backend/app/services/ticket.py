@@ -1,12 +1,14 @@
 import uuid
 from collections.abc import Sequence
 
+from sqlalchemy import or_
 from fastapi import Depends
 
 from app.exceptions.ticket import (
     InvalidAssigneeError,
     TicketAccessDeniedError,
     TicketDeleteNotAllowedError,
+    TicketMissingDataError,
     TicketNotFoundError,
 )
 from app.models.ticket import Ticket, TicketStatus
@@ -15,6 +17,7 @@ from app.repositories.ticket import TicketRepository
 from app.repositories.user import UserRepository
 from app.schemas.ticket import (
     TicketCreate,
+    TicketFilterParams,
     TicketStatusUpdate,
     TicketUpdateAdmin,
     TicketUpdateSupport,
@@ -53,7 +56,7 @@ class TicketService:
 
         return ticket
 
-    def list_tickets(self, filters, current_user: User) -> tuple[Sequence[Ticket], int]:
+    def list_tickets(self, filters: TicketFilterParams, current_user: User) -> tuple[Sequence[Ticket], int]:
         extra_conditions = []
         if current_user.role == "reporter":
             extra_conditions.append(Ticket.reporter_id == current_user.id)
@@ -61,7 +64,6 @@ class TicketService:
             if getattr(filters, "assigned_to_me", False):
                 extra_conditions.append(Ticket.assigned_to_id == current_user.id)
             else:
-                from sqlalchemy import or_
                 extra_conditions.append(
                     or_(
                         Ticket.assigned_to_id == current_user.id,
@@ -84,6 +86,14 @@ class TicketService:
 
         update_data = data.model_dump(exclude_unset=True)
 
+        final_assignee = update_data.get("assigned_to_id", ticket.assigned_to_id)
+        final_category = update_data.get("category_id", ticket.category_id)
+        final_priority = update_data.get("priority", ticket.priority)
+
+        if final_assignee is not None:
+            if not final_category or not final_priority:
+                raise TicketMissingDataError()
+
         if "assigned_to_id" in update_data:
             new_assignee = update_data["assigned_to_id"]
             if current_user.role == "support" and new_assignee is not None and new_assignee != current_user.id:
@@ -93,15 +103,6 @@ class TicketService:
                 assignee = self.user_repo.get_by_id(new_assignee)
                 if not assignee or assignee.role not in ["support", "admin"]:
                     raise InvalidAssigneeError()
-                
-                final_category = update_data.get("category_id", ticket.category_id)
-                final_priority = update_data.get("priority", ticket.priority)
-                if not final_category or not final_priority:
-                    from fastapi import HTTPException, status
-                    raise HTTPException(
-                        status_code=status.HTTP_400_BAD_REQUEST, 
-                        detail="Zgłoszenie musi mieć przypisaną kategorię i priorytet przed przypisaniem pracownika."
-                    )
                 
                 if ticket.assigned_to_id is None and ticket.status == TicketStatus.nowe:
                     ticket.status = TicketStatus.przyjete
@@ -124,6 +125,8 @@ class TicketService:
         if current_user.role == "admin":
             self.repository.delete(ticket)
         elif current_user.role == "support":
-            if ticket.assigned_to_id != current_user.id or ticket.status != "zamkniete":
+            if ticket.assigned_to_id != current_user.id or ticket.status != TicketStatus.zamkniete:
                 raise TicketDeleteNotAllowedError()
             self.repository.delete(ticket)
+        else:
+            raise TicketAccessDeniedError()

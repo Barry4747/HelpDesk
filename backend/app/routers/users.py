@@ -1,9 +1,9 @@
 import uuid
 
-from fastapi import APIRouter, Depends, status
+from fastapi import APIRouter, Depends, HTTPException, status
 
 from app.dependencies.auth import get_current_user, require_role
-from app.models.user import User
+from app.models.user import User, UserRole
 from app.schemas.user import UserCreate, UserResponse, UserUpdate, UserFilterParams, PaginatedUsersResponse
 from app.services.user import UserService
 
@@ -37,9 +37,22 @@ def list_users(
 def get_user(
     user_id: uuid.UUID,
     service: UserService = Depends(),
-    _user: User = Depends(get_current_user),
+    current_user: User = Depends(get_current_user),
 ):
-    return service.get_user(user_id)
+    # BUG-4: Role-based access control on user data.
+    # - Reporter: may only fetch support/admin users (to see who is assigned to their tickets).
+    # - Support: may fetch any user (to see reporters on tickets they handle).
+    # - Admin: may fetch any user.
+    user = service.get_user(user_id)
+
+    if current_user.role == UserRole.reporter:
+        if user.role == UserRole.reporter and user.id != current_user.id:
+            raise HTTPException(
+                status_code=status.HTTP_403_FORBIDDEN,
+                detail="Brak dostępu do danych tego użytkownika",
+            )
+
+    return user
 
 
 @router.patch("/{user_id}", response_model=UserResponse)

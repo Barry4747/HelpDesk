@@ -56,7 +56,7 @@ export function TicketEditPage() {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const { user } = useAuth();
-  const role = (user as any)?.role;
+  const role = user?.role;
 
   const [ticket, setTicket] = useState<Ticket | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -120,7 +120,7 @@ export function TicketEditPage() {
           assigned_to_id: assignedToId || null,
         });
       }
-      if (status && status !== ticket.status && assignedToId) {
+      if (status && status !== ticket.status) {
         await updateStatus(ticket.id, { status: status as TicketStatus });
       }
       toast.success("Zgłoszenie zostało pomyślnie zaktualizowane");

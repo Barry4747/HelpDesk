@@ -1,5 +1,5 @@
 import type { Department, DepartmentFilterParams, DepartmentUpdateInput, PaginatedDepartmentsResponse } from "../types/department";
-import { apiFetch } from "./client";
+import { apiFetch, throwApiError } from "./client";
 
 const API_BASE_URL = "/api/v1/departments";
 
@@ -13,7 +13,7 @@ export async function getDepartments(filters?: DepartmentFilterParams): Promise<
     });
   }
   const response = await apiFetch(`${API_BASE_URL}?${params.toString()}`);
-  if (!response.ok) throw new Error("Błąd pobierania działów");
+  if (!response.ok) await throwApiError(response, "Błąd pobierania działów");
   return response.json();
 }
 
@@ -23,12 +23,7 @@ export async function createDepartment(name: string): Promise<Department> {
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ name }),
   });
-  if (!response.ok) {
-    if (response.status === 409) {
-      throw new Error("Dział o tej nazwie już istnieje");
-    }
-    throw new Error("Błąd tworzenia działu");
-  }
+  if (!response.ok) await throwApiError(response, "Błąd tworzenia działu");
   return response.json();
 }
 
@@ -38,11 +33,6 @@ export async function updateDepartment(id: string, data: DepartmentUpdateInput):
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(data),
   });
-  if (!response.ok) {
-    if (response.status === 409) {
-      throw new Error("Dział o tej nazwie już istnieje");
-    }
-    throw new Error("Błąd edycji działu");
-  }
+  if (!response.ok) await throwApiError(response, "Błąd edycji działu");
   return response.json();
 }

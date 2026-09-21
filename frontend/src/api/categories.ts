@@ -1,5 +1,5 @@
 import type { Category, CategoryUpdateInput, CategoryFilterParams, PaginatedCategoriesResponse } from "../types/category";
-import { apiFetch } from "./client";
+import { apiFetch, throwApiError } from "./client";
 
 const API_BASE_URL = "/api/v1/categories";
 
@@ -15,7 +15,7 @@ export async function getCategories(filters?: CategoryFilterParams): Promise<Pag
   const queryString = params.toString();
   const url = queryString ? `${API_BASE_URL}?${queryString}` : API_BASE_URL;
   const response = await apiFetch(url);
-  if (!response.ok) throw new Error("Błąd pobierania kategorii");
+  if (!response.ok) await throwApiError(response, "Błąd pobierania kategorii");
   return response.json();
 }
 
@@ -25,12 +25,7 @@ export async function createCategory(name: string): Promise<Category> {
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ name }),
   });
-  if (!response.ok) {
-    if (response.status === 409) {
-      throw new Error("Kategoria o tej nazwie już istnieje");
-    }
-    throw new Error("Błąd tworzenia kategorii");
-  }
+  if (!response.ok) await throwApiError(response, "Błąd tworzenia kategorii");
   return response.json();
 }
 
@@ -40,11 +35,6 @@ export async function updateCategory(id: string, data: CategoryUpdateInput): Pro
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(data),
   });
-  if (!response.ok) {
-    if (response.status === 409) {
-      throw new Error("Kategoria o tej nazwie już istnieje");
-    }
-    throw new Error("Błąd edycji kategorii");
-  }
+  if (!response.ok) await throwApiError(response, "Błąd edycji kategorii");
   return response.json();
 }

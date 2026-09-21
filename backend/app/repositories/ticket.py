@@ -21,7 +21,7 @@ class TicketRepository:
         stmt = select(Ticket)
         return self.session.scalars(stmt).all()
 
-    def get_filtered(self, filters, extra_conditions: list = None) -> tuple[Sequence[Ticket], int]:
+    def get_filtered(self, filters, extra_conditions: list | None = None) -> tuple[Sequence[Ticket], int]:
         from sqlalchemy import case, func
         
         stmt = select(Ticket)
