@@ -4,7 +4,7 @@ target-version = "py312"
 
 [tool.ruff.lint]
 select = ["E", "F", "I", "UP", "B", "W"] # pycodestyle, pyflakes, isort, pyupgrade, flake8-bugbear, pycodestyle warnings
-ignore = ["B008"] 
+ignore = ["B008", "E712"] 
 
 [tool.mypy]
 python_version = "3.12"

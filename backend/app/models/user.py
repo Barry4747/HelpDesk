@@ -9,7 +9,7 @@ from sqlalchemy.sql import func
 from app.core.database import Base
 
 
-class UserRole(str, enum.Enum):
+class UserRole(enum.StrEnum):
     reporter = "reporter"
     support = "support"
     admin = "admin"

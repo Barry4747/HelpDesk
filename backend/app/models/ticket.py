@@ -9,13 +9,13 @@ from sqlalchemy.sql import func
 from app.core.database import Base
 
 
-class TicketStatus(str, enum.Enum):
+class TicketStatus(enum.StrEnum):
     nowe = "nowe"
     przyjete = "przyjete"
     zamkniete = "zamkniete"
 
 
-class TicketPriority(str, enum.Enum):
+class TicketPriority(enum.StrEnum):
     niski = "niski"
     sredni = "sredni"
     wysoki = "wysoki"

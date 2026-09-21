@@ -24,11 +24,11 @@ def get_current_user(request: Request, user_repo: UserRepository = Depends()) ->
         user_id = payload.get("sub")
         if not user_id:
             raise InvalidTokenError()
-    except InvalidTokenError:
+    except InvalidTokenError as e:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail="Nieprawidłowy lub wygasły token",
-        )
+        ) from e
 
     user = user_repo.get_by_id(user_id)
     if not user:

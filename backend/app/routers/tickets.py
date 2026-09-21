@@ -65,7 +65,7 @@ def update_ticket(
         else:
             data = TicketUpdateSupport.model_validate(body)  # type: ignore[assignment]
     except ValidationError as e:
-        raise HTTPException(status_code=status.HTTP_422_UNPROCESSABLE_ENTITY, detail=e.errors())
+        raise HTTPException(status_code=status.HTTP_422_UNPROCESSABLE_ENTITY, detail=e.errors()) from e
 
     return service.update_ticket(ticket_id, data, current_user)
 
