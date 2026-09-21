@@ -9,6 +9,7 @@ from app.models.category import Category
 from app.models.ticket import Ticket, TicketStatus
 from app.models.user import User, UserRole
 from typing import TYPE_CHECKING
+
 if TYPE_CHECKING:
     from app.schemas.stats import StatsOverviewFilterParams, StatsWorkloadFilterParams
 

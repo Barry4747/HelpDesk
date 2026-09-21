@@ -36,7 +36,7 @@ def list_tickets(
 ):
     items, total = service.list_tickets(filters, current_user)
     return PaginatedTicketsResponse(
-        items=items, # type: ignore[arg-type]
+        items=items,  # type: ignore[arg-type]
         total=total,
         page=filters.page,
         page_size=filters.page_size,

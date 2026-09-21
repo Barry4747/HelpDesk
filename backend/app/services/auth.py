@@ -121,8 +121,8 @@ class AuthService:
         session = self._create_full_session(user_record.id, user_record.role.value)
 
         return RefreshResult(
-            access_token=session.access_token, # type: ignore[arg-type]
-            refresh_token=session.refresh_token, # type: ignore[arg-type]
+            access_token=session.access_token,  # type: ignore[arg-type]
+            refresh_token=session.refresh_token,  # type: ignore[arg-type]
         )
 
     def logout(self, raw_refresh_token: str) -> None:
