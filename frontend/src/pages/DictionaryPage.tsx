@@ -64,7 +64,6 @@ function DictPanel({
   const updateFilters = (newFilters: Record<string, any>) => {
     const params = new URLSearchParams(searchParams);
 
-    // Always reset page to 1 when changing filters other than page itself
     const newPage = newFilters.page || (Object.keys(newFilters).length === 1 && newFilters.page_size ? page : 1);
 
     const updated = {

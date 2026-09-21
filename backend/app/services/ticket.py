@@ -1,8 +1,8 @@
 import uuid
 from collections.abc import Sequence
 
-from sqlalchemy import or_
 from fastapi import Depends
+from sqlalchemy import or_
 
 from app.exceptions.ticket import (
     InvalidAssigneeError,
@@ -67,7 +67,7 @@ class TicketService:
                 extra_conditions.append(
                     or_(
                         Ticket.assigned_to_id == current_user.id,
-                        (Ticket.status == TicketStatus.nowe) & (Ticket.assigned_to_id.is_(None))
+                        (Ticket.status == TicketStatus.nowe) & (Ticket.assigned_to_id.is_(None)),
                     )
                 )
         elif current_user.role == "admin":
@@ -103,7 +103,7 @@ class TicketService:
                 assignee = self.user_repo.get_by_id(new_assignee)
                 if not assignee or assignee.role not in ["support", "admin"]:
                     raise InvalidAssigneeError()
-                
+
                 if ticket.assigned_to_id is None and ticket.status == TicketStatus.nowe:
                     ticket.status = TicketStatus.przyjete
 
@@ -112,9 +112,7 @@ class TicketService:
 
         return self.repository.update(ticket)
 
-    def update_status(
-        self, ticket_id: uuid.UUID, data: TicketStatusUpdate, current_user: User
-    ) -> Ticket:
+    def update_status(self, ticket_id: uuid.UUID, data: TicketStatusUpdate, current_user: User) -> Ticket:
         ticket = self.get_ticket(ticket_id, current_user)
         ticket.status = data.status
         return self.repository.update(ticket)

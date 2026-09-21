@@ -12,11 +12,9 @@ app = FastAPI(
     description="API serwisu zgłoszeń HelpDesk",
 )
 
-# SEC-4: Attach rate limiter
 app.state.limiter = limiter
-app.add_exception_handler(RateLimitExceeded, _rate_limit_exceeded_handler)
+app.add_exception_handler(RateLimitExceeded, _rate_limit_exceeded_handler) # type: ignore[arg-type]
 
-# SEC-1: CORS — allow frontend origin; tighten in production
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["http://localhost:5173", "http://localhost:3000"],

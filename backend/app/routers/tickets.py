@@ -6,13 +6,13 @@ from pydantic import ValidationError
 from app.dependencies.auth import get_current_user, require_role
 from app.models.user import User
 from app.schemas.ticket import (
+    PaginatedTicketsResponse,
     TicketCreate,
+    TicketFilterParams,
     TicketResponse,
     TicketStatusUpdate,
     TicketUpdateAdmin,
     TicketUpdateSupport,
-    PaginatedTicketsResponse,
-    TicketFilterParams,
 )
 from app.services.ticket import TicketService
 
@@ -36,16 +36,14 @@ def list_tickets(
 ):
     items, total = service.list_tickets(filters, current_user)
     return PaginatedTicketsResponse(
-        items=items,
+        items=items, # type: ignore[arg-type]
         total=total,
         page=filters.page,
         page_size=filters.page_size,
     )
 
 
-@router.get(
-    "/{ticket_id}", response_model=TicketResponse, status_code=status.HTTP_200_OK
-)
+@router.get("/{ticket_id}", response_model=TicketResponse, status_code=status.HTTP_200_OK)
 def get_ticket(
     ticket_id: uuid.UUID,
     service: TicketService = Depends(),
@@ -54,9 +52,7 @@ def get_ticket(
     return service.get_ticket(ticket_id, current_user)
 
 
-@router.patch(
-    "/{ticket_id}", response_model=TicketResponse, status_code=status.HTTP_200_OK
-)
+@router.patch("/{ticket_id}", response_model=TicketResponse, status_code=status.HTTP_200_OK)
 def update_ticket(
     ticket_id: uuid.UUID,
     body: dict = Body(...),
@@ -65,13 +61,11 @@ def update_ticket(
 ):
     try:
         if current_user.role == "admin":
-            data = TicketUpdateAdmin.model_validate(body)
+            data = TicketUpdateAdmin.model_validate(body)  # type: ignore[assignment]
         else:
-            data = TicketUpdateSupport.model_validate(body)
+            data = TicketUpdateSupport.model_validate(body)  # type: ignore[assignment]
     except ValidationError as e:
-        raise HTTPException(
-            status_code=status.HTTP_422_UNPROCESSABLE_ENTITY, detail=e.errors()
-        )
+        raise HTTPException(status_code=status.HTTP_422_UNPROCESSABLE_ENTITY, detail=e.errors())
 
     return service.update_ticket(ticket_id, data, current_user)
 

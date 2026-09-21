@@ -8,6 +8,7 @@ from app.services.auth import AuthService, clear_auth_cookies, set_auth_cookies
 
 router = APIRouter(prefix="/api/v1/auth", tags=["auth"])
 
+
 @router.post("/login")
 @limiter.limit("10/minute")
 def login(
@@ -42,9 +43,7 @@ def refresh_token(
 ):
     refresh_token = request.cookies.get("refresh_token")
     if not refresh_token:
-        raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED, detail="Brak tokena odświeżania"
-        )
+        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Brak tokena odświeżania")
 
     try:
         result = auth_service.refresh(refresh_token)
@@ -87,13 +86,9 @@ def change_password(
     try:
         auth_service.change_password(token, data.new_password)
     except InvalidTokenError:
-        response.delete_cookie(
-            key="password_change_token", httponly=True, secure=True, samesite="strict"
-        )
+        response.delete_cookie(key="password_change_token", httponly=True, secure=True, samesite="strict")
         raise
 
-    response.delete_cookie(
-        key="password_change_token", httponly=True, secure=True, samesite="strict"
-    )
+    response.delete_cookie(key="password_change_token", httponly=True, secure=True, samesite="strict")
     clear_auth_cookies(response)
     return {"message": "Hasło zmienione pomyślnie. Zaloguj się ponownie."}

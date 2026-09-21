@@ -1,5 +1,4 @@
 import uuid
-from collections.abc import Sequence
 
 from fastapi import Depends
 
@@ -9,7 +8,7 @@ from app.exceptions.category import (
 )
 from app.models.category import Category
 from app.repositories.category import CategoryRepository
-from app.schemas.category import CategoryCreate, CategoryUpdate, CategoryFilterParams, PaginatedCategoriesResponse
+from app.schemas.category import CategoryCreate, CategoryFilterParams, CategoryUpdate, PaginatedCategoriesResponse
 
 
 class CategoryService:
@@ -29,10 +28,10 @@ class CategoryService:
     def list_categories(self, filters: CategoryFilterParams) -> PaginatedCategoriesResponse:
         items, total = self.repository.get_filtered(filters)
         return PaginatedCategoriesResponse(
-            items=items,
+            items=items,  # type: ignore[arg-type]
             total=total,
             page=filters.page,
-            page_size=filters.page_size
+            page_size=filters.page_size,
         )
 
     def update_category(self, category_id: uuid.UUID, data: CategoryUpdate) -> Category:

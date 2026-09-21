@@ -1,5 +1,6 @@
 from fastapi import HTTPException, status
 
+
 class InvalidCredentialsError(HTTPException):
     def __init__(self):
         super().__init__(
@@ -8,6 +9,7 @@ class InvalidCredentialsError(HTTPException):
             headers={"WWW-Authenticate": "Bearer"},
         )
 
+
 class InvalidTokenError(HTTPException):
     def __init__(self):
         super().__init__(
@@ -15,6 +17,7 @@ class InvalidTokenError(HTTPException):
             detail="Nieprawidłowy lub wygasły token",
             headers={"WWW-Authenticate": "Bearer"},
         )
+
 
 class AccountInactiveError(HTTPException):
     def __init__(self):

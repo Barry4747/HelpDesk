@@ -34,23 +34,15 @@ class Ticket(Base):
         nullable=False,
         index=True,
     )
-    reporter_id: Mapped[uuid.UUID] = mapped_column(
-        ForeignKey("users.id"), nullable=False, index=True
-    )
-    assigned_to_id: Mapped[uuid.UUID | None] = mapped_column(
-        ForeignKey("users.id"), nullable=True, index=True
-    )
-    category_id: Mapped[uuid.UUID | None] = mapped_column(
-        ForeignKey("categories.id"), nullable=True, index=True
-    )
+    reporter_id: Mapped[uuid.UUID] = mapped_column(ForeignKey("users.id"), nullable=False, index=True)
+    assigned_to_id: Mapped[uuid.UUID | None] = mapped_column(ForeignKey("users.id"), nullable=True, index=True)
+    category_id: Mapped[uuid.UUID | None] = mapped_column(ForeignKey("categories.id"), nullable=True, index=True)
     priority: Mapped[TicketPriority | None] = mapped_column(
         Enum(TicketPriority, name="ticket_priority_enum", native_enum=True),
         nullable=True,
         index=True,
     )
-    suggested_category_id: Mapped[uuid.UUID | None] = mapped_column(
-        ForeignKey("categories.id"), nullable=True
-    )
+    suggested_category_id: Mapped[uuid.UUID | None] = mapped_column(ForeignKey("categories.id"), nullable=True)
     suggested_priority: Mapped[TicketPriority | None] = mapped_column(
         Enum(TicketPriority, name="ticket_priority_enum", native_enum=True),
         nullable=True,

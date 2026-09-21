@@ -4,7 +4,7 @@ from fastapi import APIRouter, Depends, HTTPException, status
 
 from app.dependencies.auth import get_current_user, require_role
 from app.models.user import User, UserRole
-from app.schemas.user import UserCreate, UserResponse, UserUpdate, UserFilterParams, PaginatedUsersResponse
+from app.schemas.user import PaginatedUsersResponse, UserCreate, UserFilterParams, UserResponse, UserUpdate
 from app.services.user import UserService
 
 router = APIRouter(prefix="/api/v1/users", tags=["users"])
@@ -28,7 +28,7 @@ def create_user(
 def list_users(
     filters: UserFilterParams = Depends(),
     service: UserService = Depends(),
-    _admin: User = Depends(require_role("admin"))
+    _admin: User = Depends(require_role("admin")),
 ):
     return service.list_users(filters)
 
@@ -39,10 +39,6 @@ def get_user(
     service: UserService = Depends(),
     current_user: User = Depends(get_current_user),
 ):
-    # BUG-4: Role-based access control on user data.
-    # - Reporter: may only fetch support/admin users (to see who is assigned to their tickets).
-    # - Support: may fetch any user (to see reporters on tickets they handle).
-    # - Admin: may fetch any user.
     user = service.get_user(user_id)
 
     if current_user.role == UserRole.reporter:
@@ -72,4 +68,3 @@ def deactivate_user(
     _admin: User = Depends(require_role("admin")),
 ):
     return service.deactivate_user(user_id)
-

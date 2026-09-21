@@ -26,11 +26,11 @@ class UserRepository:
         return self.session.scalars(stmt).all()
 
     def get_filtered(self, filters) -> tuple[Sequence[User], int]:
-        from sqlalchemy import func, or_, case
-        
+        from sqlalchemy import case, func, or_
+
         stmt = select(User)
         count_stmt = select(func.count()).select_from(User)
-        
+
         conditions = []
         if filters.role:
             conditions.append(User.role == filters.role)
@@ -40,35 +40,32 @@ class UserRepository:
             conditions.append(User.is_active == filters.is_active)
         if filters.search:
             search_term = f"%{filters.search}%"
-            conditions.append(or_(
-                User.login.ilike(search_term),
-                User.first_name.ilike(search_term),
-                User.last_name.ilike(search_term)
-            ))
-            
+            conditions.append(
+                or_(
+                    User.login.ilike(search_term), User.first_name.ilike(search_term), User.last_name.ilike(search_term)
+                )
+            )
+
         if conditions:
             stmt = stmt.where(*conditions)
             count_stmt = count_stmt.where(*conditions)
-            
+
         total = self.session.scalar(count_stmt) or 0
-        
+
         if filters.sort_by == "role":
             order_col = case(
-                (User.role == "admin", 3),
-                (User.role == "support", 2),
-                (User.role == "reporter", 1),
-                else_=0
+                (User.role == "admin", 3), (User.role == "support", 2), (User.role == "reporter", 1), else_=0
             )
         else:
             order_col = getattr(User, filters.sort_by)
-            
+
         if filters.sort_order == "desc":
             stmt = stmt.order_by(order_col.desc())
         else:
             stmt = stmt.order_by(order_col.asc())
-            
+
         stmt = stmt.limit(filters.page_size).offset((filters.page - 1) * filters.page_size)
-        
+
         items = self.session.scalars(stmt).all()
         return items, total
 

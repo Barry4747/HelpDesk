@@ -1,7 +1,7 @@
 import uuid
 from datetime import datetime
-
 from typing import Literal
+
 from pydantic import BaseModel, ConfigDict, Field
 
 from app.models.ticket import TicketPriority, TicketStatus

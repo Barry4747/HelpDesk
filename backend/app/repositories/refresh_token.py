@@ -1,6 +1,6 @@
 import uuid
 from collections.abc import Sequence
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 
 from fastapi import Depends
 from sqlalchemy import select
@@ -23,7 +23,7 @@ class RefreshTokenRepository:
             select(RefreshToken)
             .where(RefreshToken.user_id == user_id)
             .where(RefreshToken.revoked == False)
-            .where(RefreshToken.expires_at > datetime.now(timezone.utc))
+            .where(RefreshToken.expires_at > datetime.now(UTC))
         )
         return self.session.scalars(stmt).all()
 
@@ -44,12 +44,8 @@ class RefreshTokenRepository:
         self.session.commit()
 
     def revoke_all_for_user(self, user_id: uuid.UUID) -> None:
-        stmt = select(RefreshToken).where(
-            RefreshToken.user_id == user_id, RefreshToken.revoked == False
-        )
+        stmt = select(RefreshToken).where(RefreshToken.user_id == user_id, RefreshToken.revoked == False)
         tokens: Sequence[RefreshToken] = self.session.scalars(stmt).all()
         for token in tokens:
             token.revoked = True
         self.session.commit()
-
-    # TODO: Implement reuse detection logic (revoke all tokens for user if reused)

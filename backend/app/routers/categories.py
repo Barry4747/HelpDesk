@@ -1,10 +1,16 @@
 import uuid
 
-from fastapi import APIRouter, Depends, HTTPException, status
+from fastapi import APIRouter, Depends, status
 
 from app.dependencies.auth import get_current_user, require_role
 from app.models.user import User
-from app.schemas.category import CategoryCreate, CategoryResponse, CategoryUpdate, CategoryFilterParams, PaginatedCategoriesResponse
+from app.schemas.category import (
+    CategoryCreate,
+    CategoryFilterParams,
+    CategoryResponse,
+    CategoryUpdate,
+    PaginatedCategoriesResponse,
+)
 from app.services.category import CategoryService
 
 router = APIRouter(prefix="/api/v1/categories", tags=["categories"])

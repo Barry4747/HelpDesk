@@ -31,7 +31,6 @@ const PRIORITY_LABELS: Record<string, string> = {
 
 const COLORS = ["#3B4C9B", "#4CAF50", "#FF9800", "#F44336", "#9C27B0", "#00BCD4"];
 
-// Subcomponent for locally sortable table
 function StatsTable({
   rows,
   labelKey,
@@ -106,13 +105,11 @@ export function StatsPage() {
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
 
-  // Filter state
   const dateFrom = searchParams.get("date_from") || "";
   const dateTo = searchParams.get("date_to") || "";
   const departmentIds = searchParams.get("department_ids") || "";
-  const workloadStatuses = searchParams.get("workload_statuses") || "przyjete"; // default
+  const workloadStatuses = searchParams.get("workload_statuses") || "przyjete";
 
-  // Fetch departments for filter
   useEffect(() => {
     getDepartments({ page_size: 1000 }).then(res => setDepartments(res.items)).catch(console.error);
   }, []);
@@ -190,7 +187,6 @@ export function StatsPage() {
     }
   };
 
-  // Local sorting for workload
   const [wlSortCol, setWlSortCol] = useState<"name" | "count">("count");
   const [wlSortOrder, setWlSortOrder] = useState<"asc" | "desc">("desc");
 

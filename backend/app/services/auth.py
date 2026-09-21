@@ -1,5 +1,6 @@
+import uuid
 from dataclasses import dataclass
-from datetime import datetime, timedelta, timezone
+from datetime import UTC, datetime, timedelta
 
 from fastapi import Depends, Response
 
@@ -41,12 +42,8 @@ def set_auth_cookies(response: Response, access_token: str, refresh_token: str) 
 
 
 def clear_auth_cookies(response: Response) -> None:
-    response.delete_cookie(
-        key="access_token", httponly=True, secure=True, samesite="strict"
-    )
-    response.delete_cookie(
-        key="refresh_token", httponly=True, secure=True, samesite="strict"
-    )
+    response.delete_cookie(key="access_token", httponly=True, secure=True, samesite="strict")
+    response.delete_cookie(key="refresh_token", httponly=True, secure=True, samesite="strict")
 
 
 @dataclass
@@ -71,14 +68,12 @@ class AuthService:
         self.user_repo = user_repo
         self.refresh_token_repo = refresh_token_repo
 
-    def _create_full_session(self, user_id: str, role: str) -> LoginResult:
+    def _create_full_session(self, user_id: uuid.UUID, role: str) -> LoginResult:
         access_token = create_access_token(user_id=user_id, role=role)
         raw_refresh_token = generate_refresh_token()
         hashed_token = hash_refresh_token(raw_refresh_token)
 
-        expires_at = datetime.now(timezone.utc) + timedelta(
-            days=settings.JWT_REFRESH_TOKEN_EXPIRE_DAYS
-        )
+        expires_at = datetime.now(UTC) + timedelta(days=settings.JWT_REFRESH_TOKEN_EXPIRE_DAYS)
 
         self.refresh_token_repo.revoke_all_for_user(user_id)
 
@@ -114,11 +109,7 @@ class AuthService:
         hashed_token = hash_refresh_token(raw_refresh_token)
         rt_record = self.refresh_token_repo.get_by_token_hash(hashed_token)
 
-        if (
-            not rt_record
-            or rt_record.revoked
-            or rt_record.expires_at < datetime.now(timezone.utc)
-        ):
+        if not rt_record or rt_record.revoked or rt_record.expires_at < datetime.now(UTC):
             raise InvalidTokenError()
 
         self.refresh_token_repo.revoke(rt_record)
@@ -130,8 +121,8 @@ class AuthService:
         session = self._create_full_session(user_record.id, user_record.role.value)
 
         return RefreshResult(
-            access_token=session.access_token,
-            refresh_token=session.refresh_token,
+            access_token=session.access_token, # type: ignore[arg-type]
+            refresh_token=session.refresh_token, # type: ignore[arg-type]
         )
 
     def logout(self, raw_refresh_token: str) -> None:
@@ -140,9 +131,7 @@ class AuthService:
         if rt_record:
             self.refresh_token_repo.revoke(rt_record)
 
-    def change_password(
-        self, password_change_token: str, new_password: str
-    ) -> LoginResult:
+    def change_password(self, password_change_token: str, new_password: str) -> LoginResult:
         payload = decode_password_change_token(password_change_token)
         if not payload:
             raise InvalidTokenError()

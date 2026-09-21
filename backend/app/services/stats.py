@@ -4,9 +4,11 @@ from app.repositories.stats import StatsRepository
 from app.schemas.stats import (
     CategoryCount,
     PriorityCount,
-    StatusCount,
+    StatsOverviewFilterParams,
     StatsOverviewResponse,
+    StatsWorkloadFilterParams,
     StatsWorkloadResponse,
+    StatusCount,
     WorkloadItem,
 )
 
@@ -16,13 +18,9 @@ class StatsService:
         self.repo = repo
 
     def get_overview(self, filters: "StatsOverviewFilterParams") -> StatsOverviewResponse:
-        by_status = [
-            StatusCount(status=status, count=count)
-            for status, count in self.repo.count_by_status(filters)
-        ]
+        by_status = [StatusCount(status=status, count=count) for status, count in self.repo.count_by_status(filters)]
         by_priority = [
-            PriorityCount(priority=priority, count=count)
-            for priority, count in self.repo.count_by_priority(filters)
+            PriorityCount(priority=priority, count=count) for priority, count in self.repo.count_by_priority(filters)
         ]
         by_category = [
             CategoryCount(

@@ -2,10 +2,10 @@ from fastapi import APIRouter, Depends
 
 from app.dependencies.auth import require_role
 from app.schemas.stats import (
-    StatsOverviewResponse, 
-    StatsWorkloadResponse,
     StatsOverviewFilterParams,
+    StatsOverviewResponse,
     StatsWorkloadFilterParams,
+    StatsWorkloadResponse,
 )
 from app.services.stats import StatsService
 

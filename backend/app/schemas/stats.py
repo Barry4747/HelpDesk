@@ -1,7 +1,7 @@
 import uuid
-from pydantic import BaseModel
-from typing import Literal, List
 from datetime import datetime
+
+from pydantic import BaseModel
 
 
 class StatusCount(BaseModel):
@@ -42,8 +42,8 @@ class StatsOverviewFilterParams(BaseModel):
     date_from: datetime | None = None
     date_to: datetime | None = None
 
+
 class StatsWorkloadFilterParams(BaseModel):
     date_from: datetime | None = None
     date_to: datetime | None = None
     workload_statuses: str | None = None
-

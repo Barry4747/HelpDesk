@@ -32,7 +32,7 @@ export interface StatsWorkloadResponse {
 }
 
 export interface StatsOverviewFilterParams {
-  department_ids?: string; // Comma separated UUIDs
+  department_ids?: string;
   date_from?: string;
   date_to?: string;
 }
@@ -40,5 +40,5 @@ export interface StatsOverviewFilterParams {
 export interface StatsWorkloadFilterParams {
   date_from?: string;
   date_to?: string;
-  workload_statuses?: string; // Comma separated, e.g. "nowe,przyjete"
+  workload_statuses?: string;
 }

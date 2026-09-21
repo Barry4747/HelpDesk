@@ -1,5 +1,4 @@
 import uuid
-from collections.abc import Sequence
 
 from fastapi import Depends
 
@@ -45,7 +44,7 @@ class UserService:
     def list_users(self, filters: UserFilterParams) -> PaginatedUsersResponse:
         items, total = self.user_repo.get_filtered(filters)
         return PaginatedUsersResponse(
-            items=items,
+            items=items, # type: ignore[arg-type]
             total=total,
             page=filters.page,
             page_size=filters.page_size,

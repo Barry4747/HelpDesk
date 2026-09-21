@@ -1,14 +1,14 @@
 import uuid
 
-from fastapi import APIRouter, Depends, HTTPException, status
+from fastapi import APIRouter, Depends, status
 
 from app.dependencies.auth import get_current_user, require_role
 from app.models.user import User
 from app.schemas.department import (
     DepartmentCreate,
+    DepartmentFilterParams,
     DepartmentResponse,
     DepartmentUpdate,
-    DepartmentFilterParams,
     PaginatedDepartmentsResponse,
 )
 from app.services.department import DepartmentService

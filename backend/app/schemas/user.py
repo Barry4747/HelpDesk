@@ -44,7 +44,9 @@ class UserFilterParams(BaseModel):
     department_id: uuid.UUID | None = None
     is_active: bool | None = None
     search: str | None = None
-    sort_by: Literal["login", "first_name", "last_name", "created_at", "role", "department_id", "is_active"] = "created_at"
+    sort_by: Literal["login", "first_name", "last_name", "created_at", "role", "department_id", "is_active"] = (
+        "created_at"
+    )
     sort_order: Literal["asc", "desc"] = "desc"
     page: int = Field(default=1, ge=1)
     page_size: int = Field(default=20, ge=1, le=100)

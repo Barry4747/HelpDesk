@@ -8,6 +8,9 @@ from app.dependencies.database import get_db
 from app.models.category import Category
 from app.models.ticket import Ticket, TicketStatus
 from app.models.user import User, UserRole
+from typing import TYPE_CHECKING
+if TYPE_CHECKING:
+    from app.schemas.stats import StatsOverviewFilterParams, StatsWorkloadFilterParams
 
 
 class StatsRepository:
@@ -15,10 +18,7 @@ class StatsRepository:
         self.session = session
 
     def count_by_status(self, filters: "StatsOverviewFilterParams") -> list[tuple[str, int]]:
-        stmt = (
-            select(Ticket.status, func.count().label("cnt"))
-            .group_by(Ticket.status)
-        )
+        stmt = select(Ticket.status, func.count().label("cnt")).group_by(Ticket.status)
         stmt = self._apply_overview_filters(stmt, filters)
         rows = self.session.execute(stmt).all()
         return [(str(row[0].value if hasattr(row[0], "value") else row[0]), row[1]) for row in rows]
@@ -49,13 +49,12 @@ class StatsRepository:
             conditions.append(Ticket.created_at >= filters.date_from)
         if filters.date_to:
             conditions.append(Ticket.created_at <= filters.date_to)
-        
+
         if filters.department_ids:
             try:
                 parts = filters.department_ids.split(",")
                 dept_ids = [uuid.UUID(p.strip()) for p in parts if p.strip()]
                 if dept_ids:
-                    # We need to join User to check department of reporter
                     stmt = stmt.join(User, Ticket.reporter_id == User.id)
                     conditions.append(User.department_id.in_(dept_ids))
             except ValueError:
@@ -66,7 +65,7 @@ class StatsRepository:
         return stmt
 
     def workload(self, filters: "StatsWorkloadFilterParams") -> list[tuple[uuid.UUID, str, str, int]]:
-        
+
         statuses_to_count = [TicketStatus.przyjete]
         if filters.workload_statuses:
             try:
@@ -74,22 +73,18 @@ class StatsRepository:
                 statuses_to_count = [TicketStatus(p.strip()) for p in parts if p.strip()]
             except ValueError:
                 pass
-        
+
         ticket_conditions = [
             Ticket.status.in_(statuses_to_count),
             Ticket.assigned_to_id == User.id,
         ]
-        
+
         if filters.date_from:
             ticket_conditions.append(Ticket.created_at >= filters.date_from)
         if filters.date_to:
             ticket_conditions.append(Ticket.created_at <= filters.date_to)
 
-        active_ticket_count = (
-            func.count(Ticket.id)
-            .filter(*ticket_conditions)
-            .label("active_ticket_count")
-        )
+        active_ticket_count = func.count(Ticket.id).filter(*ticket_conditions).label("active_ticket_count")
         stmt = (
             select(
                 User.id,

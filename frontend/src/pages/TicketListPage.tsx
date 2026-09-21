@@ -7,7 +7,6 @@ import { useAuth } from "../context/AuthContext";
 import type { PaginatedTicketsResponse, TicketFilterParams, TicketStatus, TicketPriority } from "../types/ticket";
 import type { Category } from "../types/category";
 
-// Simple debounce helper
 function useDebounce<T extends (...args: any[]) => void>(callback: T, delay: number) {
   const [timeoutId, setTimeoutId] = useState<NodeJS.Timeout | null>(null);
   

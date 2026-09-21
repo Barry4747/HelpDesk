@@ -1,5 +1,4 @@
 import uuid
-from collections.abc import Sequence
 
 from fastapi import Depends
 
@@ -9,7 +8,12 @@ from app.exceptions.department import (
 )
 from app.models.department import Department
 from app.repositories.department import DepartmentRepository
-from app.schemas.department import DepartmentCreate, DepartmentUpdate, DepartmentFilterParams, PaginatedDepartmentsResponse
+from app.schemas.department import (
+    DepartmentCreate,
+    DepartmentFilterParams,
+    DepartmentUpdate,
+    PaginatedDepartmentsResponse,
+)
 
 
 class DepartmentService:
@@ -29,10 +33,10 @@ class DepartmentService:
     def list_departments(self, filters: DepartmentFilterParams) -> PaginatedDepartmentsResponse:
         items, total = self.repository.get_filtered(filters)
         return PaginatedDepartmentsResponse(
-            items=items,
+            items=items,  # type: ignore[arg-type]
             total=total,
             page=filters.page,
-            page_size=filters.page_size
+            page_size=filters.page_size,
         )
 
     def update_department(self, department_id: uuid.UUID, data: DepartmentUpdate) -> Department:
