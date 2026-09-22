@@ -47,6 +47,12 @@ class Ticket(Base):
         Enum(TicketPriority, name="ticket_priority_enum", native_enum=True),
         nullable=True,
     )
+    is_ai_processing: Mapped[bool] = mapped_column(
+        default=False,
+        server_default="false",
+        nullable=False,
+        index=True,
+    )
     created_at: Mapped[datetime] = mapped_column(
         DateTime(timezone=True),
         server_default=func.now(),

@@ -1,8 +1,7 @@
 import uuid
-
-from fastapi import APIRouter, Body, Depends, HTTPException, status
+from fastapi import APIRouter, Body, Depends, HTTPException, status, BackgroundTasks
 from pydantic import ValidationError
-
+from app.services.llm_service import generate_ticket_suggestion
 from app.dependencies.auth import get_current_user, require_role
 from app.models.user import User
 from app.schemas.ticket import (
@@ -22,10 +21,13 @@ router = APIRouter(prefix="/api/v1/tickets", tags=["tickets"])
 @router.post("", response_model=TicketResponse, status_code=status.HTTP_201_CREATED)
 def create_ticket(
     data: TicketCreate,
+    background_tasks: BackgroundTasks,
     service: TicketService = Depends(),
     current_user: User = Depends(require_role("reporter")),
 ):
-    return service.create_ticket(data, reporter_id=current_user.id)
+    new_ticket = service.create_ticket(data, reporter_id=current_user.id)
+    background_tasks.add_task(generate_ticket_suggestion, new_ticket.id)
+    return new_ticket
 
 
 @router.get("", response_model=PaginatedTicketsResponse, status_code=status.HTTP_200_OK)

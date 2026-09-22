@@ -5,11 +5,34 @@ from slowapi.errors import RateLimitExceeded
 
 from app.core.limiter import limiter
 from app.routers import auth, categories, departments, stats, tickets, users
+from contextlib import asynccontextmanager
+from app.core.database import SessionLocal
+from app.models.ticket import Ticket
+import logging
+
+logger = logging.getLogger(__name__)
+
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    try:
+        db = SessionLocal()
+        zombie_tickets = db.query(Ticket).filter(Ticket.is_ai_processing == True).all()
+        for t in zombie_tickets:
+            t.is_ai_processing = False
+        if zombie_tickets:
+            db.commit()
+            logger.info(f"Cleared {len(zombie_tickets)} zombie AI processing locks.")
+    except Exception as e:
+        logger.error(f"Failed to clear AI processing locks on startup: {e}")
+    finally:
+        db.close()
+    yield
 
 app = FastAPI(
     title="HelpDesk API",
     version="0.1.0",
     description="API serwisu zgłoszeń HelpDesk",
+    lifespan=lifespan,
 )
 
 app.state.limiter = limiter

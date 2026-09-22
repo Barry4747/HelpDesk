@@ -9,6 +9,10 @@ class Settings(BaseSettings):
     JWT_REFRESH_TOKEN_EXPIRE_DAYS: int = 7
     JWT_PASSWORD_CHANGE_TOKEN_EXPIRE_MINUTES: int = 10
 
+    GEMINI_API_KEY: str
+    GEMINI_MODEL: str = "gemini-3.5-flash-lite"
+    GEMINI_TIMEOUT_SECONDS: int = 90
+
     class Config:
         env_file = ".env"
         env_file_encoding = "utf-8"

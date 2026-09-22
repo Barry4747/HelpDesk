@@ -39,6 +39,7 @@ class TicketService:
             description=data.description,
             reporter_id=reporter_id,
             status=TicketStatus.nowe,
+            is_ai_processing=True,
         )
         return self.repository.create(ticket)
 
@@ -67,12 +68,20 @@ class TicketService:
                 extra_conditions.append(
                     or_(
                         Ticket.assigned_to_id == current_user.id,
-                        (Ticket.status == TicketStatus.nowe) & (Ticket.assigned_to_id.is_(None)),
+                        (Ticket.status == TicketStatus.nowe) & (Ticket.assigned_to_id.is_(None)) & (Ticket.is_ai_processing == False),
                     )
                 )
         elif current_user.role == "admin":
             if getattr(filters, "assigned_to_me", False):
                 extra_conditions.append(Ticket.assigned_to_id == current_user.id)
+            else:
+                extra_conditions.append(
+                    or_(
+                        Ticket.assigned_to_id.is_not(None),
+                        Ticket.status != TicketStatus.nowe,
+                        (Ticket.status == TicketStatus.nowe) & (Ticket.assigned_to_id.is_(None)) & (Ticket.is_ai_processing == False),
+                    )
+                )
 
         return self.repository.get_filtered(filters, extra_conditions)
 

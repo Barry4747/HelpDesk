@@ -43,6 +43,7 @@ entity "Ticket" as Ticket {
   suggested_priority : enum(low, medium, high, critical)
   category_id : UUID <<FK>>
   priority : enum(low, medium, high, critical)
+  * is_ai_processing : boolean
   * created_at : timestamp
   * updated_at : timestamp
 }
