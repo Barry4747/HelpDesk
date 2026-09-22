@@ -5,12 +5,13 @@ from app.core.config import settings
 
 logger = logging.getLogger(__name__)
 
+
 async def call_gemini(description: str, active_categories: list[str]) -> dict | None:
     if not active_categories:
         return None
 
     url = f"https://generativelanguage.googleapis.com/v1beta/models/{settings.GEMINI_MODEL}:generateContent?key={settings.GEMINI_API_KEY}"
-    
+
     prompt = (
         f"You are an IT helpdesk assistant. Based on the ticket description below, "
         f"categorize the ticket and assign a priority.\n\n"
@@ -25,11 +26,11 @@ async def call_gemini(description: str, active_categories: list[str]) -> dict | 
                 "type": "OBJECT",
                 "properties": {
                     "category": {"type": "STRING", "enum": active_categories},
-                    "priority": {"type": "STRING", "enum": ["niski", "sredni", "wysoki", "krytyczny"]}
+                    "priority": {"type": "STRING", "enum": ["niski", "sredni", "wysoki", "krytyczny"]},
                 },
-                "required": ["category", "priority"]
-            }
-        }
+                "required": ["category", "priority"],
+            },
+        },
     }
 
     try:
@@ -37,7 +38,7 @@ async def call_gemini(description: str, active_categories: list[str]) -> dict | 
             response = await client.post(url, json=payload)
             response.raise_for_status()
             data = response.json()
-            
+
             text_response = data["candidates"][0]["content"]["parts"][0]["text"]
             result = json.loads(text_response)
             return result

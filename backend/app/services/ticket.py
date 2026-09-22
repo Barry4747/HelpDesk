@@ -68,7 +68,9 @@ class TicketService:
                 extra_conditions.append(
                     or_(
                         Ticket.assigned_to_id == current_user.id,
-                        (Ticket.status == TicketStatus.nowe) & (Ticket.assigned_to_id.is_(None)) & (Ticket.is_ai_processing == False),
+                        (Ticket.status == TicketStatus.nowe)
+                        & (Ticket.assigned_to_id.is_(None))
+                        & (Ticket.is_ai_processing == False),
                     )
                 )
         elif current_user.role == "admin":
@@ -79,7 +81,9 @@ class TicketService:
                     or_(
                         Ticket.assigned_to_id.is_not(None),
                         Ticket.status != TicketStatus.nowe,
-                        (Ticket.status == TicketStatus.nowe) & (Ticket.assigned_to_id.is_(None)) & (Ticket.is_ai_processing == False),
+                        (Ticket.status == TicketStatus.nowe)
+                        & (Ticket.assigned_to_id.is_(None))
+                        & (Ticket.is_ai_processing == False),
                     )
                 )
 

@@ -9,6 +9,7 @@ from app.models.ticket import Ticket, TicketPriority
 
 logger = logging.getLogger(__name__)
 
+
 async def generate_ticket_suggestion(ticket_id: uuid.UUID) -> None:
     db = SessionLocal()
     try:
@@ -32,7 +33,7 @@ async def generate_ticket_suggestion(ticket_id: uuid.UUID) -> None:
 
         if suggested_category_name not in category_map:
             return
-            
+
         try:
             priority_enum = TicketPriority(suggested_priority_str)
         except ValueError:
@@ -46,7 +47,7 @@ async def generate_ticket_suggestion(ticket_id: uuid.UUID) -> None:
         logger.error(f"Error in generate_ticket_suggestion: {e}")
         db.rollback()
     finally:
-        if 'ticket' in locals() and ticket:
+        if "ticket" in locals() and ticket:
             ticket.is_ai_processing = False
             db.commit()
         db.close()
