@@ -33,6 +33,9 @@ async def generate_ticket_suggestion(ticket_id: uuid.UUID) -> None:
         if suggested_category_name not in category_map:
             return
 
+        if not isinstance(suggested_priority_str, str):
+            return
+
         try:
             priority_enum = TicketPriority(suggested_priority_str)
         except ValueError:
