@@ -1,7 +1,8 @@
 import uuid
-from fastapi import APIRouter, Body, Depends, HTTPException, status, BackgroundTasks
+
+from fastapi import APIRouter, BackgroundTasks, Body, Depends, HTTPException, status
 from pydantic import ValidationError
-from app.services.llm_service import generate_ticket_suggestion
+
 from app.dependencies.auth import get_current_user, require_role
 from app.models.user import User
 from app.schemas.ticket import (
@@ -13,6 +14,7 @@ from app.schemas.ticket import (
     TicketUpdateAdmin,
     TicketUpdateSupport,
 )
+from app.services.llm_service import generate_ticket_suggestion
 from app.services.ticket import TicketService
 
 router = APIRouter(prefix="/api/v1/tickets", tags=["tickets"])

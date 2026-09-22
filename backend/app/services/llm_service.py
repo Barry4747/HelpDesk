@@ -1,6 +1,5 @@
 import logging
 import uuid
-from sqlalchemy.exc import IntegrityError
 
 from app.core.database import SessionLocal
 from app.core.llm_client import call_gemini
