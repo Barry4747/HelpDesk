@@ -53,6 +53,7 @@ rectangle "HelpDesk System" {
     usecase "Weryfikacja predykcji LLM" as UC_Sup_Weryfikacja
     usecase "Zmiana statusu zgłoszenia" as UC_Sup_Zmiana
     usecase "Edycja zgłoszenia" as UC_Sup_Edycja
+    usecase "Usuwanie przypisanego, zamkniętego zgłoszenia" as UC_Sup_Usuwanie
     usecase "Filtrowanie zgłoszeń " as UC_Sup_Filtrowanie
     usecase "Sortowanie zgłoszeń " as UC_Sup_Sortowanie
   }
@@ -65,6 +66,7 @@ rectangle "HelpDesk System" {
     usecase "Przeglądanie listy użytkowników" as UC_Adm_Lista
     usecase "Zarządzanie kategoriami zgłoszeń" as UC_Adm_Kategorie
     usecase "Zarządzanie działami" as UC_Adm_Dzialy
+    usecase "Usuwanie dowolnego zgłoszenia" as UC_Adm_Usuwanie_Zgloszenia
   }
 }
 
@@ -84,6 +86,7 @@ Support --> UC_Sup_Przegladanie <<assoc>>
 Support --> UC_Sup_Przypinanie <<assoc>>
 Support --> UC_Sup_Zmiana <<assoc>>
 Support --> UC_Sup_Edycja <<assoc>>
+Support --> UC_Sup_Usuwanie <<assoc>>
 UC_Sup_Przypinanie .[#Blue].> UC_Sup_Weryfikacja : <<include>>
 
 UC_Sup_Przegladanie <.[#Gray]. UC_Sup_Filtrowanie : <<extend>>
@@ -96,5 +99,6 @@ Admin --> UC_Adm_Statystyki <<assoc>>
 Admin --> UC_Adm_Lista <<assoc>>
 Admin --> UC_Adm_Kategorie <<assoc>>
 Admin --> UC_Adm_Dzialy <<assoc>>
+Admin --> UC_Adm_Usuwanie_Zgloszenia <<assoc>>
 
 @enduml
