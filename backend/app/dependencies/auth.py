@@ -39,8 +39,14 @@ def get_current_user(request: Request, user_repo: UserRepository = Depends()) ->
 
     if not user.is_active:
         raise HTTPException(
-            status_code=status.HTTP_403_FORBIDDEN,
-            detail="Konto jest nieaktywne",
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Konto zostało zdezaktywowane",
+        )
+
+    if user.is_temporary_password:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Hasło zostało zresetowane",
         )
 
     return user
