@@ -18,6 +18,8 @@ class UserCreate(BaseModel):
 
 
 class UserUpdate(BaseModel):
+    login: str | None = None
+    password: str | None = Field(None, min_length=8)
     first_name: str | None = None
     last_name: str | None = None
     role: Literal["reporter", "support", "admin"] | None = None
@@ -49,7 +51,7 @@ class UserFilterParams(BaseModel):
     )
     sort_order: Literal["asc", "desc"] = "desc"
     page: int = Field(default=1, ge=1)
-    page_size: int = Field(default=20, ge=1, le=100)
+    page_size: int = Field(default=20, ge=1, le=1000)
 
 
 class PaginatedUsersResponse(BaseModel):
