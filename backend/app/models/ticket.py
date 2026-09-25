@@ -9,13 +9,13 @@ from sqlalchemy.sql import func
 from app.core.database import Base
 
 
-class TicketStatus(str, enum.Enum):
+class TicketStatus(enum.StrEnum):
     nowe = "nowe"
     przyjete = "przyjete"
     zamkniete = "zamkniete"
 
 
-class TicketPriority(str, enum.Enum):
+class TicketPriority(enum.StrEnum):
     niski = "niski"
     sredni = "sredni"
     wysoki = "wysoki"
@@ -34,26 +34,24 @@ class Ticket(Base):
         nullable=False,
         index=True,
     )
-    reporter_id: Mapped[uuid.UUID] = mapped_column(
-        ForeignKey("users.id"), nullable=False, index=True
-    )
-    assigned_to_id: Mapped[uuid.UUID | None] = mapped_column(
-        ForeignKey("users.id"), nullable=True, index=True
-    )
-    category_id: Mapped[uuid.UUID | None] = mapped_column(
-        ForeignKey("categories.id"), nullable=True, index=True
-    )
+    reporter_id: Mapped[uuid.UUID] = mapped_column(ForeignKey("users.id"), nullable=False, index=True)
+    assigned_to_id: Mapped[uuid.UUID | None] = mapped_column(ForeignKey("users.id"), nullable=True, index=True)
+    category_id: Mapped[uuid.UUID | None] = mapped_column(ForeignKey("categories.id"), nullable=True, index=True)
     priority: Mapped[TicketPriority | None] = mapped_column(
         Enum(TicketPriority, name="ticket_priority_enum", native_enum=True),
         nullable=True,
         index=True,
     )
-    suggested_category_id: Mapped[uuid.UUID | None] = mapped_column(
-        ForeignKey("categories.id"), nullable=True
-    )
+    suggested_category_id: Mapped[uuid.UUID | None] = mapped_column(ForeignKey("categories.id"), nullable=True)
     suggested_priority: Mapped[TicketPriority | None] = mapped_column(
         Enum(TicketPriority, name="ticket_priority_enum", native_enum=True),
         nullable=True,
+    )
+    is_ai_processing: Mapped[bool] = mapped_column(
+        default=False,
+        server_default="false",
+        nullable=False,
+        index=True,
     )
     created_at: Mapped[datetime] = mapped_column(
         DateTime(timezone=True),

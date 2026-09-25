@@ -1,5 +1,3 @@
-# HelpDesk — .gitignore
-
 # ── Python / Backend ──────────────────────────────────────────────────────
 __pycache__/
 *.py[cod]
@@ -15,9 +13,7 @@ venv/
 env/
 .env
 *.env
-
-# ── Alembic ───────────────────────────────────────────────────────────────
-# (wersjonujemy alembic/versions/*.py, pomijamy tylko artefakty)
+backend/.env.docker
 
 # ── Node / Frontend ───────────────────────────────────────────────────────
 node_modules/
@@ -25,7 +21,6 @@ frontend/dist/
 frontend/.env
 
 # ── Docker ────────────────────────────────────────────────────────────────
-# (docker-compose.dev.yml trafia do repo, pomijamy override z sekretami)
 docker-compose.override.yml
 
 # ── IDE / OS ──────────────────────────────────────────────────────────────

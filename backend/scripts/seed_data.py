@@ -44,7 +44,7 @@ def seed_data():
         db.commit()
 
         password_hash = get_password_hash("temp123")
-        
+
         users_data = [
             ("jkowalski", "Jan", "Kowalski", UserRole.reporter, db_deps[3].id),
             ("anowak", "Anna", "Nowak", UserRole.reporter, db_deps[1].id),
@@ -52,7 +52,7 @@ def seed_data():
             ("mwojcik", "Michał", "Wójcik", UserRole.support, db_deps[0].id),
             ("kzielinska", "Katarzyna", "Zielińska", UserRole.support, db_deps[0].id),
         ]
-        
+
         db_users = []
         for login, fname, lname, role, dep_id in users_data:
             user = User(
@@ -72,13 +72,26 @@ def seed_data():
         supports = [u for u in db_users if u.role == UserRole.support]
 
         ticket_titles = [
-            "Myszka nie działa", "Zapomniałem hasła", "Brak dostępu do VPN",
-            "Monitor miga", "Nowy pracownik - pakiety", "Błąd w programie księgowym",
-            "Drukarka brudzi papier", "Brak internetu w sali A", "Klawiatura zalana",
-            "Potrzebny dostęp do GitHub", "Prośba o nowy telefon", "Nie mogę wysłać maila",
-            "Aplikacja HR zawiesza się", "Brak wolnego miejsca na dysku", "Wirus na komputerze",
-            "Konto zablokowane", "Aktualizacja systemu operacyjnego", "Nowy certyfikat",
-            "Wymiana tonera", "Słaby zasięg WiFi"
+            "Myszka nie działa",
+            "Zapomniałem hasła",
+            "Brak dostępu do VPN",
+            "Monitor miga",
+            "Nowy pracownik - pakiety",
+            "Błąd w programie księgowym",
+            "Drukarka brudzi papier",
+            "Brak internetu w sali A",
+            "Klawiatura zalana",
+            "Potrzebny dostęp do GitHub",
+            "Prośba o nowy telefon",
+            "Nie mogę wysłać maila",
+            "Aplikacja HR zawiesza się",
+            "Brak wolnego miejsca na dysku",
+            "Wirus na komputerze",
+            "Konto zablokowane",
+            "Aktualizacja systemu operacyjnego",
+            "Nowy certyfikat",
+            "Wymiana tonera",
+            "Słaby zasięg WiFi",
         ]
 
         priorities = list(TicketPriority)
@@ -87,7 +100,7 @@ def seed_data():
             reporter = random.choice(reporters)
             suggested_cat = random.choice(db_cats)
             suggested_prio = random.choice(priorities)
-            
+
             if i < 5:
                 status = TicketStatus.nowe
                 assigned = None
@@ -123,7 +136,7 @@ def seed_data():
                 suggested_priority=suggested_prio if suggested_prio else None,
             )
             db.add(ticket)
-        
+
         db.commit()
         print("Test data seeded successfully.")
 

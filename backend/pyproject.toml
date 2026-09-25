@@ -1,0 +1,14 @@
+[tool.ruff]
+line-length = 120
+target-version = "py312"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B", "W"] # pycodestyle, pyflakes, isort, pyupgrade, flake8-bugbear, pycodestyle warnings
+ignore = ["B008", "E712"] 
+
+[tool.mypy]
+python_version = "3.12"
+check_untyped_defs = true
+disallow_untyped_defs = false
+ignore_missing_imports = true
+warn_return_any = false
