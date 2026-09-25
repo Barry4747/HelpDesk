@@ -32,7 +32,7 @@ services:
     restart: unless-stopped
     volumes:
       - ./frontend:/app
-      - /app/node_modules # Chroni lokalne node_modules na hoście przed nadpisaniem
+      - /app/node_modules
     command: npm run dev -- --host 0.0.0.0 --port 5173
     expose:
       - "5173"

@@ -37,8 +37,8 @@ System obsługi zgłoszeń IT dla małych i średnich organizacji. Umożliwia re
 ```
 
 Caddy działa jako reverse proxy na porcie `80` i kieruje ruch:
-- `/api/*` → backend (port `8000`)
-- `/*` → frontend (port `5173`)
+- `/api/*` - backend (port `8000`)
+- `/*` - frontend (port `5173`)
 
 Dzięki temu frontend i API mają wspólny origin, co umożliwia bezpieczne ciasteczka `SameSite=Strict`.
 
@@ -77,7 +77,7 @@ HelpDesk/
 1. Użytkownik loguje się przez `POST /api/v1/auth/login`.
 2. Backend wydaje dwa tokeny JWT: `access_token` (15 min) i `refresh_token` (7 dni), zapisane w ciasteczkach `httpOnly; Secure; SameSite=Strict`.
 3. Przy każdym żądaniu `get_current_user` weryfikuje `access_token` z ciasteczka i sprawdza aktualny stan konta w bazie (aktywność, flaga tymczasowego hasła).
-4. Gdy `access_token` wygaśnie, frontend automatycznie wywołuje `POST /api/v1/auth/refresh` — następuje rotacja `refresh_token` (stary jest unieważniany w bazie).
+4. Gdy `access_token` wygaśnie, frontend automatycznie wywołuje `POST /api/v1/auth/refresh` - następuje rotacja `refresh_token` (stary jest unieważniany w bazie).
 5. Wylogowanie, zmiana hasła lub edycja konta przez admina unieważnia wszystkie `refresh_token` użytkownika, co wymusza ponowne logowanie przy następnym żądaniu.
 
 ### Integracja z LLM
@@ -86,11 +86,11 @@ Po utworzeniu nowego zgłoszenia backend uruchamia `generate_ticket_suggestion` 
 
 1. Pobiera treść opisu i listę aktywnych kategorii.
 2. Wysyła zapytanie do Gemini API (tylko opis + lista kategorii, bez danych osobowych).
-3. Waliduje odpowiedź — kategoria musi być z aktualnej listy, priorytet z dozwolonego zbioru.
+3. Waliduje odpowiedź - kategoria musi być z aktualnej listy, priorytet z dozwolonego zbioru.
 4. Zapisuje sugestię w osobnych polach (`suggested_category_id`, `suggested_priority`).
 5. Niezależnie od powodzenia czyści flagę `is_ai_processing`.
 
-Sugestia **nigdy** nie jest zapisywana jako finalna wartość automatycznie — Support lub Admin musi ją zatwierdzić lub poprawić przy przypisaniu zgłoszenia.
+Sugestia **nigdy** nie jest zapisywana jako finalna wartość automatycznie - Support lub Admin musi ją zatwierdzić lub poprawić przy przypisaniu zgłoszenia.
 
 ## Uruchomienie lokalne (Docker Compose)
 

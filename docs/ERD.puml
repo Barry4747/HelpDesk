@@ -1,5 +1,4 @@
 @startuml
-' Zwiększamy odstępy, by etykiety miały miejsce
 skinparam nodesep 70
 skinparam ranksep 70
 
