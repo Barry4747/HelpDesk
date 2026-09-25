@@ -31,7 +31,6 @@ export default function AppRoutes() {
 
         <Route path="/stats" element={<ProtectedRoute allowedRoles={["admin"]}><StatsPage /></ProtectedRoute>} />
 
-        {/* Przekierowanie starych ścieżek dla kompatybilności */}
         <Route path="/categories" element={<ProtectedRoute allowedRoles={["admin"]}><DictionaryPage /></ProtectedRoute>} />
         <Route path="/departments" element={<ProtectedRoute allowedRoles={["admin"]}><DictionaryPage /></ProtectedRoute>} />
       </Routes>

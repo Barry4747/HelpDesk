@@ -17,7 +17,7 @@ class StatsService:
     def __init__(self, repo: StatsRepository = Depends()):
         self.repo = repo
 
-    def get_overview(self, filters: "StatsOverviewFilterParams") -> StatsOverviewResponse:
+    def get_overview(self, filters: StatsOverviewFilterParams) -> StatsOverviewResponse:
         by_status = [StatusCount(status=status, count=count) for status, count in self.repo.count_by_status(filters)]
         by_priority = [
             PriorityCount(priority=priority, count=count) for priority, count in self.repo.count_by_priority(filters)
@@ -36,7 +36,7 @@ class StatsService:
             by_category=by_category,
         )
 
-    def get_workload(self, filters: "StatsWorkloadFilterParams") -> StatsWorkloadResponse:
+    def get_workload(self, filters: StatsWorkloadFilterParams) -> StatsWorkloadResponse:
         items = [
             WorkloadItem(
                 user_id=user_id,

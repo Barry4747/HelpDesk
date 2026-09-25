@@ -245,7 +245,6 @@ export function TicketDetailPage() {
 
   return (
     <div className="container">
-      {/* Header */}
       <div className="page-header">
         <div>
           <button

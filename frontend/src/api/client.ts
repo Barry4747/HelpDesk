@@ -18,6 +18,20 @@ export async function throwApiError(response: Response, fallbackMessage: string)
   throw new Error(detail);
 }
 
+let refreshPromise: Promise<boolean> | null = null;
+
+async function doRefreshToken(): Promise<boolean> {
+  try {
+    const refreshResponse = await fetch("/api/v1/auth/refresh", {
+      method: "POST",
+      credentials: "include",
+    });
+    return refreshResponse.ok;
+  } catch {
+    return false;
+  }
+}
+
 export async function apiFetch(url: string, options: RequestInit = {}): Promise<Response> {
   const mergedOptions: RequestInit = {
     ...options,
@@ -26,14 +40,21 @@ export async function apiFetch(url: string, options: RequestInit = {}): Promise<
 
   let response = await fetch(url, mergedOptions);
 
-  if (response.status === 401 && !url.includes("/auth/login") && !url.includes("/auth/refresh") && !url.includes("/auth/change-password")) {
+  if (
+    response.status === 401 &&
+    !url.includes("/auth/login") &&
+    !url.includes("/auth/refresh") &&
+    !url.includes("/auth/change-password")
+  ) {
     try {
-      const refreshResponse = await fetch("/api/v1/auth/refresh", {
-        method: "POST",
-        credentials: "include",
-      });
+      if (!refreshPromise) {
+        refreshPromise = doRefreshToken().finally(() => {
+          refreshPromise = null;
+        });
+      }
 
-      if (!refreshResponse.ok) {
+      const ok = await refreshPromise;
+      if (!ok) {
         throw new Error("Refresh failed");
       }
 

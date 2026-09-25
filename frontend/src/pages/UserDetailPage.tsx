@@ -116,7 +116,6 @@ export function UserDetailPage() {
 
   return (
     <div className="container">
-      {/* Header */}
       <div className="page-header">
         <div>
           <button
@@ -145,7 +144,6 @@ export function UserDetailPage() {
       {error && <div className="alert alert-error">{error}</div>}
       {saveMsg && <div className="alert alert-info">{saveMsg}</div>}
 
-      {/* Info badges */}
       <div style={{ display: "flex", gap: "8px", marginBottom: "24px" }}>
         <span className={user.is_active ? "badge badge-green" : "badge badge-red"}>
           {user.is_active ? "Aktywny" : "Nieaktywny"}
@@ -155,7 +153,6 @@ export function UserDetailPage() {
         )}
       </div>
 
-      {/* Info card */}
       <div className="card" style={{ marginBottom: "24px" }}>
         <div className="card-header">
           <span className="card-title">Informacje o koncie</span>
@@ -183,7 +180,6 @@ export function UserDetailPage() {
       </div>
 
       <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "24px", alignItems: "start" }}>
-        {/* Edit data form */}
         <div className="card">
           <div className="card-header">
             <span className="card-title">Edytuj dane</span>
@@ -250,7 +246,6 @@ export function UserDetailPage() {
           </div>
         </div>
 
-        {/* Change password form */}
         <div className="card">
           <div className="card-header">
             <span className="card-title">Zmień hasło</span>

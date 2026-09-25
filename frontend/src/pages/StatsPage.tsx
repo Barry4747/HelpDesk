@@ -121,7 +121,7 @@ export function StatsPage() {
       date_to: dateTo ? new Date(dateTo).toISOString() : undefined,
       department_ids: departmentIds || undefined,
     };
-    
+
     const workloadParams = {
       date_from: dateFrom ? new Date(dateFrom).toISOString() : undefined,
       date_to: dateTo ? new Date(dateTo).toISOString() : undefined,
@@ -198,8 +198,8 @@ export function StatsPage() {
         const nameB = `${b.first_name} ${b.last_name}`;
         return wlSortOrder === "asc" ? nameA.localeCompare(nameB) : nameB.localeCompare(nameA);
       } else {
-        return wlSortOrder === "asc" 
-          ? a.active_ticket_count - b.active_ticket_count 
+        return wlSortOrder === "asc"
+          ? a.active_ticket_count - b.active_ticket_count
           : b.active_ticket_count - a.active_ticket_count;
       }
     });
@@ -235,12 +235,12 @@ export function StatsPage() {
           <span className="card-title">Filtry Obliczeń</span>
         </div>
         <div className="card-body" style={{ display: "flex", gap: "16px", flexWrap: "wrap", alignItems: "flex-end" }}>
-          
+
           <div className="form-group" style={{ marginBottom: 0, minWidth: "180px" }}>
             <label className="form-label">Data od</label>
-            <input 
-              type="date" 
-              className="form-control" 
+            <input
+              type="date"
+              className="form-control"
               value={dateFrom}
               onChange={(e) => updateFilters({ date_from: e.target.value })}
             />
@@ -248,9 +248,9 @@ export function StatsPage() {
 
           <div className="form-group" style={{ marginBottom: 0, minWidth: "180px" }}>
             <label className="form-label">Data do</label>
-            <input 
-              type="date" 
-              className="form-control" 
+            <input
+              type="date"
+              className="form-control"
               value={dateTo}
               onChange={(e) => updateFilters({ date_to: e.target.value })}
             />
@@ -258,7 +258,7 @@ export function StatsPage() {
         </div>
 
         <div className="card-body" style={{ display: "flex", gap: "24px", flexWrap: "wrap", borderTop: "1px solid var(--color-border)", paddingTop: "16px" }}>
-          
+
           <div className="form-group" style={{ marginBottom: 0, flex: 1 }}>
             <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "8px" }}>
               <label className="form-label" style={{ marginBottom: 0 }}>Działy (dotyczy statystyk ogólnych)</label>
@@ -320,7 +320,6 @@ export function StatsPage() {
       ) : overview && workload ? (
         <>
           <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "24px", marginBottom: "24px" }}>
-            {/* Wg statusu */}
             <div className="card">
               <div className="card-header">
                 <span className="card-title">Wg statusu</span>
@@ -354,7 +353,6 @@ export function StatsPage() {
               </div>
             </div>
 
-            {/* Wg priorytetu */}
             <div className="card">
               <div className="card-header">
                 <span className="card-title">Wg priorytetu</span>
@@ -390,7 +388,6 @@ export function StatsPage() {
           </div>
 
           <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "24px" }}>
-            {/* Wg kategorii */}
             <div className="card">
               <div className="card-header">
                 <span className="card-title">Wg kategorii</span>
@@ -402,7 +399,6 @@ export function StatsPage() {
               </div>
             </div>
 
-            {/* Obciążenie zespołu */}
             <div className="card">
               <div className="card-header">
                 <span className="card-title">Obciążenie zespołu</span>
@@ -436,7 +432,7 @@ export function StatsPage() {
                         ))}
                       </tbody>
                     </table>
-                    
+
                     <div style={{ height: "200px", padding: "16px" }}>
                       <ResponsiveContainer width="100%" height="100%">
                         <BarChart

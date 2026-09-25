@@ -1,5 +1,4 @@
 import uuid
-from typing import TYPE_CHECKING
 
 from fastapi import Depends
 from sqlalchemy import func, select
@@ -9,22 +8,20 @@ from app.dependencies.database import get_db
 from app.models.category import Category
 from app.models.ticket import Ticket, TicketStatus
 from app.models.user import User, UserRole
-
-if TYPE_CHECKING:
-    from app.schemas.stats import StatsOverviewFilterParams, StatsWorkloadFilterParams
+from app.schemas.stats import StatsOverviewFilterParams, StatsWorkloadFilterParams
 
 
 class StatsRepository:
     def __init__(self, session: Session = Depends(get_db)):
         self.session = session
 
-    def count_by_status(self, filters: "StatsOverviewFilterParams") -> list[tuple[str, int]]:
+    def count_by_status(self, filters: StatsOverviewFilterParams) -> list[tuple[str, int]]:
         stmt = select(Ticket.status, func.count().label("cnt")).group_by(Ticket.status)
         stmt = self._apply_overview_filters(stmt, filters)
         rows = self.session.execute(stmt).all()
         return [(str(row[0].value if hasattr(row[0], "value") else row[0]), row[1]) for row in rows]
 
-    def count_by_priority(self, filters: "StatsOverviewFilterParams") -> list[tuple[str, int]]:
+    def count_by_priority(self, filters: StatsOverviewFilterParams) -> list[tuple[str, int]]:
         stmt = (
             select(Ticket.priority, func.count().label("cnt"))
             .where(Ticket.priority.isnot(None))
@@ -34,7 +31,7 @@ class StatsRepository:
         rows = self.session.execute(stmt).all()
         return [(str(row[0].value if hasattr(row[0], "value") else row[0]), row[1]) for row in rows]
 
-    def count_by_category(self, filters: "StatsOverviewFilterParams") -> list[tuple[uuid.UUID | None, str | None, int]]:
+    def count_by_category(self, filters: StatsOverviewFilterParams) -> list[tuple[uuid.UUID | None, str | None, int]]:
         stmt = (
             select(Ticket.category_id, Category.name, func.count().label("cnt"))
             .outerjoin(Category, Ticket.category_id == Category.id)
@@ -44,7 +41,7 @@ class StatsRepository:
         rows = self.session.execute(stmt).all()
         return [(row[0], row[1], row[2]) for row in rows]
 
-    def _apply_overview_filters(self, stmt, filters: "StatsOverviewFilterParams"):
+    def _apply_overview_filters(self, stmt, filters: StatsOverviewFilterParams):
         conditions = []
         if filters.date_from:
             conditions.append(Ticket.created_at >= filters.date_from)
@@ -65,7 +62,7 @@ class StatsRepository:
             stmt = stmt.where(*conditions)
         return stmt
 
-    def workload(self, filters: "StatsWorkloadFilterParams") -> list[tuple[uuid.UUID, str, str, int]]:
+    def workload(self, filters: StatsWorkloadFilterParams) -> list[tuple[uuid.UUID, str, str, int]]:
 
         statuses_to_count = [TicketStatus.przyjete]
         if filters.workload_statuses:

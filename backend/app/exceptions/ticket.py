@@ -22,8 +22,6 @@ class InvalidAssigneeError(HTTPException):
 
 
 class TicketMissingDataError(HTTPException):
-    """Raised when a ticket is missing required category or priority before assignee can be set."""
-
     def __init__(self):
         super().__init__(
             status_code=status.HTTP_400_BAD_REQUEST,
