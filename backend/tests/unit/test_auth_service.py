@@ -59,7 +59,6 @@ class TestLogin:
             svc.login("unknown", "wrongpass")
 
     def test_bad_password_same_error_as_unknown_login(self):
-        """Brute-force mitigation: both cases raise the same error type."""
         user_repo = MagicMock()
         user_repo.get_by_login.return_value = None
         svc = _make_service(user_repo=user_repo)
